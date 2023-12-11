@@ -1,17 +1,24 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"fmt"
+	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
-var db = make(map[string]string)
+func main(){
+	router := mux.NewRouter()
 
-func setupRouter() *gin.Engine {
-	r := gin.Default()
-	return r
+	// Définir les routes
+	router.HandleFunc("/hello", HelloHandler).Methods("GET")
+
+	// Démarrer le serveur
+	fmt.Println("Server is running on :8080")
+	http.ListenAndServe(":8080", router)
 }
 
-func main() {
-	r := setupRouter()
-	r.Run(":8080")
+// Handlers
+func HelloHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Hello !")
 }
