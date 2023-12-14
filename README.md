@@ -8,21 +8,21 @@ Concevoir une solution applicative en microservice avec une application client w
 
 ## Microservices
 
-| Service             | Port  | Language       | Database   | Assignee   |
-| ------------------- | ----- | -------------- | ---------- | ---------- |
-| Gateway             | 50000 | Java (Spring)  | None       | Benjamin   |
-| Auth                | 50001 | JS (Nest.js)   | MongoDB    | Lucile     |
-| Product / Basket    | 50002 | Go             | PostgreSQL | Benjamin   |
-| Delivery / Order    | 50003 | C# (ASP.NET)   | PostgreSQL | Maxime     |
-| Stock / Management  | 50004 | C# (ASP.NET)   | PostgreSQL | Benjamin   |
-| Mailling            | 50005 | TS (NodeJS)    | None       | Lucile     |
+| Service            | Port  | Langage       | Base de données | Assigné  |
+| ------------------ | ----- | ------------- | --------------- | -------- |
+| Gateway            | 50000 | Java (Spring) |                 | Benjamin |
+| Auth               | 50001 | JS (Nest.js)  | MongoDB         | Lucile   |
+| Product / Basket   | 50002 | Go            | PostgreSQL      | Benjamin |
+| Delivery / Order   | 50003 | C# (ASP.NET)  | PostgreSQL      | Maxime   |
+| Stock / Management | 50004 | C# (ASP.NET)  | PostgreSQL      | Benjamin |
+| Mailling           | 50005 | TS (NodeJS)   |                 | Lucile   |
 
 ## Architecture de dossier
 
 ```
 .
 ├── README.md
-├── (...) # other files like .gitignore, etc.
+├── (...) autre fichiers tel que .gitignore, etc...
 ├── Apps/
 │   ├── mobile/
 │   ├── web/
