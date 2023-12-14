@@ -1,25 +1,23 @@
-version: '3.4'
+version: '3.8'
 
 services:
   host:
-    build: ./Host
+    build: ./Sources
     restart: always
+    ports:
+    - "50003:8080"
   worker:
-    build: ./TestRabbitMQ
+    build: ./Tests/TestRabbitMQ
     restart: always
     depends_on:
       - "host"
       - "rabbitmq"
 
-  rabbitmq: # login guest:guest
-    image: rabbitmq:3-management
+  rabbitmq:
+    image: rabbitmq:3.12-management
     hostname: "rabbitmq"
     labels:
       NAME: "rabbitmq"
     ports:
-    - "4369:4369"
-    - "5671:5671"
     - "5672:5672"
-    - "25672:25672"
-    - "15671:15671"
     - "15672:15672"

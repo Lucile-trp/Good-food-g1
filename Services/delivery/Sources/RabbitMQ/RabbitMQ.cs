@@ -8,7 +8,7 @@
     {
         public static string Send(string str)
         {
-            var factory = new ConnectionFactory { HostName = "localhost" };
+            var factory = new ConnectionFactory { HostName = "localhost", Port = 5672 };
             using var connection = factory.CreateConnection();
             using var channel = connection.CreateModel();
 
