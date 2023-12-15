@@ -26,6 +26,14 @@ export class UserService {
     return user;
   }
 
+  async getUserByEmail(email: string) {
+    const user = this.userModel.findOne({ email: email });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
+  }
+
   async insertUser(email: string, password: string) {
     const passwordHash = await hashPassword(password);
     const newUser = new this.userModel({
