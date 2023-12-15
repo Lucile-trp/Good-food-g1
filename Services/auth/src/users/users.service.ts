@@ -26,7 +26,14 @@ export class UserService {
       password,
     });
     const res = await newUser.save();
-    console.log('New user : ', res);
     return res.id;
+  }
+
+  // TODO : update
+
+  async deleteUser(id: string) {
+    const objectId = toObjectId(id);
+    const res = await this.userModel.findByIdAndDelete(objectId);
+    return res;
   }
 }
