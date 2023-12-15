@@ -5,10 +5,8 @@ export const UserSchema = new Schema({
   password: { type: String, required: true },
 });
 
-export class User {
-  constructor(
-    public id: string,
-    public email: string,
-    public password: string,
-  ) {}
+export interface User {
+  id: string;
+  email: string;
+  password: string;
 }
