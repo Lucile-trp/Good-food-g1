@@ -3,6 +3,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './users.model';
 import { toObjectId } from 'src/helpers/toObjectId';
+import { hashPassword } from 'src/helpers/hashPassword';
 
 @Injectable()
 export class UserService {
@@ -20,10 +21,10 @@ export class UserService {
   }
 
   async insertUser(email: string, password: string) {
-    //TODO : hash password
+    const passwordHash = await hashPassword(password);
     const newUser = new this.userModel({
       email,
-      password,
+      password: passwordHash,
     });
     const res = await newUser.save();
     return res.id;
