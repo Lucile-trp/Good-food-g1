@@ -5,14 +5,6 @@ VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Host", "Sources\Host\Host.csproj", "{6A525426-9BBE-4299-9D26-3FFF47F2276C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQ", "Sources\RabbitMQ\RabbitMQ.csproj", "{0F85571B-7FFA-47BB-9049-018BB1B16CED}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sources", "Sources", "{AA1F5FA8-77ED-4078-9ADC-F11B3815A1B8}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{760A3824-572B-4AA3-B6C8-F0C3AB13B644}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestRabbitMQ", "Tests\TestRabbitMQ\TestRabbitMQ.csproj", "{E4BEEEEF-4AC4-4768-8048-7EFC3579AE64}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,22 +15,9 @@ Global
 		{6A525426-9BBE-4299-9D26-3FFF47F2276C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A525426-9BBE-4299-9D26-3FFF47F2276C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A525426-9BBE-4299-9D26-3FFF47F2276C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0F85571B-7FFA-47BB-9049-018BB1B16CED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0F85571B-7FFA-47BB-9049-018BB1B16CED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0F85571B-7FFA-47BB-9049-018BB1B16CED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0F85571B-7FFA-47BB-9049-018BB1B16CED}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E4BEEEEF-4AC4-4768-8048-7EFC3579AE64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E4BEEEEF-4AC4-4768-8048-7EFC3579AE64}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E4BEEEEF-4AC4-4768-8048-7EFC3579AE64}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E4BEEEEF-4AC4-4768-8048-7EFC3579AE64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{6A525426-9BBE-4299-9D26-3FFF47F2276C} = {AA1F5FA8-77ED-4078-9ADC-F11B3815A1B8}
-		{0F85571B-7FFA-47BB-9049-018BB1B16CED} = {AA1F5FA8-77ED-4078-9ADC-F11B3815A1B8}
-		{E4BEEEEF-4AC4-4768-8048-7EFC3579AE64} = {760A3824-572B-4AA3-B6C8-F0C3AB13B644}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C8D3BB9F-8D79-4288-8A13-F0973C9AB2B5}
