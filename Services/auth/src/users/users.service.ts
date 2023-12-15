@@ -16,7 +16,7 @@ export class UserService {
 
   async getUserWithId(id: string) {
     const objectId = toObjectId(id);
-    const user = this.userModel.find({ _id: objectId });
+    const user = this.userModel.findOne({ _id: objectId });
     return user;
   }
 
@@ -30,7 +30,13 @@ export class UserService {
     return res.id;
   }
 
-  // TODO : update
+  async updateUser(id: string, user: User) {
+    const objectId = toObjectId(id);
+    const res = await this.userModel.findOneAndUpdate({ _id: objectId }, user, {
+      returnDocument: 'after',
+    });
+    return res;
+  }
 
   async deleteUser(id: string) {
     const objectId = toObjectId(id);
