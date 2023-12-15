@@ -17,16 +17,12 @@ export class UserController {
 
   @Get()
   async get(@Query('id') id: string): Promise<User | User[]> {
-    try {
-      if (id) {
-        const res = await this.userService.getUserWithId(id);
-        return res;
-      }
-      const res = await this.userService.getAllUsers();
+    if (id) {
+      const res = await this.userService.getUserWithId(id);
       return res;
-    } catch (error) {
-      throw error;
     }
+    const res = await this.userService.getAllUsers();
+    return res;
   }
 
   @Post()
@@ -34,12 +30,8 @@ export class UserController {
     @Body('email') email: string,
     @Body('password') password: string,
   ): Promise<string> {
-    try {
-      const res = await this.userService.insertUser(email, password);
-      return res;
-    } catch (error) {
-      throw error;
-    }
+    const res = await this.userService.insertUser(email, password);
+    return res;
   }
 
   @Put()
@@ -48,28 +40,20 @@ export class UserController {
     @Body('email') email?: string,
     @Body('password') password?: string,
   ) {
-    try {
-      const user = await this.userService.getUserWithId(id);
+    const user = await this.userService.getUserWithId(id);
 
-      // Assignation des changements
-      email ? (user.email = email) : user.email;
-      password ? (user.password = await hashPassword(password)) : user.password;
+    // Assignation des changements
+    email && (user.email = email);
+    password && (user.password = await hashPassword(password));
 
-      // Modification de la donnée
-      const res = await this.userService.updateUser(id, user);
-      return res;
-    } catch (error) {
-      throw error;
-    }
+    // Modification de la donnée
+    const res = await this.userService.updateUser(id, user);
+    return res;
   }
 
   @Delete()
   async deleteUserQuery(@Query('id') id: string) {
-    try {
-      const res = await this.userService.deleteUser(id);
-      return res;
-    } catch (error) {
-      throw error;
-    }
+    const res = await this.userService.deleteUser(id);
+    return res;
   }
 }
