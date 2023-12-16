@@ -6,7 +6,7 @@ require('dotenv').config();
 
 const { PRODUCT_API } = process.env.PRODUCT_API;
 
-router.get('/product', isAuthorized, async (req, res, next) => {
+router.get('/', isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.get(PRODUCT_API + req.originalUrl);
     res.set(response.headers);
@@ -16,7 +16,7 @@ router.get('/product', isAuthorized, async (req, res, next) => {
   }
 });
 
-router.get("/product/:id", isAuthorized, async (req, res, next) => {
+router.get("/:id", isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.get(PRODUCT_API + req.originalUrl);
     res.set(response.headers);
