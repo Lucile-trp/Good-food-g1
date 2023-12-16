@@ -6,7 +6,7 @@ require('dotenv').config();
 
 const { FRANCHISE_API } = process.env.FRANCHISE_API;
 
-router.get('/franchise', isAuthorized, async (req, res, next) => {
+router.get('/', isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.get(FRANCHISE_API + req.originalUrl);
     res.set(response.headers);
@@ -16,7 +16,7 @@ router.get('/franchise', isAuthorized, async (req, res, next) => {
   }
 });
 
-router.get("franchise/:id", isAuthorized, async (req, res, next) => {
+router.get("/:id", isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.get(FRANCHISE_API + req.originalUrl);
     res.set(response.headers);
