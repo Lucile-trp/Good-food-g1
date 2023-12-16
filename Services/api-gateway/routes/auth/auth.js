@@ -7,16 +7,6 @@ const { AUTH_API } = process.env.AUTH_API;
 
 // exemple de route pour l'authentification (a modifier si besoins)
 
-router.get('/test', async (req, res, next) => {
-  try {
-    const response = await axios.get(AUTH_API + req.originalUrl);
-    res.set(response.headers);
-    res.status(response.status).json(response.data);
-  } catch (err) {
-    next(err);
-  }
-});
-
 router.post('/refresh', async (req, res, next) => {
   const axios_instance = axios.create({
     baseURL: AUTH_API,

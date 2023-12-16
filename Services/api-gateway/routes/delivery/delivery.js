@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
-const isAuthorized = require('../middlewares/isAuthorized');
+const isAuthorized = require('../../middlewares/isAuthorized');
 require('dotenv').config();
 
-const { PRODUCT_API } = process.env.PRODUCT_API;
+const { DELIVERY_API } = process.env.DELIVERY_API;
 
-router.get('/', isAuthorized, async (req, res, next) => {
+router.get('/delivery', isAuthorized, async (req, res, next) => {
   try {
-    const response = await axios.get(PRODUCT_API + req.originalUrl);
+    const response = await axios.get(DELIVERY_API + req.originalUrl);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
@@ -16,9 +16,9 @@ router.get('/', isAuthorized, async (req, res, next) => {
   }
 });
 
-router.get("/:id", isAuthorized, async (req, res, next) => {
+router.get("/delivery/:id", isAuthorized, async (req, res, next) => {
   try {
-    const response = await axios.get(PRODUCT_API + req.originalUrl);
+    const response = await axios.get(DELIVERY_API + req.originalUrl);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {

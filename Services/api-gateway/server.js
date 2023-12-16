@@ -2,11 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const isAuthorized = require('./middlewares/isAuthorized');
 
-const authRoutes = require('./routes/auth');
-const productRoutes = require('./routes/product');
-const deliveryRoutes = require('./routes/delivery');
-const franchiseRoutes = require('./routes/franchise');
-const mailingRoutes = require('./routes/mailing');
+const authRoutes = require('./routes/auth/auth');
+const productRoutes = require('./routes/product/product');
+const deliveryRoutes = require('./routes/delivery/delivery');
+const franchiseRoutes = require('./routes/franchise/franchise');
+const mailingRoutes = require('./routes/mailing/mailing');
 
 const app = express();
 const GATEWAY_PORT = process.env.GATEWAY_PORT;
@@ -14,19 +14,19 @@ const GATEWAY_PORT = process.env.GATEWAY_PORT;
 app.use(bodyParser.json());
 
 // Routes pour AUTH
-app.use('/auth', authRoutes);
+app.use('/auth/api', authRoutes);
 
 // Routes pour PRODUCT
-app.use('/product', isAuthorized, productRoutes);
+app.use('/product/api', isAuthorized, productRoutes);
 
 // Routes pour DELIVERY
-app.use('/delivery', isAuthorized, deliveryRoutes);
+app.use('/delivery/api', isAuthorized, deliveryRoutes);
 
 // Routes pour FRANCHISE
-app.use('/franchise', isAuthorized, franchiseRoutes);
+app.use('/franchise/api', isAuthorized, franchiseRoutes);
 
 // Routes pour MAILING
-app.use('/mailing', isAuthorized, mailingRoutes);
+app.use('/mailing/api', isAuthorized, mailingRoutes);
 
 // Gestion des erreurs
 app.use((err, req, res, next) => {
