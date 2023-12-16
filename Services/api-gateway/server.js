@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const isAuthorized = require('./middlewares/isAuthorized');
 
 const authRoutes = require('./routes/auth/auth');
+const userRoutes = require('./routes/auth/user');
+
 const productRoutes = require('./routes/product/product');
 const deliveryRoutes = require('./routes/delivery/delivery');
 const franchiseRoutes = require('./routes/franchise/franchise');
@@ -15,18 +17,19 @@ app.use(bodyParser.json());
 
 // Routes pour AUTH
 app.use('/auth/api', authRoutes);
+app.use('/auth/api/user', userRoutes);
 
 // Routes pour PRODUCT
-app.use('/product/api', isAuthorized, productRoutes);
+app.use('/product/api/product', isAuthorized, productRoutes);
 
 // Routes pour DELIVERY
-app.use('/delivery/api', isAuthorized, deliveryRoutes);
+app.use('/delivery/api/delivery', isAuthorized, deliveryRoutes);
 
 // Routes pour FRANCHISE
-app.use('/franchise/api', isAuthorized, franchiseRoutes);
+app.use('/franchise/api/franchise', isAuthorized, franchiseRoutes);
 
 // Routes pour MAILING
-app.use('/mailing/api', isAuthorized, mailingRoutes);
+app.use('/mailing/api/', isAuthorized, mailingRoutes);
 
 // Gestion des erreurs
 app.use((err, req, res, next) => {
