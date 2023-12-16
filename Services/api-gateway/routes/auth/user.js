@@ -6,7 +6,7 @@ require('dotenv').config();
 
 const { AUTH_API } = process.env.AUTH_API;
 
-router.get('/user', isAuthorized, async (req, res, next) => {
+router.get('/', isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.get(AUTH_API + req.originalUrl);
     res.set(response.headers);
@@ -16,7 +16,7 @@ router.get('/user', isAuthorized, async (req, res, next) => {
   }
 });
 
-router.get("/user/:id", isAuthorized, async (req, res, next) => {
+router.get("/:id", isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.get(AUTH_API + req.originalUrl);
     res.set(response.headers);
