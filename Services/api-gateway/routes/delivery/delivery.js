@@ -6,7 +6,7 @@ require('dotenv').config();
 
 const { DELIVERY_API } = process.env.DELIVERY_API;
 
-router.get('/delivery', isAuthorized, async (req, res, next) => {
+router.get('/', isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.get(DELIVERY_API + req.originalUrl);
     res.set(response.headers);
@@ -16,7 +16,7 @@ router.get('/delivery', isAuthorized, async (req, res, next) => {
   }
 });
 
-router.get("/delivery/:id", isAuthorized, async (req, res, next) => {
+router.get("/:id", isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.get(DELIVERY_API + req.originalUrl);
     res.set(response.headers);
