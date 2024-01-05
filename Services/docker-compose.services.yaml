@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+# Product service : host
+  product-host:
+    build: 
+      context: ./product
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "50002:8080"
+
+# Delivery service : host
+  delivery-host:
+    container_name: DeliveryHost
+    build: 
+      context: ./delivery/Sources
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "50003:8080"
+    env_file:
+      - ./delivery/Sources/.env
+      - ./delivery/Sources/compose.env
+  
+# Delivery service : db
+  delivery_postgres_db:
+    image: postgres:latest
+    container_name: DeliveryPostgres
+    restart: always
+    environment: 
+      - POSTGRES_USER=deliverypostgresadmin
+      - POSTGRES_PASSWORD=admin
+      - PGDATA=/data/postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - delivery:/data/delivery/postgres
+    hostname: postgresdelivery
+    networks:
+      - backend
+
+# RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: "RabbitMQ"
+    hostname: "rabbitmq"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - backend
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+
+volumes:
+    auth:
+      driver: local
+    delivery:
+      driver: local
+    product:
+      driver: local
