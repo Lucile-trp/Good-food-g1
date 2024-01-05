@@ -17,18 +17,15 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddHostedService<IRabbitMQPersistentConnection>(pc =>
 {
-    var settings = builder.Configuration.GetSection("RabbitMQ").Get<RabbitMQSettings>();
-
-    if (settings == null)
+    var settings = new RabbitMQSettings()
     {
-        throw new ArgumentNullException($"{nameof(settings)} nout found in appsettings.json");
-    }
+        Hostname = builder.Configuration["RabbitMQ:Hostname"],
+        Username = builder.Configuration["RabbitMQ:Username"],
+        Password = builder.Configuration["RabbitMQ:Password"],
+        Port = int.Parse(builder.Configuration["RabbitMQ:Port"])
+    };
 
-    settings.Ip = Environment.GetEnvironmentVariable("RabbitMQ_IP") ?? settings.Ip;
-
-    var factory = new ConnectionFactory() { HostName = settings.Ip, Port = settings.Port };
-
-    return new RabbitMQPersistentConnection(factory);
+    return new RabbitMQPersistentConnection(settings);
 });
 
 var app = builder.Build();
