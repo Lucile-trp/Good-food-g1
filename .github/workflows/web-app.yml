@@ -28,12 +28,17 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
+       - name: "install depts & build"
+          run: | 
+            pwd 
+            ls -la
+
       - name: Build & Push Docker image to Docker Hub
         uses: docker/build-push-action@v5
         with:
           context: ./Apps/web
-          file: Dockerfile
+          file: ./Apps/web/Dockerfile
           push: true
           tags: lutrp/goodfood-webapp
-
+       
 
