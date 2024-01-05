@@ -4,11 +4,11 @@ namespace Host
 {
     public static class ApplicationBuilderExtentions
     {
-        public static RabbitMQPersistentConnection Listener { get; set; }
+        public static IRabbitMQPersistentConnection Listener { get; set; }
 
         public static IApplicationBuilder UseRabbitListener(this IApplicationBuilder app)
         {
-            Listener = app.ApplicationServices.GetService<RabbitMQPersistentConnection>() ?? throw new ArgumentNullException(nameof(RabbitMQPersistentConnection));
+            Listener = app.ApplicationServices.GetServices<IHostedService>().OfType<IRabbitMQPersistentConnection>().Single() ?? throw new ArgumentNullException(nameof(IRabbitMQPersistentConnection));
             var life = app.ApplicationServices.GetService<IHostApplicationLifetime>() ?? throw new ArgumentNullException(nameof(IHostApplicationLifetime));
             life.ApplicationStarted.Register(OnStarted);
 

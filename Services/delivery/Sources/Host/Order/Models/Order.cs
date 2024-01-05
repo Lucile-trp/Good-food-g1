@@ -1,8 +1,8 @@
 ﻿using Host.Core.Models;
 
-namespace Host.Command.Models
+namespace Host.Order.Models
 {
-    public class Command : ModelBase
+    public class Order : ModelBase
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }

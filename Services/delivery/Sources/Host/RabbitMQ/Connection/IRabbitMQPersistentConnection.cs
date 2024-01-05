@@ -1,14 +1,18 @@
-﻿using RabbitMQ.Client;
+﻿using Host.RabbitMQ.Handler;
+using RabbitMQ.Client;
 
 namespace RabbitMQ.Connection
 {
-    public interface IRabbitMQPersistentConnection : IDisposable
+    public interface IRabbitMQPersistentConnection : IHostedService, IDisposable
     {
+        Dictionary<string, RabbitMQMessageHandler> Subscribers { get; }
+
         bool IsConnected { get; }
+        IModel Channel { get; }
 
         bool TryConnect();
 
-        IModel CreateModel();
+        void CreateModel();
 
         void CreateConsumersChannels();
 
