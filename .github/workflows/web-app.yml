@@ -10,6 +10,7 @@ jobs:
         uses: actions/checkout@v3
       - name: "install depts & build"
         run: |
+          cd ./Apps/web
           npm i
           npm run build
 
