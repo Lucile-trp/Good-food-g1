@@ -1,6 +1,8 @@
 name: web application build & push image
 
-on: [push]
+on: 
+  push:
+    branches: [dev]
 
 jobs: 
   build-app: 
@@ -40,5 +42,3 @@ jobs:
           file: ./Apps/web/Dockerfile
           push: true
           tags: lutrp/goodfood-webapp
-       
-
