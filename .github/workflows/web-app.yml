@@ -28,10 +28,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-       - name: "install depts & build"
-          run: | 
-            pwd 
-            ls -la
+      - name: "TEST"
+        run: | 
+          pwd 
+          ls -la
 
       - name: Build & Push Docker image to Docker Hub
         uses: docker/build-push-action@v5
