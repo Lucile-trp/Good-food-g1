@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../users/users.service';
-import { hashPassword } from 'src/helpers/hashPassword';
 import { JwtService } from '@nestjs/jwt';
+import { compare } from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +15,9 @@ export class AuthService {
     _password: string,
   ): Promise<{ access_token: string }> {
     const user = await this.usersService.getUserByEmail(_email);
-    if (user?.password !== (await hashPassword(_password))) {
+    console.log(user);
+    const res = await compare(_password, user.password);
+    if (res === false) {
       throw new UnauthorizedException();
     }
     // JWT generation & return
