@@ -15,7 +15,6 @@ export class AuthService {
     _password: string,
   ): Promise<{ access_token: string }> {
     const user = await this.usersService.getUserByEmail(_email);
-    console.log(user);
     const res = await compare(_password, user.password);
     if (res === false) {
       throw new UnauthorizedException();
