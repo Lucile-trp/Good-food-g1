@@ -39,7 +39,7 @@ Concevoir une solution applicative en microservice avec une application client w
 
 ## Installation
 
-### Docker
+### Docker Compose
 
 Utiliser docker pour executé les microservices et l'api gateway avec cette commande :
 
@@ -47,10 +47,17 @@ Utiliser docker pour executé les microservices et l'api gateway avec cette comm
 docker-compose up -f services/docker-compose.services.yml
 ```
 
-Utiliser docker pour executé l'application client web et le build de l'application mobile avec vette commande :
+Utiliser docker pour executé l'application client web et le build de l'application mobile avec cette commande :
 
 ```shell
 docker-compose up -f apps/docker-compose.apps.yml
+```
+
+### Docker
+
+Utiliser cette command pour executé le microservice Delivery / Order
+```shell
+docker run -p 50003:8080 --env-file .env delivery-source
 ```
 
 ## Membres
