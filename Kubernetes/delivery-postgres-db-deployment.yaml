@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  labels:
+    io.kompose.service: delivery-postgres-db
+  name: delivery-postgres-db
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: delivery-postgres-db
+  strategy:
+    type: Recreate
+
+  template:
+    metadata:
+      labels:
+        io.kompose.network/services-backend: "true"
+        io.kompose.service: delivery-postgres-db
+    spec:
+      containers:
+        - env:
+            - name: PGDATA
+              value: /data/delivery/postgres
+            - name: POSTGRES_PASSWORD
+              value: admin
+            - name: POSTGRES_USER
+              value: deliverypostgresadmin
+          image: postgres:latest
+          name: deliverypostgres
+          ports:
+            - containerPort: 5432
+              hostPort: 5433
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - mountPath: /data/delivery/postgres
+              name: delivery
+      hostname: postgresdelivery
+      restartPolicy: Always
+      volumes:
+        - name: delivery
+          persistentVolumeClaim:
+            claimName: delivery
+
+status: {}
