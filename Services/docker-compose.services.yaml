@@ -12,7 +12,10 @@ services:
       - auth-mongodb
       - rabbitmq
     environment:
-      - MONGO_URI="mongodb://authmongodbadmin:admin@mongodbauth:27017"
+      DATABASE_NAME: goodfood-auth
+      DATABASE_USER: admin
+      DATABASE_PASS: admin
+      DATABASE_URI: mongodb://mongodbauth:27017
     ports:
       - "50001:8080"
     networks:
@@ -24,12 +27,12 @@ services:
     container_name: AuthentificationMongo
     restart: always
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=authmongodbadmin
-      - MONGO_INITDB_ROOT_PASSWORD=admin
-    ports:
-      - '27017:27017'
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
     volumes:
       - auth:/data/auth/mongodb
+    ports:
+      - '27017:27017'
     hostname: mongodbauth
     networks:
       - backend
