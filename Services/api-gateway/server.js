@@ -1,10 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const isAuthorized = require('./middlewares/isAuthorized');
 
 const authRoutes = require('./routes/auth/auth');
-const userRoutes = require('./routes/auth/user');
-
 const productRoutes = require('./routes/product/product');
 const deliveryRoutes = require('./routes/delivery/delivery');
 const franchiseRoutes = require('./routes/franchise/franchise');
@@ -15,20 +14,19 @@ const GATEWAY_PORT = process.env.GATEWAY_PORT;
 
 app.use(bodyParser.json());
 
-// Routes pour AUTH
-app.use('/auth/api', authRoutes);
-app.use('/auth/api/user', userRoutes);
+// Routes du MS-AUTH
+app.use('/auth/api/', authRoutes);
 
-// Routes pour PRODUCT
-app.use('/product/api/product', isAuthorized, productRoutes);
+// Routes du MS-PRODUCT 
+app.use('/product/api/product', productRoutes);
 
-// Routes pour DELIVERY
+// Routes du MS-DELIVERY 
 app.use('/delivery/api/delivery', isAuthorized, deliveryRoutes);
 
-// Routes pour FRANCHISE
+// Routes du MS-FRANCHISE 
 app.use('/franchise/api/franchise', isAuthorized, franchiseRoutes);
 
-// Routes pour MAILING
+// Routes du MS-MAILING 
 app.use('/mailing/api/', isAuthorized, mailingRoutes);
 
 // Gestion des erreurs

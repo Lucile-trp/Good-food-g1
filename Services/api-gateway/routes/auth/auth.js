@@ -3,7 +3,7 @@ const router = express.Router();
 const axios = require("axios");
 require('dotenv').config();
 
-const { AUTH_API } = process.env.AUTH_API;
+const AUTH_API = process.env.AUTH_API;
 
 // exemple de route pour l'authentification (a modifier si besoins)
 
@@ -15,7 +15,7 @@ router.post('/refresh', async (req, res, next) => {
   });
 
   try {
-    const response = await axios_instance.post("auth/refresh");
+    const response = await axios_instance.post("auth/api/auth/refresh");
     res.set(response.headers);
     res.json(response.data);
   } catch (err) {
@@ -31,7 +31,7 @@ router.post('/signin', async (req, res, next) => {
   });
 
   try {
-    const response = await axios_instance.post("auth/signin", req.body);
+    const response = await axios_instance.post("auth/api/auth/signin", req.body);
     res.set(response.headers);
     res.json(response.data);
   } catch (err) {
@@ -47,7 +47,7 @@ router.post('/signup', async (req, res, next) => {
   });
 
   try {
-    const response = await axios_instance.post("auth/signup", req.body);
+    const response = await axios_instance.post("auth/api/auth/signup", req.body);
     res.set(response.headers);
     res.json(response.data);
   } catch (err) {
