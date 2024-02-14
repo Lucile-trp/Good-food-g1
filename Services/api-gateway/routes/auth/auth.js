@@ -15,7 +15,7 @@ router.post('/refresh', async (req, res, next) => {
   });
 
   try {
-    const response = await axios_instance.post("auth/api/auth/refresh");
+    const response = await axios_instance.post("/auth/api/auth/refresh");
     res.set(response.headers);
     res.json(response.data);
   } catch (err) {
@@ -31,7 +31,7 @@ router.post('/signin', async (req, res, next) => {
   });
 
   try {
-    const response = await axios_instance.post("auth/api/auth/signin", req.body);
+    const response = await axios_instance.post("/auth/api/auth/signin", req.body);
     res.set(response.headers);
     res.json(response.data);
   } catch (err) {
@@ -47,7 +47,7 @@ router.post('/signup', async (req, res, next) => {
   });
 
   try {
-    const response = await axios_instance.post("auth/api/auth/signup", req.body);
+    const response = await axios_instance.post("/auth/api/auth/signup", req.body);
     res.set(response.headers);
     res.json(response.data);
   } catch (err) {
