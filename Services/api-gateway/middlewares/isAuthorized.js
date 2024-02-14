@@ -16,7 +16,7 @@ const isAuthorized = async (req, res, next) => {
         });
 
         try {
-            const response = await axios_instance.post(AUTH_API + '/auth/verify');
+            const response = await axios_instance.post(AUTH_API + 'auth/api/auth/verify');
 
             if (response.status === 200) {
                 next();
