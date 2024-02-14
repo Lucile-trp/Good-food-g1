@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use('/auth/api/', authRoutes);
 
 // Routes du MS-PRODUCT 
-app.use('/product/api/product', productRoutes);
+app.use('/product/api/product', isAuthorized, productRoutes);
 
 // Routes du MS-DELIVERY 
 app.use('/delivery/api/delivery', isAuthorized, deliveryRoutes);
