@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  labels:
+    io.kompose.service: auth-host
+  name: auth-host
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: auth-host
+
+  template:
+    metadata:
+      labels:
+        io.kompose.network/services-backend: "true"
+        io.kompose.service: auth-host
+
+    spec:
+      containers:
+        - env:
+            - name: DATABASE_NAME
+              value: goodfood-auth
+            - name: DATABASE_PASS
+              value: admin
+            - name: DATABASE_URI
+              value: mongodb://mongodbauth:27017
+            - name: DATABASE_USER
+              value: admin
+
+          image: lutrp/goodfood-authms
+
+          name: authentificationhost
+
+          ports:
+            - containerPort: 8080
+              hostPort: 50001

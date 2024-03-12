@@ -14,15 +14,25 @@ namespace RabbitMQ.Connection
         public IModel Channel { get; private set; }
 
         private readonly IConnectionFactory ConnectionFactory;
-        IConnection Connection;
-        bool Disposed;
+        private IConnection Connection;
+        private bool Disposed;
+
+        RabbitMQSettings Settings;
 
         public bool IsConnected => Connection != null && Connection.IsOpen && !Disposed;
 
-        public RabbitMQPersistentConnection(IConnectionFactory connectionFactory)
+        public RabbitMQPersistentConnection(RabbitMQSettings settings)
         {
+            Settings = settings;
             Subscribers = new Dictionary<string, RabbitMQMessageHandler>();
-            ConnectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
+            ConnectionFactory = new ConnectionFactory() 
+            { 
+                HostName = settings.Hostname, 
+                Port = settings.Port, 
+                UserName = settings.Username, 
+                Password = settings.Password 
+            };
+
             TryConnect();
         }
 
@@ -101,9 +111,18 @@ namespace RabbitMQ.Connection
             }
             catch (BrokerUnreachableException)
             {
-                Thread.Sleep(5000);
-                Console.WriteLine("RabbitMQ Client is trying to reconnect");
-                Connection = ConnectionFactory.CreateConnection();
+                try
+                {
+                    Console.WriteLine("RabbitMQ Client is trying to reconnect");
+                    Thread.Sleep(5000);
+                    Connection = ConnectionFactory.CreateConnection();
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("RabbitMQ connections could not be created and opened");
+                    Console.WriteLine($"Connection failed on: {Settings.Hostname}:{Settings.Port} with {ConnectionFactory.UserName}");
+                    throw;
+                }
             }
 
             if (IsConnected)
@@ -111,11 +130,8 @@ namespace RabbitMQ.Connection
                 Console.WriteLine($"RabbitMQ persistent connection acquired a connection {Connection.Endpoint.HostName}");
                 return true;
             }
-            else
-            {
-                Console.WriteLine("RabbitMQ connections could not be created and opened");
-                return false;
-            }
+
+            return false;
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
