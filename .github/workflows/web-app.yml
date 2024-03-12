@@ -35,10 +35,34 @@ jobs:
           pwd 
           ls -la
 
-      - name: Build & Push Docker image to Docker Hub
+      - name: Build & Push Web app Docker image to Docker Hub
         uses: docker/build-push-action@v5
         with:
           context: ./Apps/web
           file: ./Apps/web/Dockerfile
+          push: true
+          tags: lutrp/goodfood-webapp
+
+      - name: Build & Push Auth MS Docker image to Docker Hub
+        uses: docker/build-push-action@v5
+        with:
+          context: ./Services/auth/
+          file: ./Services/auth//Dockerfile
+          push: true
+          tags: lutrp/goodfood-webapp
+      
+      - name: Build & Push delivery MS Docker image to Docker Hub
+        uses: docker/build-push-action@v5
+        with:
+          context: ./Services/delivery/Sources/
+          file: ./Services/delivery/Sources/Dockerfile
+          push: true
+          tags: lutrp/goodfood-webapp
+
+      - name: Build & Push product MS Docker image to Docker Hub
+        uses: docker/build-push-action@v5
+        with:
+          context: ./Services/product/
+          file: ./Services/product/Dockerfile
           push: true
           tags: lutrp/goodfood-webapp
