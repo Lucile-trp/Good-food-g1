@@ -1,5 +1,4 @@
 const validator = require('validator');
-const axios = require('axios');
 const { AUTH_API } = process.env;
 
 const isAuthorized = async (req, res, next) => {
