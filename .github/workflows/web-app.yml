@@ -49,7 +49,7 @@ jobs:
           context: ./Services/auth/
           file: ./Services/auth//Dockerfile
           push: true
-          tags: lutrp/goodfood-webapp
+          tags: lutrp/goodfood-authms
       
       - name: Build & Push delivery MS Docker image to Docker Hub
         uses: docker/build-push-action@v5
@@ -57,7 +57,7 @@ jobs:
           context: ./Services/delivery/Sources/
           file: ./Services/delivery/Sources/Dockerfile
           push: true
-          tags: lutrp/goodfood-webapp
+          tags: lutrp/goodfood-deliveryms
 
       - name: Build & Push product MS Docker image to Docker Hub
         uses: docker/build-push-action@v5
@@ -65,4 +65,4 @@ jobs:
           context: ./Services/product/
           file: ./Services/product/Dockerfile
           push: true
-          tags: lutrp/goodfood-webapp
+          tags: lutrp/goodfood-productms
