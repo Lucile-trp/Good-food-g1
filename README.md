@@ -8,14 +8,14 @@ Concevoir une solution applicative en microservice avec une application client w
 
 ## Microservices
 
-| Service            | Port  | Langage       | Base de données | Assigné  |
-| ------------------ | ----- | ------------- | --------------- | -------- |
-| Gateway            | 50000 | Java (Spring) |                 | Benjamin |
-| Auth               | 50001 | JS (Nest.js)  | MongoDB         | Lucile   |
-| Product / Basket   | 50002 | Go            | PostgreSQL      | Benjamin |
-| Delivery / Order   | 50003 | C# (ASP.NET)  | PostgreSQL      | Maxime   |
-| Stock / Management | 50004 | C# (ASP.NET)  | PostgreSQL      | Benjamin |
-| Mailling           | 50005 | TS (NodeJS)   |                 | Lucile   |
+| Service            | Port  | Langage      | Base de données | Assigné  |
+| ------------------ | ----- | ------------ | --------------- | -------- |
+| Gateway            | 50000 | TS (Nest.js) |                 | Benjamin |
+| Auth               | 50001 | TS (Nest.js) | MongoDB         | Lucile   |
+| Product / Basket   | 50002 | Go           | PostgreSQL      | Benjamin |
+| Delivery / Order   | 50003 | C# (ASP.NET) | PostgreSQL      | Maxime   |
+| Stock / Management | 50004 | C# (ASP.NET) | PostgreSQL      | Benjamin |
+| Mailling           | 50005 | JS (NodeJS)  |                 | Lucile   |
 
 ## Architecture de dossier
 
@@ -32,14 +32,14 @@ Concevoir une solution applicative en microservice avec une application client w
     ├── auth/
     ├── delivery/
     ├── product/
-    ├── stock/
+    ├── franchise/
     ├── mailling/
     └── docker-compose.services.yml
 ```
 
 ## Installation
 
-### Docker
+### Docker Compose
 
 Utiliser docker pour executé les microservices et l'api gateway avec cette commande :
 
@@ -47,14 +47,21 @@ Utiliser docker pour executé les microservices et l'api gateway avec cette comm
 docker-compose up -f services/docker-compose.services.yml
 ```
 
-Utiliser docker pour executé l'application client web et le build de l'application mobile avec vette commande :
+Utiliser docker pour executé l'application client web et le build de l'application mobile avec cette commande :
 
 ```shell
 docker-compose up -f apps/docker-compose.apps.yml
 ```
 
+### Docker
+
+Utiliser cette command pour executé le microservice Delivery / Order
+```shell
+docker run -p 50003:8080 --env-file .env delivery-source
+```
+
 ## Membres
 
-Maxime ADLER
-Lucile TRIPER
-Benjamin PERCHEPIED
++Maxime ADLER
++Lucile TRIPER
++Benjamin PERCHEPIED

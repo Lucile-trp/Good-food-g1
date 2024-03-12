@@ -1,0 +1,12 @@
+FROM golang:1.21.5-alpine3.18 AS build-env
+WORKDIR /app
+
+COPY . ./
+# Restore packages
+RUN go mod download
+# build source
+RUN go build -o product -work
+
+FROM alpine:3.18
+COPY --from=build-env ./app/product ./product
+ENTRYPOINT [ "./product" ]

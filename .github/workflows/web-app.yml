@@ -1,0 +1,68 @@
+name: web application build & push image
+
+on: 
+  push:
+    branches: [dev]
+
+jobs: 
+  build-app: 
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      - name: "install depts & build"
+        run: |
+          cd ./Apps/web
+          npm i
+          npm run build
+
+  docker-push: 
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    needs: build-app
+    steps: 
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      
+      - name: Log In to Docker Hub 
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: "TEST"
+        run: | 
+          pwd 
+          ls -la
+
+      - name: Build & Push Web app Docker image to Docker Hub
+        uses: docker/build-push-action@v5
+        with:
+          context: ./Apps/web
+          file: ./Apps/web/Dockerfile
+          push: true
+          tags: lutrp/goodfood-webapp
+
+      - name: Build & Push Auth MS Docker image to Docker Hub
+        uses: docker/build-push-action@v5
+        with:
+          context: ./Services/auth/
+          file: ./Services/auth//Dockerfile
+          push: true
+          tags: lutrp/goodfood-authms
+      
+      - name: Build & Push delivery MS Docker image to Docker Hub
+        uses: docker/build-push-action@v5
+        with:
+          context: ./Services/delivery/Sources/
+          file: ./Services/delivery/Sources/Dockerfile
+          push: true
+          tags: lutrp/goodfood-deliveryms
+
+      - name: Build & Push product MS Docker image to Docker Hub
+        uses: docker/build-push-action@v5
+        with:
+          context: ./Services/product/
+          file: ./Services/product/Dockerfile
+          push: true
+          tags: lutrp/goodfood-productms
