@@ -30,8 +30,7 @@ spec:
             - name: RabbitMQ__Username
               value: admin
 
-          image: services-delivery-host
-          imagePullPolicy: Never # TODO: delete
+          image: lutrp/goodfood-deliveryms
 
           name: deliveryhost
 

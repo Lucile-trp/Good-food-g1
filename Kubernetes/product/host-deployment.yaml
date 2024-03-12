@@ -24,8 +24,7 @@ spec:
             - name: CONNECTION_STRING
               value: '"Server=tcp:productpostgresadmin,5432;Initial Catalog=Product;Persist Security Info=False;User ID=productpostgresadmin;Password=admin;Connection Timeout=30;"'
           
-          image: services-product-host
-          imagePullPolicy: Never # TODO: delete
+          image: lutrp/goodfood-productms
           
           name: producthost
           
