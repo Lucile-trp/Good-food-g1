@@ -9,27 +9,29 @@ const isAuthorized = async (req, res, next) => {
     ) {
         next(400);
     } else {
-        const axios_instance = axios.create({
-            baseURL: AUTH_API,
-            timeout: 10000,
-            headers: { Authorization: req.headers.authorization }
-        });
+        // TODO: connect rabbitmq
 
-        try {
-            const response = await axios_instance.post(AUTH_API + '/auth/api/auth/verify');
+        // const axios_instance = axios.create({
+        //     baseURL: AUTH_API,
+        //     timeout: 10000,
+        //     headers: { Authorization: req.headers.authorization }
+        // });
 
-            if (response.status === 200) {
-                next();
-            } else {
-                next(400);
-            }
-        } catch (err) {
-            if (err.response && err.response.status) {
-                next(err.response.status);
-            } else {
-                next(500);
-            }
-        }
+        // try {
+        //     const response = await axios_instance.post(AUTH_API + '/auth/api/auth/verify');
+
+        //     if (response.status === 200) {
+        //         next();
+        //     } else {
+        //         next(400);
+        //     }
+        // } catch (err) {
+        //     if (err.response && err.response.status) {
+        //         next(err.response.status);
+        //     } else {
+        //         next(500);
+        //     }
+        // }
     }
 };
 
