@@ -11,13 +11,13 @@ spec:
   selector:
     matchLabels:
       io.kompose.service: delivery-host
-  strategy: {}
 
   template:
     metadata:
       labels:
         io.kompose.network/services-backend: "true"
         io.kompose.service: delivery-host
+
     spec:
       containers:
         - env:
@@ -29,13 +29,12 @@ spec:
               value: admin
             - name: RabbitMQ__Username
               value: admin
-          image: delivery-host
+
+          image: services-delivery-host
+          imagePullPolicy: Never # TODO: delete
+
           name: deliveryhost
+
           ports:
             - containerPort: 8080
               hostPort: 50003
-              protocol: TCP
-          resources: {}
-      restartPolicy: Always
-
-status: {}

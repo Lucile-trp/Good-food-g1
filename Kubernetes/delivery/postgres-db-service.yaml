@@ -13,5 +13,6 @@ spec:
       targetPort: 5432
   selector:
     io.kompose.service: delivery-postgres-db
+    
 status:
   loadBalancer: {}

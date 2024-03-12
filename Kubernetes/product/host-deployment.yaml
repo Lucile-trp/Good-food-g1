@@ -11,25 +11,24 @@ spec:
   selector:
     matchLabels:
       io.kompose.service: product-host
-  strategy: {}
 
   template:
     metadata:
       labels:
         io.kompose.network/services-backend: "true"
         io.kompose.service: product-host
+
     spec:
       containers:
         - env:
             - name: CONNECTION_STRING
               value: '"Server=tcp:productpostgresadmin,5432;Initial Catalog=Product;Persist Security Info=False;User ID=productpostgresadmin;Password=admin;Connection Timeout=30;"'
-          image: product-host
+          
+          image: services-product-host
+          imagePullPolicy: Never # TODO: delete
+          
           name: producthost
+          
           ports:
             - containerPort: 8080
               hostPort: 50002
-              protocol: TCP
-          resources: {}
-      restartPolicy: Always
-      
-status: {}
