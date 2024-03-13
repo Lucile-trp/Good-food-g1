@@ -2,20 +2,18 @@ apiVersion: apps/v1
 kind: Deployment
 
 metadata:
-  labels:
-    io.kompose.service: rabbitmq
   name: rabbitmq
+
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: rabbitmq
+      app: rabbitmq
 
   template:
     metadata:
       labels:
-        io.kompose.network/services-backend: "true"
-        io.kompose.service: rabbitmq
+        app: rabbitmq
 
     spec:
       containers:
@@ -36,8 +34,4 @@ spec:
 
           ports:
             - containerPort: 5672
-              hostPort: 5672
             - containerPort: 15672
-              hostPort: 15672
-              
-      hostname: rabbitmq
