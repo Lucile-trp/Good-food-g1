@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const isAuthorized = require('./middlewares/isAuthorized');
@@ -10,7 +9,6 @@ const franchiseRoutes = require('./routes/franchise/franchise');
 const mailingRoutes = require('./routes/mailing/mailing');
 
 const app = express();
-const GATEWAY_PORT = process.env.GATEWAY_PORT;
 
 app.use(bodyParser.json());
 
@@ -36,6 +34,6 @@ app.use((err, req, res, next) => {
 });
 
 // Démarrage du serveur
-app.listen(GATEWAY_PORT, () => {
-  console.log(`Server is running on http://localhost:${GATEWAY_PORT}`);
+app.listen(8080, () => {
+  console.log(`Server is running on http://localhost:8080`);
 });

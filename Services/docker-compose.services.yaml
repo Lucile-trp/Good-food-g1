@@ -5,19 +5,16 @@ services:
   gateway-host:
     container_name: ApiGatewayHost
     build: 
-      context: ./api-gateway
+      context: ./gateway
       dockerfile: Dockerfile
     restart: always
     depends_on:
-      - auth-haut
+      - auth-host
+      - product-host
+      - delivery-host
       - rabbitmq
-    environment:
-      DATABASE_NAME: goodfood-auth
-      DATABASE_USER: admin
-      DATABASE_PASS: admin
-      DATABASE_URI: mongodb://mongodbauth:27017
     ports:
-      - "50001:8080"
+      - "50000:8080"
     networks:
       - backend
 

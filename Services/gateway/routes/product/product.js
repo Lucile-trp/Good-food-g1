@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const isAuthorized = require('../../middlewares/isAuthorized');
-require('dotenv').config();
 
 const PRODUCT_API = process.env.PRODUCT_API;
 
