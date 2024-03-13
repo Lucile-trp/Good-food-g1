@@ -20,7 +20,7 @@ spec:
 
     spec:
       containers:
-        - name: ApiGateway
+        - name: apigateway
 
           image: lutrp/goodfood-authms
 
@@ -28,7 +28,7 @@ spec:
             limits:
               cpu: 100m
               memory: 200Mi
-              
+
           ports:
             - containerPort: 8080
               hostPort: 50001

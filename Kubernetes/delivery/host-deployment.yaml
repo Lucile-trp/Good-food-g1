@@ -20,7 +20,7 @@ spec:
 
     spec:
       containers:
-        - name: DeliveryHost
+        - name: deliveryhost
 
           env:
             - name: ConnectionStrings__DefaultConnection

@@ -20,7 +20,7 @@ spec:
 
     spec:
       containers:
-        - name: ProductHost
+        - name: producthost
          
           env:
             - name: CONNECTION_STRING
