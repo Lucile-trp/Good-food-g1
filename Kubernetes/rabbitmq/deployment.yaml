@@ -19,7 +19,9 @@ spec:
 
     spec:
       containers:
-        - env:
+        - name: rabbitmq
+
+          env:
             - name: RABBITMQ_DEFAULT_PASS
               value: admin
             - name: RABBITMQ_DEFAULT_USER
@@ -27,7 +29,10 @@ spec:
 
           image: rabbitmq:management
 
-          name: rabbitmq
+          resources:
+            limits:
+              cpu: 100m
+              memory: 300Mi
 
           ports:
             - containerPort: 5672

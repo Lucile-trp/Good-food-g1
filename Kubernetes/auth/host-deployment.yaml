@@ -20,7 +20,9 @@ spec:
 
     spec:
       containers:
-        - env:
+        - name: AuthentificationHost
+
+          env:
             - name: DATABASE_NAME
               value: goodfood-auth
             - name: DATABASE_PASS
@@ -32,7 +34,10 @@ spec:
 
           image: lutrp/goodfood-authms
 
-          name: authentificationhost
+          resources:
+            limits:
+              cpu: 100m
+              memory: 200Mi
 
           ports:
             - containerPort: 8080
