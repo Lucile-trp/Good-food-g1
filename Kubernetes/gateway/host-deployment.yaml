@@ -22,7 +22,7 @@ spec:
       containers:
         - name: apigateway
 
-          image: lutrp/goodfood-authms
+          image: lutrp/goodfood-gateway
 
           resources:
             limits:
@@ -31,4 +31,4 @@ spec:
 
           ports:
             - containerPort: 8080
-              hostPort: 50001
+              hostPort: 50000
