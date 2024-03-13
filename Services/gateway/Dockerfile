@@ -1,4 +1,4 @@
-FROM node:21-alpine
+FROM node:slim
 WORKDIR /app
 
 # Restore packages
@@ -6,6 +6,6 @@ COPY . .
 RUN npm install
 
 # Build & run application for production
-ENTRYPOINT [ "node", "./server.js" ]
+CMD npm run start
 
 
