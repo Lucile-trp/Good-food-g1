@@ -20,14 +20,19 @@ spec:
 
     spec:
       containers:
-        - env:
+        - name: producthost
+         
+          env:
             - name: CONNECTION_STRING
               value: '"Server=tcp:productpostgresadmin,5432;Initial Catalog=Product;Persist Security Info=False;User ID=productpostgresadmin;Password=admin;Connection Timeout=30;"'
           
           image: lutrp/goodfood-productms
-          
-          name: producthost
-          
+                    
+          resources:
+            limits:
+              cpu: 100m
+              memory: 200Mi
+
           ports:
             - containerPort: 8080
               hostPort: 50002

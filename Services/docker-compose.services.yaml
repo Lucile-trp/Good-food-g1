@@ -2,6 +2,23 @@ version: '3'
 
 services:
 # Authentification service : host
+  gateway-host:
+    container_name: ApiGatewayHost
+    build: 
+      context: ./gateway
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - auth-host
+      - product-host
+      - delivery-host
+      - rabbitmq
+    ports:
+      - "50000:8080"
+    networks:
+      - backend
+
+# Authentification service : host
   auth-host:
     container_name: AuthentificationHost
     build: 

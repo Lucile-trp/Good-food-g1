@@ -20,7 +20,9 @@ spec:
 
     spec:
       containers:
-        - env:
+        - name: deliveryhost
+
+          env:
             - name: ConnectionStrings__DefaultConnection
               value: '"Server=tcp:postgresdelivery,5433;Initial Catalog=Delivery;Persist Security Info=False;User ID=deliverypostgresadmin;Password=admin;Connection Timeout=30;"'
             - name: RabbitMQ__Hostname
@@ -32,7 +34,10 @@ spec:
 
           image: lutrp/goodfood-deliveryms
 
-          name: deliveryhost
+          resources:
+            limits:
+              cpu: 100m
+              memory: 200Mi
 
           ports:
             - containerPort: 8080

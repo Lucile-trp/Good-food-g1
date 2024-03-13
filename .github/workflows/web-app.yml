@@ -35,6 +35,7 @@ jobs:
           pwd 
           ls -la
 
+      # Deploy web app
       - name: Build & Push Web app Docker image to Docker Hub
         uses: docker/build-push-action@v5
         with:
@@ -43,6 +44,16 @@ jobs:
           push: true
           tags: lutrp/goodfood-webapp
 
+      # Deploy gateway
+      - name: Build & Push api gateway Docker image to Docker Hub
+        uses: docker/build-push-action@v5
+        with:
+          context: ./Services/gateway
+          file: ./Apps/web/Dockerfile
+          push: true
+          tags: lutrp/goodfood-gateway
+
+      # Deploy auth ms
       - name: Build & Push Auth MS Docker image to Docker Hub
         uses: docker/build-push-action@v5
         with:
@@ -51,6 +62,7 @@ jobs:
           push: true
           tags: lutrp/goodfood-authms
       
+      # Deploy delivery ms
       - name: Build & Push delivery MS Docker image to Docker Hub
         uses: docker/build-push-action@v5
         with:
@@ -58,7 +70,7 @@ jobs:
           file: ./Services/delivery/Sources/Dockerfile
           push: true
           tags: lutrp/goodfood-deliveryms
-
+      # Deploy product ms
       - name: Build & Push product MS Docker image to Docker Hub
         uses: docker/build-push-action@v5
         with:
