@@ -8,14 +8,14 @@ Concevoir une solution applicative en microservice avec une application client w
 
 ## Microservices
 
-| Service            | Port  | Langage      | Base de données | Assigné  |
-| ------------------ | ----- | ------------ | --------------- | -------- |
-| Gateway            | 50000 | TS (Nest.js) |                 | Benjamin |
-| Auth               | 50001 | TS (Nest.js) | MongoDB         | Lucile   |
-| Product / Basket   | 50002 | Go           | PostgreSQL      | Benjamin |
-| Delivery / Order   | 50003 | C# (ASP.NET) | PostgreSQL      | Maxime   |
-| Stock / Management | 50004 | C# (ASP.NET) | PostgreSQL      | Benjamin |
-| Mailling           | 50005 | JS (NodeJS)  |                 | Lucile   |
+| Service            | Port  | Langage         | Base de données | Assigné  |
+| ------------------ | ----- | --------------- | --------------- | -------- |
+| Gateway            | 50000 | JS (Express.js) |                 | Benjamin |
+| Auth               | 50001 | TS (Nest.js)    | MongoDB         | Lucile   |
+| Product / Basket   | 50002 | Go              | PostgreSQL      | Benjamin |
+| Delivery / Order   | 50003 | C# (ASP.NET)    | PostgreSQL      | Maxime   |
+| Stock / Management | 50004 | C# (ASP.NET)    | PostgreSQL      | Benjamin |
+| Mailling           | 50005 | JS (NodeJS)     |                 | Lucile   |
 
 ## Architecture de dossier
 
@@ -62,6 +62,6 @@ docker run -p 50003:8080 --env-file .env delivery-source
 
 ## Membres
 
-+Maxime ADLER
-+Lucile TRIPER
-+Benjamin PERCHEPIED
++ Maxime ADLER
++ Lucile TRIPER
++ Benjamin PERCHEPIED
