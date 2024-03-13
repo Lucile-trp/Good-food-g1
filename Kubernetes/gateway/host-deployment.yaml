@@ -2,21 +2,18 @@ apiVersion: apps/v1
 kind: Deployment
 
 metadata:
-  labels:
-    io.kompose.service: api-gateway
   name: api-gateway
 
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: api-gateway
+      app: api-gateway
 
   template:
     metadata:
       labels:
-        io.kompose.network/services-backend: "true"
-        io.kompose.service: api-gateway
+        app: api-gateway
 
     spec:
       containers:
@@ -31,4 +28,3 @@ spec:
 
           ports:
             - containerPort: 8080
-              hostPort: 50000
