@@ -5,11 +5,9 @@ metadata:
   name: auth-host-service
 
 spec:
-  type: NodePort
   ports:
     - name: "50001"
       port: 50001
       targetPort: 8080
-      nodePort: 30001
   selector:
     app: auth-host
