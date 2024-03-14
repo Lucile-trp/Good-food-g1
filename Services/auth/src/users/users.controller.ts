@@ -18,11 +18,11 @@ export class UserController {
   @Get()
   async get(@Query('id') id: string): Promise</*User | User[]*/string> {
     if (id) {
-      //const res = await this.userService.getUserWithId(id);
-      return 'Hello World !';
+      const res = await this.userService.getUserWithId(id);
+      return '';
     }
     //const res = await this.userService.getAllUsers();
-    return 'Hello World !';
+    return 'Hello World ! called by authentification';
   }
 
   @Post()
