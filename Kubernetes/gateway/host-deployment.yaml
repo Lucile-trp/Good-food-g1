@@ -21,11 +21,11 @@ spec:
 
           env:
             - name: AUTH_API
-              value: http://auth-host-service:8080
+              value: http://auth-host-service:50001
             - name: PRODUCT_API
-              value: http://product-host-service:8080
+              value: http://product-host-service:50002
             - name: DELIVERY_API
-              value: http://delivery-host-service:8080
+              value: http://delivery-host-service:50003
 
           image: lutrp/goodfood-gateway
 
