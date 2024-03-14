@@ -13,8 +13,13 @@ services:
       - product-host
       - delivery-host
       - rabbitmq
+    environment:
+      AUTH_API: http://auth-host:8080
+      PRODUCT_API: http://product-host:8080
+      DELIVERY_API: http://delivery-host:8080
     ports:
-      - "50000:8080"
+      - "80:8080"
+      - "443:8080"
     networks:
       - backend
 
@@ -65,7 +70,7 @@ services:
       - product_postgres_db
       - rabbitmq
     environment:
-      - CONNECTION_STRING="Server=tcp:productpostgresadmin,5432;Initial Catalog=Product;Persist Security Info=False;User ID=productpostgresadmin;Password=admin;Connection Timeout=30;"
+      - CONNECTION_STRING="Server=tcp:productpostgresadmin,5500;Initial Catalog=Product;Persist Security Info=False;User ID=productpostgresadmin;Password=admin;Connection Timeout=30;"
     ports:
       - "50002:8080"
     networks:
@@ -81,7 +86,7 @@ services:
       - POSTGRES_PASSWORD=admin
       - PGDATA=/data/product/postgres
     ports:
-      - "5432:5432"
+      - "5500:5432"
     volumes:
       - product:/data/product/postgres
     hostname: postgresproduct
@@ -101,7 +106,7 @@ services:
     ports:
       - "50003:8080"
     environment:
-      - ConnectionStrings__DefaultConnection="Server=tcp:postgresdelivery,5433;Initial Catalog=Delivery;Persist Security Info=False;User ID=deliverypostgresadmin;Password=admin;Connection Timeout=30;"
+      - ConnectionStrings__DefaultConnection="Server=tcp:postgresdelivery,5501;Initial Catalog=Delivery;Persist Security Info=False;User ID=deliverypostgresadmin;Password=admin;Connection Timeout=30;"
       - RabbitMQ__Hostname=rabbitmq
       - RabbitMQ__Username=admin
       - RabbitMQ__Password=admin
@@ -118,7 +123,7 @@ services:
       - POSTGRES_PASSWORD=admin
       - PGDATA=/data/delivery/postgres
     ports:
-      - "5433:5432"
+      - "5501:5432"
     volumes:
       - delivery:/data/delivery/postgres
     hostname: postgresdelivery
