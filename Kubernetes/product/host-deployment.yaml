@@ -24,6 +24,7 @@ spec:
               value: '"Server=tcp:product-postgres-db-service,5500;Initial Catalog=Product;Persist Security Info=False;User ID=productpostgresadmin;Password=admin;Connection Timeout=30;"'
           
           image: lutrp/goodfood-productms
+          imagePullPolicy: "Always"
                     
           resources:
             limits:
