@@ -22,7 +22,7 @@ export class UserController {
       return '';
     }
     //const res = await this.userService.getAllUsers();
-    return 'Hello World ! called by authentification';
+    return 'Hello CESI ! called by authentification';
   }
 
   @Post()

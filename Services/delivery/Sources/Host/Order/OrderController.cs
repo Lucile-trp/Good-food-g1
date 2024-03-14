@@ -23,7 +23,7 @@ namespace Host.Order
         [HttpGet("")]
         public ActionResult Get()
         {
-            return Ok("Hello World ! called by delivery");
+            return Ok("Hello CESI ! called by delivery");
         }
 
         [HttpPost("")]
