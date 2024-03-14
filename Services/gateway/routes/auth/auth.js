@@ -4,7 +4,20 @@ const axios = require("axios");
 
 const AUTH_API = process.env.AUTH_API;
 
+
 // exemple de route pour l'authentification (a modifier si besoins)
+
+// Route pour obtenir un delivery par son ID
+router.get("/:id", async (req, res, next) => {
+  try {
+    const response = await axios.get(`${AUTH_API}/users/${req.params.id}`);
+    res.set(response.headers);
+    res.status(response.status).json(response.data);
+  } catch (err) {
+    console.error(err); // Afficher l'erreur dans la console pour le débogage
+    next(err);
+  }
+});
 
 router.post('/refresh', async (req, res, next) => {
   const axios_instance = axios.create({

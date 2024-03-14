@@ -6,11 +6,10 @@ const isAuthorized = require('../../middlewares/isAuthorized');
 const PRODUCT_API = process.env.PRODUCT_API;
 
 // Route pour obtenir la liste des produits
-router.get('/', isAuthorized, async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
-    const response = await axios.get(PRODUCT_API + '/product/api/product');
-    res.set(response.headers);
-    res.status(response.status).json(response.data);
+    const response = await axios.get(PRODUCT_API + '/products');
+    res.send(response.data);
   } catch (err) {
     console.error(err); // Afficher l'erreur dans la console pour le débogage
     next(err);
@@ -18,9 +17,9 @@ router.get('/', isAuthorized, async (req, res, next) => {
 });
 
 // Route pour obtenir un produit par son ID
-router.get("/:id", isAuthorized, async (req, res, next) => {
+router.get("/:id", async (req, res, next) => {
   try {
-    const response = await axios.get(`${PRODUCT_API}/product/api/product/${req.params.id}`);
+    const response = await axios.get(`${PRODUCT_API}/products/${req.params.id}`);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
@@ -32,7 +31,7 @@ router.get("/:id", isAuthorized, async (req, res, next) => {
 // Route pour créer un nouveau produit
 router.post('/', isAuthorized, async (req, res, next) => {
   try {
-    const response = await axios.post(PRODUCT_API + '/product/api/product', req.body);
+    const response = await axios.post(PRODUCT_API + '/products', req.body);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
@@ -44,7 +43,7 @@ router.post('/', isAuthorized, async (req, res, next) => {
 // Route pour mettre à jour un produit existant
 router.put("/:id", isAuthorized, async (req, res, next) => {
   try {
-    const response = await axios.put(`${PRODUCT_API}/product/api/product/${req.params.id}`, req.body);
+    const response = await axios.put(`${PRODUCT_API}/products/${req.params.id}`, req.body);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
@@ -56,7 +55,7 @@ router.put("/:id", isAuthorized, async (req, res, next) => {
 // Route pour supprimer un produit
 router.delete("/:id", isAuthorized, async (req, res, next) => {
   try {
-    const response = await axios.delete(`${PRODUCT_API}/product/api/product/${req.params.id}`);
+    const response = await axios.delete(`${PRODUCT_API}/products/${req.params.id}`);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {

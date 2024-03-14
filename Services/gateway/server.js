@@ -13,19 +13,19 @@ const app = express();
 app.use(bodyParser.json());
 
 // Routes du MS-AUTH
-app.use('/auth/api/', authRoutes);
+app.use('/api/auth/', authRoutes);
 
 // Routes du MS-PRODUCT 
-app.use('/product/api/product', isAuthorized, productRoutes);
+app.use('/api/product/', productRoutes);
 
 // Routes du MS-DELIVERY 
-app.use('/delivery/api/delivery', isAuthorized, deliveryRoutes);
+app.use('/api/delivery/', deliveryRoutes);
 
 // Routes du MS-FRANCHISE 
-app.use('/franchise/api/franchise', isAuthorized, franchiseRoutes);
+app.use('/api/franchise/', franchiseRoutes);
 
 // Routes du MS-MAILING 
-app.use('/mailing/api/', isAuthorized, mailingRoutes);
+app.use('/api/mailing/', mailingRoutes);
 
 // Gestion des erreurs
 app.use((err, req, res, next) => {

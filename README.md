@@ -8,14 +8,14 @@ Concevoir une solution applicative en microservice avec une application client w
 
 ## Microservices
 
-| Service            | Port  | Langage         | Base de données | Assigné  |
-| ------------------ | ----- | --------------- | --------------- | -------- |
-| Gateway            | 50000 | JS (Express.js) |                 | Benjamin |
-| Auth               | 50001 | TS (Nest.js)    | MongoDB         | Lucile   |
-| Product / Basket   | 50002 | Go              | PostgreSQL      | Benjamin |
-| Delivery / Order   | 50003 | C# (ASP.NET)    | PostgreSQL      | Maxime   |
-| Stock / Management | 50004 | C# (ASP.NET)    | PostgreSQL      | Benjamin |
-| Mailling           | 50005 | JS (NodeJS)     |                 | Lucile   |
+| Service            | Port   | Langage         | Base de données | Assigné  |
+| ------------------ | ------ | --------------- | --------------- | -------- |
+| Gateway            | 80,443 | JS (Express.js) |                 | Benjamin |
+| Auth               | 50001  | TS (Nest.js)    | MongoDB         | Lucile   |
+| Product / Basket   | 50002  | Go              | PostgreSQL      | Maxime |
+| Delivery / Order   | 50003  | C# (ASP.NET)    | PostgreSQL      | Maxime   |
+| Stock / Management | 50004  | C# (ASP.NET)    | PostgreSQL      | Benjamin |
+| Mailling           | 50005  | JS (NodeJS)     |                 | Lucile   |
 
 ## Architecture de dossier
 
@@ -44,20 +44,20 @@ Concevoir une solution applicative en microservice avec une application client w
 Utiliser docker pour executé les microservices et l'api gateway avec cette commande :
 
 ```shell
-docker-compose up -f services/docker-compose.services.yml
+docker-compose -f ./Services/docker-compose.services.yml up
 ```
 
 Utiliser docker pour executé l'application client web et le build de l'application mobile avec cette commande :
 
 ```shell
-docker-compose up -f apps/docker-compose.apps.yml
+docker-compose -f ./Apps/docker-compose.apps.yml up
 ```
 
-### Docker
+### Kubernetes
 
-Utiliser cette command pour executé le microservice Delivery / Order
+Utiliser cette command pour executé le cluster kubernetes
 ```shell
-docker run -p 50003:8080 --env-file .env delivery-source
+kubectl apply -f ./Kubernetes --recursive
 ```
 
 ## Membres

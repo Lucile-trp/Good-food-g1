@@ -13,8 +13,13 @@ services:
       - product-host
       - delivery-host
       - rabbitmq
+    environment:
+      AUTH_API: http://localhost:50001
+      PRODUCT_API: http://localhost:50002
+      DELIVERY_API: http://localhost:50003
     ports:
-      - "50000:8080"
+      - "80:8080"
+      - "443:8080"
     networks:
       - backend
 

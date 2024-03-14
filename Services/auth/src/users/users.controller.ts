@@ -16,13 +16,13 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  async get(@Query('id') id: string): Promise<User | User[]> {
+  async get(@Query('id') id: string): Promise</*User | User[]*/string> {
     if (id) {
-      const res = await this.userService.getUserWithId(id);
-      return res;
+      //const res = await this.userService.getUserWithId(id);
+      return 'Hello World !';
     }
-    const res = await this.userService.getAllUsers();
-    return res;
+    //const res = await this.userService.getAllUsers();
+    return 'Hello World !';
   }
 
   @Post()

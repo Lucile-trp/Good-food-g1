@@ -7,7 +7,7 @@ using RabbitMQ.EventBus;
 namespace Host.Order
 {
     [ApiController]
-    [Route("command")]
+    [Route("deliveries")]
 
     public class OrderController : Controller
     {
@@ -21,12 +21,12 @@ namespace Host.Order
         }
 
         [HttpGet("")]
-        public ActionResult Index()
+        public ActionResult Get()
         {
-            return Ok();
+            return Ok("Hello World !");
         }
 
-        [HttpPost("send")]
+        [HttpPost("")]
         public ActionResult Send(Models.Order command)
         {
             eventBus.Publish(command);
