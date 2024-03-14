@@ -11,14 +11,14 @@ func main(){
 	router := mux.NewRouter()
 
 	// Définir les routes
-	router.HandleFunc("/hello", HelloHandler).Methods("GET")
+	router.HandleFunc("/products", HelloHandler).Methods("GET")
 
 	// Démarrer le serveur
-	fmt.Println("Server is running on :8080")
+	fmt.Println("Server is running on http://localhost:8080")
 	http.ListenAndServe(":8080", router)
 }
 
 // Handlers
 func HelloHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Hello !")
+	fmt.Fprintln(w, "Hello World !")
 }

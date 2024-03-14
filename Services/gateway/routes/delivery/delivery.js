@@ -7,8 +7,10 @@ const DELIVERY_API = process.env.DELIVERY_API;
 
 // Route pour obtenir la liste des deliverys
 router.get('/', isAuthorized, async (req, res, next) => {
+  console.log(DELIVERY_API);
+
   try {
-    const response = await axios.get(DELIVERY_API + '/delivery/api/delivery');
+    const response = await axios.get(DELIVERY_API + '/deliveries/');
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
@@ -20,7 +22,7 @@ router.get('/', isAuthorized, async (req, res, next) => {
 // Route pour obtenir un delivery par son ID
 router.get("/:id", isAuthorized, async (req, res, next) => {
   try {
-    const response = await axios.get(`${DELIVERY_API}/delivery/api/delivery/${req.params.id}`);
+    const response = await axios.get(`${DELIVERY_API}/deliveries/${req.params.id}`);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
@@ -32,7 +34,7 @@ router.get("/:id", isAuthorized, async (req, res, next) => {
 // Route pour créer un nouveau delivery
 router.post('/', isAuthorized, async (req, res, next) => {
   try {
-    const response = await axios.post(DELIVERY_API + '/delivery/api/delivery', req.body);
+    const response = await axios.post(DELIVERY_API + '/deliveries/', req.body);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
@@ -44,7 +46,7 @@ router.post('/', isAuthorized, async (req, res, next) => {
 // Route pour mettre à jour un delivery existant
 router.put("/:id", isAuthorized, async (req, res, next) => {
   try {
-    const response = await axios.put(`${DELIVERY_API}/delivery/api/delivery/${req.params.id}`, req.body);
+    const response = await axios.put(`${DELIVERY_API}/deliveries/${req.params.id}`, req.body);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
@@ -56,7 +58,7 @@ router.put("/:id", isAuthorized, async (req, res, next) => {
 // Route pour supprimer un delivery
 router.delete("/:id", isAuthorized, async (req, res, next) => {
   try {
-    const response = await axios.delete(`${DELIVERY_API}/delivery/api/delivery/${req.params.id}`);
+    const response = await axios.delete(`${DELIVERY_API}/deliveries/${req.params.id}`);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {

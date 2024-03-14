@@ -21,7 +21,7 @@ spec:
          
           env:
             - name: CONNECTION_STRING
-              value: '"Server=tcp:product-postgres-db-service,5432;Initial Catalog=Product;Persist Security Info=False;User ID=productpostgresadmin;Password=admin;Connection Timeout=30;"'
+              value: '"Server=tcp:product-postgres-db-service,5500;Initial Catalog=Product;Persist Security Info=False;User ID=productpostgresadmin;Password=admin;Connection Timeout=30;"'
           
           image: lutrp/goodfood-productms
                     

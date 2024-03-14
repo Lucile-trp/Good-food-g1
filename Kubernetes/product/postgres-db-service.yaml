@@ -5,8 +5,8 @@ metadata:
 
 spec:
   ports:
-    - name: "5432"
-      port: 5432
+    - name: "5500"
+      port: 5500
       targetPort: 5432
   selector:
     app: product-postgres-db

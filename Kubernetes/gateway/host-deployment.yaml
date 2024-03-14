@@ -19,6 +19,14 @@ spec:
       containers:
         - name: apigateway
 
+          env:
+            - name: AUTH_API
+              value: http://auth-host-service:8080
+            - name: PRODUCT_API
+              value: http://product-host-service:8080
+            - name: DELIVERY_API
+              value: http://delivery-host-service:8080
+
           image: lutrp/goodfood-gateway
 
           resources:

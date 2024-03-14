@@ -21,7 +21,7 @@ spec:
 
           env:
             - name: ConnectionStrings__DefaultConnection
-              value: '"Server=tcp:delivery-postgres-db-service,5433;Initial Catalog=Delivery;Persist Security Info=False;User ID=deliverypostgresadmin;Password=admin;Connection Timeout=30;"'
+              value: '"Server=tcp:delivery-postgres-db-service,5501;Initial Catalog=Delivery;Persist Security Info=False;User ID=deliverypostgresadmin;Password=admin;Connection Timeout=30;"'
             - name: RabbitMQ__Hostname
               value: rabbitmq-service
             - name: RabbitMQ__Password

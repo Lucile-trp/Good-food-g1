@@ -6,8 +6,8 @@ metadata:
   
 spec:
   ports:
-    - name: "5433"
-      port: 5433
+    - name: "5501"
+      port: 5501
       targetPort: 5432
   selector:
     app: delivery-postgres-db
