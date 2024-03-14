@@ -8,8 +8,9 @@ const PRODUCT_API = process.env.PRODUCT_API;
 // Route pour obtenir la liste des produits
 router.get('/', async (req, res, next) => {
   try {
-    const response = await axios.get(PRODUCT_API + '/products');
-    res.send(response.data);
+    const response = await axios.get(`${PRODUCT_API}/products`);
+    res.set(response.headers);
+    res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err); // Afficher l'erreur dans la console pour le débogage
     next(err);

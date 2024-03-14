@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const isAuthorized = require('./middlewares/isAuthorized');
 
 const authRoutes = require('./routes/auth/auth');
 const productRoutes = require('./routes/product/product');
@@ -13,16 +12,16 @@ const app = express();
 app.use(bodyParser.json());
 
 // Routes du MS-AUTH
-app.use('/api/auth/', authRoutes);
+app.use('/api/users/', authRoutes);
 
 // Routes du MS-PRODUCT 
-app.use('/api/product/', productRoutes);
+app.use('/api/products/', productRoutes);
 
 // Routes du MS-DELIVERY 
-app.use('/api/delivery/', deliveryRoutes);
+app.use('/api/deliveries/', deliveryRoutes);
 
 // Routes du MS-FRANCHISE 
-app.use('/api/franchise/', franchiseRoutes);
+app.use('/api/franchises/', franchiseRoutes);
 
 // Routes du MS-MAILING 
 app.use('/api/mailing/', mailingRoutes);
