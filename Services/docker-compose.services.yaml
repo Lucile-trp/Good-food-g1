@@ -130,6 +130,43 @@ services:
     networks:
       - backend
 
+# Franchise service : host
+  franchise-host:
+    container_name: FranchiseHost
+    build: 
+      context: ./franchise/Sources
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - franchise_postgres_db
+      - rabbitmq
+    ports:
+      - "50004:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection="Server=tcp:postgresfranchise,5501;Initial Catalog=Franchise;Persist Security Info=False;User ID=franchisepostgresadmin;Password=admin;Connection Timeout=30;"
+      - RabbitMQ__Hostname=rabbitmq
+      - RabbitMQ__Username=admin
+      - RabbitMQ__Password=admin
+    networks:
+      - backend
+
+# Franchise service : db
+  franchise_postgres_db:
+    image: postgres:latest
+    container_name: FranchisePostgres
+    restart: always
+    environment: 
+      - POSTGRES_USER=franchisepostgresadmin
+      - POSTGRES_PASSWORD=admin
+      - PGDATA=/data/franchise/postgres
+    ports:
+      - "5502:5432"
+    volumes:
+      - franchise:/data/franchise/postgres
+    hostname: postgresfranchise
+    networks:
+      - backend
+
 # RabbitMQ
   rabbitmq:
     image: rabbitmq:management
@@ -154,4 +191,6 @@ volumes:
   delivery:
     driver: local
   product:
+    driver: local
+  franchise:
     driver: local

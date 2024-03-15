@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: franchise-postgres-db-service
+  
+spec:
+  ports:
+    - name: "5502"
+      port: 5502
+      targetPort: 5432
+  selector:
+    app: franchise-postgres-db
