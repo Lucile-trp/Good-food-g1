@@ -5,8 +5,8 @@ COPY . ./
 # Restore packages
 RUN go mod download
 # build source
-RUN go build -o product -work
+RUN go build -o product -work ./cmd/app/main.go
 
 FROM alpine:3.18
 COPY --from=build-env ./app/product ./product
-ENTRYPOINT [ "./product" ]
+CMD [ "./product" ]
