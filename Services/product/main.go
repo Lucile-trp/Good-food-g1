@@ -20,5 +20,5 @@ func main(){
 
 // Handlers
 func HelloHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Hello World ! called by product")
+	fmt.Fprint(w, "Hello CESI ! called by product")
 }
