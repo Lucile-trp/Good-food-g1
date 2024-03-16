@@ -1,17 +1,18 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /app
 
-ENV ConnectionStrings__DefaultConnection="Server=tcp:postgresdelivery,5432;Initial Catalog=Order;Persist Security Info=False;User ID=deliverypostgresadmin;Password=admin;Connection Timeout=30;"
-ENV RabbitMQ__Hostname=rabbitmq
-ENV RabbitMQ__Username=admin
-ENV RabbitMQ__Password=admin
-
 # Copy everything
 COPY . ./
 # Restore as distinct layers
 RUN dotnet restore "./Host/Host.csproj"
 # Build
 RUN dotnet build "./Host/Host.csproj"
+
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+RUN dotnet ef migrations add init --project "./Host/Host.csproj"
+
 # Publish a release
 RUN dotnet publish "./Host/Host.csproj" -c Release -o out
 

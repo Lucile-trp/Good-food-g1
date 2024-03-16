@@ -1,21 +1,28 @@
-using Host;
-using Host.Core;
-using Host.Order;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using System;
+using System.IO;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using RabbitMQ;
 using RabbitMQ.Client;
 using RabbitMQ.Connection;
 using RabbitMQ.EventBus;
+using Host.Core;
+using Host.Order;
+using Host.DataBase;
+using Host.Models;
+using Host.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Configuration.AddEnvironmentVariables();
 
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
-builder.Services.AddHostedService<IRabbitMQPersistentConnection>(pc =>
+builder.Services.AddDbContext<DeliveryDbContext>(options =>
+{
+    options.UseNpgsql(Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection"));
+});
+
+
+/*builder.Services.AddHostedService<IRabbitMQPersistentConnection>(pc =>
 {
     var settings = new RabbitMQSettings()
     {
@@ -26,14 +33,9 @@ builder.Services.AddHostedService<IRabbitMQPersistentConnection>(pc =>
     };
 
     return new RabbitMQPersistentConnection(settings);
-});
+});*/
 
 var app = builder.Build();
-
-// TODO: Delete
-var persistentConnection = app.Services.GetServices<IHostedService>().OfType<IRabbitMQPersistentConnection>().Single();
-var eventBus = new RabbitMQEventBus(persistentConnection, app.Logger, Queues.Order);
-eventBus.Subscribe(new OrderHandler(persistentConnection, app.Logger));
 
 if (app.Environment.IsDevelopment())
 {
@@ -41,8 +43,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapControllers();
+/*
+// TODO: Delete
+var persistentConnection = app.Services.GetServices<IHostedService>().OfType<IRabbitMQPersistentConnection>().Single();
+var eventBus = new RabbitMQEventBus(persistentConnection, app.Logger, Queues.Order);
+eventBus.Subscribe(new OrderHandler(persistentConnection, app.Logger));
+*/
 
-app.UseRabbitListener();
+app.ApplyMigrations();
+
+app.MapControllers();
 
 app.Run();

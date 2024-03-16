@@ -12,11 +12,13 @@ services:
       - auth-host
       - product-host
       - delivery-host
+      - franchise-host
       - rabbitmq
     environment:
       AUTH_API: http://auth-host:8080
       PRODUCT_API: http://product-host:8080
       DELIVERY_API: http://delivery-host:8080
+      FRANCHISE_API: http://franchise-host:8080
     ports:
       - "80:8080"
       - "443:8080"
@@ -106,7 +108,7 @@ services:
     ports:
       - "50003:8080"
     environment:
-      - ConnectionStrings__DefaultConnection="Server=tcp:postgresdelivery,5501;Initial Catalog=Delivery;Persist Security Info=False;User ID=deliverypostgresadmin;Password=admin;Connection Timeout=30;"
+      - ConnectionStrings__DefaultConnection=Host=delivery_postgres_db;Port=5432;Database=deliverys;Username=deliverypostgresadmin;Password=admin;
       - RabbitMQ__Hostname=rabbitmq
       - RabbitMQ__Username=admin
       - RabbitMQ__Password=admin
@@ -121,12 +123,13 @@ services:
     environment: 
       - POSTGRES_USER=deliverypostgresadmin
       - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=deliverys
       - PGDATA=/data/delivery/postgres
     ports:
       - "5501:5432"
     volumes:
       - delivery:/data/delivery/postgres
-    hostname: postgresdelivery
+    hostname: delivery_postgres_db
     networks:
       - backend
 
@@ -143,27 +146,28 @@ services:
     ports:
       - "50004:8080"
     environment:
-      - ConnectionStrings__DefaultConnection="Server=tcp:postgresfranchise,5501;Initial Catalog=Franchise;Persist Security Info=False;User ID=franchisepostgresadmin;Password=admin;Connection Timeout=30;"
+      - ConnectionStrings__DefaultConnection=Host=franchise_postgres_db;Port=5432;Database=franchises;Username=franchisepostgresadmin;Password=admin;
       - RabbitMQ__Hostname=rabbitmq
       - RabbitMQ__Username=admin
       - RabbitMQ__Password=admin
     networks:
       - backend
 
-# Franchise service : db
+# Franchise service : db 
   franchise_postgres_db:
     image: postgres:latest
     container_name: FranchisePostgres
     restart: always
     environment: 
       - POSTGRES_USER=franchisepostgresadmin
-      - POSTGRES_PASSWORD=admin
+      - POSTGRES_PASSWORD=admin 
+      - POSTGRES_DB=franchises
       - PGDATA=/data/franchise/postgres
     ports:
       - "5502:5432"
     volumes:
       - franchise:/data/franchise/postgres
-    hostname: postgresfranchise
+    hostname: franchise_postgres_db
     networks:
       - backend
 

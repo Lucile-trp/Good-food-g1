@@ -3,27 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Host.Models
 {
-    [Table("suppliers")]
-    public class Supplier
+    [Table("delivery_address")]
+    public class DeliveryAddress
     {
         [Key]
         [Column("id")]
-        public int SupplierId { get; set; }
-
-        [Required]
-        [MaxLength(20)]
-        [Column("name")]
-        public string Name { get; set; }
-
-        [Required]
-        [EmailAddress]
-        [Column("email")]
-        public string Email { get; set; }
-
-        [Required]
-        [MaxLength(10)]
-        [Column("phone")]
-        public string Phone { get; set; }
+        public int DeliveryAddressId { get; set; }
 
         [Required]
         [MaxLength(200)]
