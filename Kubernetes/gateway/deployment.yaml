@@ -28,6 +28,7 @@ spec:
               value: http://delivery-host-service:50003
 
           image: lutrp/goodfood-gateway
+          imagePullPolicy: "Always"
 
           resources:
             limits:
