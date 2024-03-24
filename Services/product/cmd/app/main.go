@@ -2,8 +2,8 @@ package main
 
 import (
 	"log"
-	"produit/config"
-	"produit/internal/app"
+	"product/config"
+	"product/internal/app"
 )
 
 func main() {

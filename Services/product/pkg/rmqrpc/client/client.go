@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"produit/pkg/rmqrpc"
+	"product/pkg/rmqrpc"
 
 	"github.com/google/uuid"
 	"github.com/streadway/amqp"
@@ -52,7 +52,7 @@ type Client struct {
 }
 
 // New -.
-func New(url, serverExchange, clientExchange string, opts ...Option) (*Client, error) {
+func New(url, serverExchange, queueName string, queueBase string, clientExchange string, opts ...Option) (*Client, error) {
 	cfg := rmqrpc.Config{
 		URL:      url,
 		WaitTime: _defaultWaitTime,
@@ -60,7 +60,7 @@ func New(url, serverExchange, clientExchange string, opts ...Option) (*Client, e
 	}
 
 	c := &Client{
-		conn:           rmqrpc.New(clientExchange, cfg),
+		conn:           rmqrpc.New(clientExchange, queueName, queueBase, cfg),
 		serverExchange: serverExchange,
 		error:          make(chan error),
 		stop:           make(chan struct{}),

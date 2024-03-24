@@ -3,8 +3,8 @@ package server
 import (
 	"encoding/json"
 	"fmt"
-	"produit/pkg/logger"
-	"produit/pkg/rmqrpc"
+	"product/pkg/logger"
+	"product/pkg/rmqrpc"
 	"time"
 
 	"github.com/streadway/amqp"
@@ -32,7 +32,7 @@ type Server struct {
 }
 
 // New -.
-func New(url, serverExchange string, router map[string]CallHandler, l logger.Interface, opts ...Option) (*Server, error) {
+func New(url, serverExchange string, queueName string, queueBase string, router map[string]CallHandler, l logger.Interface, opts ...Option) (*Server, error) {
 	cfg := rmqrpc.Config{
 		URL:      url,
 		WaitTime: _defaultWaitTime,
@@ -40,7 +40,7 @@ func New(url, serverExchange string, router map[string]CallHandler, l logger.Int
 	}
 
 	s := &Server{
-		conn:    rmqrpc.New(serverExchange, cfg),
+		conn:    rmqrpc.New(serverExchange, queueName, queueBase, cfg),
 		error:   make(chan error),
 		stop:    make(chan struct{}),
 		router:  router,
@@ -55,7 +55,7 @@ func New(url, serverExchange string, router map[string]CallHandler, l logger.Int
 
 	err := s.conn.AttemptConnect()
 	if err != nil {
-		return nil, fmt.Errorf("rmq_rpc server - NewServer - s.conn.AttemptConnect: %w", err)
+		return nil, fmt.Errorf("rmqrpc server - NewServer - s.conn.AttemptConnect: %w", err)
 	}
 
 	go s.consumer()

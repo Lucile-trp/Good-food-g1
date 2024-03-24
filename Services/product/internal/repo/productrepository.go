@@ -2,8 +2,8 @@ package repo
 
 import (
 	"context"
-	"produit/internal/entity"
-	"produit/pkg/postgres"
+	"product/internal/entity"
+	"product/pkg/postgres"
 )
 
 //const _defaultEntityCap = 64

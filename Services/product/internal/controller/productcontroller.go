@@ -2,9 +2,8 @@ package controller
 
 import (
 	"net/http"
-	"produit/internal/entity"
-	"produit/internal/repo"
-	"produit/pkg/logger"
+	"product/internal/repo"
+	"product/pkg/logger"
 
 	"github.com/gin-gonic/gin"
 
@@ -15,6 +14,10 @@ import (
 type productRoutes struct {
 	l logger.Interface
 	p repo.ProductRepo
+}
+
+type errorMessage struct {
+	Message string `json:"error"`
 }
 
 func NewRouter(handler *gin.Engine, l logger.Interface, p repo.ProductRepo) {
@@ -37,7 +40,7 @@ func (r productRoutes) GetProducts(c *gin.Context) {
 	products, err := r.p.GetProducts(c.Request.Context())
 	if err != nil {
 		r.l.Error(err, "GetProducts on product")
-		c.AbortWithStatusJSON(http.StatusInternalServerError, entity.Error{Message: "DataBase errors"})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, errorMessage{Message: "DataBase errors"})
 
 		return
 	}

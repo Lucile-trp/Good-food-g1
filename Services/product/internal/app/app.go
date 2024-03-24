@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
-	"produit/config"
-	"produit/internal/controller"
-	"produit/internal/repo"
-	"produit/pkg/httpserver"
-	"produit/pkg/logger"
-	"produit/pkg/postgres"
+	"product/config"
+	"product/internal/controller"
+	"product/internal/handler"
+	"product/internal/repo"
+	"product/pkg/httpserver"
+	"product/pkg/logger"
+	"product/pkg/postgres"
+	"product/pkg/rmqrpc/server"
 	"syscall"
 
 	"github.com/gin-gonic/gin"
@@ -24,6 +26,14 @@ func Run(cfg config.Config) {
 		l.Fatal(fmt.Errorf("app - Run - postgres.New: %w", err))
 	}
 	defer pg.Close()
+
+	// RabbitMQ RPC Server
+	rmqRouter := handler.NewRouter(l, *repo.New(pg))
+
+	rmqServer, err := server.New(cfg.RmqURL, "goodfood.exchange", "goodfood.queue.productMsgQ", "goodfood.queue.*", rmqRouter, l)
+	if err != nil {
+		l.Fatal(fmt.Errorf("app - Run - rmqServer - server.New: %w", err))
+	}
 
 	// HTTP Server
 	gin.SetMode(cfg.GinMode)
@@ -40,11 +50,18 @@ func Run(cfg config.Config) {
 		l.Info("app - Run - signal: " + s.String())
 	case err = <-httpServer.Notify():
 		l.Error(fmt.Errorf("app - Run - httpServer.Notify: %w", err))
+	case err = <-rmqServer.Notify():
+		l.Error(fmt.Errorf("app - Run - rmqServer.Notify: %w", err))
 	}
 
 	// Shutdown
 	err = httpServer.Shutdown()
 	if err != nil {
 		l.Error(fmt.Errorf("app - Run - httpServer.Shutdown: %w", err))
+	}
+
+	err = rmqServer.Shutdown()
+	if err != nil {
+		l.Error(fmt.Errorf("app - Run - rmqServer.Shutdown: %w", err))
 	}
 }

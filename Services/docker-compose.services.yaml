@@ -71,9 +71,7 @@ services:
       - rabbitmq
     environment:
       - CONNEXION_STRING=postgresql://productpostgresadmin:admin@postgresproduct:5432
-      - RABBITMQ_HOSTNAME=rabbitmq
-      - RABBITMQ_USERNAME=admin
-      - RABBITMQ_PASSWORD=admin
+      - RABBITMQ_URL=amqp://admin:admin@rabbitmq:5672/
       - GIN_MODE=debug
       - LOG_MODE=debug
     ports:

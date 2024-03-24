@@ -18,6 +18,8 @@ type Config struct {
 // Connection -.
 type Connection struct {
 	ConsumerExchange string
+	QueueBase        string
+	QueueName        string
 	Config
 	Connection *amqp.Connection
 	Channel    *amqp.Channel
@@ -25,9 +27,11 @@ type Connection struct {
 }
 
 // New -.
-func New(consumerExchange string, cfg Config) *Connection {
+func New(consumerExchange string, queueName string, queueBase string, cfg Config) *Connection {
 	conn := &Connection{
 		ConsumerExchange: consumerExchange,
+		QueueName:        queueName,
+		QueueBase:        queueBase,
 		Config:           cfg,
 	}
 
@@ -68,7 +72,7 @@ func (c *Connection) connect() error {
 
 	err = c.Channel.ExchangeDeclare(
 		c.ConsumerExchange,
-		"fanout",
+		"topic",
 		false,
 		false,
 		false,
@@ -80,10 +84,10 @@ func (c *Connection) connect() error {
 	}
 
 	queue, err := c.Channel.QueueDeclare(
-		"",
+		c.QueueName,
 		false,
 		false,
-		true,
+		false,
 		false,
 		nil,
 	)
@@ -93,7 +97,7 @@ func (c *Connection) connect() error {
 
 	err = c.Channel.QueueBind(
 		queue.Name,
-		"",
+		c.QueueBase,
 		c.ConsumerExchange,
 		false,
 		nil,

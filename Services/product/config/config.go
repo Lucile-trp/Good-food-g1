@@ -7,9 +7,7 @@ import (
 
 type Config struct {
 	ConnexionString string
-	RmqHostname     string
-	RmqUsername     string
-	RmqPassword     string
+	RmqURL          string
 	GinMode         string
 	LogMode         string
 }
@@ -24,17 +22,7 @@ func NewConfig() (Config, error) {
 		return cfg, err
 	}
 
-	cfg.RmqHostname, err = GetRequiredVariableEnv("RABBITMQ_HOSTNAME")
-	if err != nil {
-		return cfg, err
-	}
-
-	cfg.RmqUsername, err = GetRequiredVariableEnv("RABBITMQ_USERNAME")
-	if err != nil {
-		return cfg, err
-	}
-
-	cfg.RmqPassword, err = GetRequiredVariableEnv("RABBITMQ_PASSWORD")
+	cfg.RmqURL, err = GetRequiredVariableEnv("RABBITMQ_URL")
 	if err != nil {
 		return cfg, err
 	}
