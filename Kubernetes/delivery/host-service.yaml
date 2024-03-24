@@ -11,3 +11,6 @@ spec:
       targetPort: 8080
   selector:
     app: delivery-host
+  type: ClusterIP
+status:
+  loadBalancer: {}
