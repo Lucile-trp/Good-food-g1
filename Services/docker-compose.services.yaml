@@ -70,7 +70,7 @@ services:
       - product_postgres_db
       - rabbitmq
     environment:
-      - CONNEXION_STRING=postgresql://productpostgresadmin:admin@postgresproduct:5432
+      - CONNECTION_STRING=postgresql://productpostgresadmin:admin@postgresproduct:5432
       - RABBITMQ_URL=amqp://admin:admin@rabbitmq:5672/
       - GIN_MODE=debug
       - LOG_MODE=debug

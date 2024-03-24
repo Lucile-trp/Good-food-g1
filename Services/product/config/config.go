@@ -6,10 +6,10 @@ import (
 )
 
 type Config struct {
-	ConnexionString string
-	RmqURL          string
-	GinMode         string
-	LogMode         string
+	ConnectionString string
+	RmqURL           string
+	GinMode          string
+	LogMode          string
 }
 
 // NewConfig returns app config.
@@ -17,7 +17,7 @@ func NewConfig() (Config, error) {
 	var cfg Config
 	var err error
 
-	cfg.ConnexionString, err = GetRequiredVariableEnv("CONNEXION_STRING")
+	cfg.ConnectionString, err = GetRequiredVariableEnv("CONNECTION_STRING")
 	if err != nil {
 		return cfg, err
 	}
