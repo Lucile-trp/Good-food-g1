@@ -3,54 +3,59 @@ package config
 import (
 	"fmt"
 	"os"
-
-	"github.com/joho/godotenv"
 )
 
-type (
-	Config struct {
-		ConnectionString string
-		RabbitMQHostname string
-		RabbitMQUsername string
-		RabbitMQPassword string
-	}
-)
+type Config struct {
+	ConnexionString string
+	RmqHostname     string
+	RmqUsername     string
+	RmqPassword     string
+	GinMode         string
+	LogMode         string
+}
 
 // NewConfig returns app config.
-func NewConfig() (*Config, error) {
-	cfg := &Config{}
+func NewConfig() (Config, error) {
+	var cfg Config
 	var err error
 
-	godotenv.Load()
-
-	cfg.ConnectionString, err = GetRequiredVariableEnv("CONNECTION_STRING")
+	cfg.ConnexionString, err = GetRequiredVariableEnv("CONNEXION_STRING")
 	if err != nil {
-		return nil, err
+		return cfg, err
 	}
 
-	cfg.RabbitMQHostname, err = GetRequiredVariableEnv("RABBITMQ_HOSTNAME")
+	cfg.RmqHostname, err = GetRequiredVariableEnv("RABBITMQ_HOSTNAME")
 	if err != nil {
-		return nil, err
+		return cfg, err
 	}
 
-	cfg.RabbitMQUsername, err = GetRequiredVariableEnv("RABBITMQ_USERNAME")
+	cfg.RmqUsername, err = GetRequiredVariableEnv("RABBITMQ_USERNAME")
 	if err != nil {
-		return nil, err
+		return cfg, err
 	}
 
-	cfg.RabbitMQPassword, err = GetRequiredVariableEnv("RABBITMQ_PASSWORD")
+	cfg.RmqPassword, err = GetRequiredVariableEnv("RABBITMQ_PASSWORD")
 	if err != nil {
-		return nil, err
+		return cfg, err
+	}
+
+	cfg.GinMode, err = GetRequiredVariableEnv("GIN_MODE")
+	if err != nil {
+		return cfg, err
+	}
+
+	cfg.LogMode, err = GetRequiredVariableEnv("LOG_MODE")
+	if err != nil {
+		return cfg, err
 	}
 
 	return cfg, err
 }
 
 func GetRequiredVariableEnv(key string) (string, error) {
-	value := os.Getenv(key)
-
-	if value == "" {
-		return "", fmt.Errorf("%s is missing in environnement variable", key)
+	value, found := os.LookupEnv(key)
+	if !found {
+		return "", fmt.Errorf("%s is missing in environment variable", key)
 	}
 
 	return value, nil
