@@ -70,7 +70,10 @@ services:
       - product_postgres_db
       - rabbitmq
     environment:
-      - CONNECTION_STRING="Server=tcp:productpostgresadmin,5500;Initial Catalog=Product;Persist Security Info=False;User ID=productpostgresadmin;Password=admin;Connection Timeout=30;"
+      - CONNECTION_STRING=postgresql://productpostgresadmin:admin@postgresproduct:5432
+      - RABBITMQ_URL=amqp://admin:admin@rabbitmq:5672/
+      - GIN_MODE=debug
+      - LOG_MODE=debug
     ports:
       - "50002:8080"
     networks:

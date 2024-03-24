@@ -21,8 +21,13 @@ spec:
          
           env:
             - name: CONNECTION_STRING
-              value: '"Server=tcp:product-postgres-db-service,5500;Initial Catalog=Product;Persist Security Info=False;User ID=productpostgresadmin;Password=admin;Connection Timeout=30;"'
-          
+              value: 'postgresql://productpostgresadmin:admin@product-postgres-db-service:5500'
+            - name: RABBITMQ_URL
+              value: amqp://admin:admin@rabbitmq-service:5672/
+            - name: GIN_MODE
+              value: debug
+            - name: LOG_MODE
+              value: debug
           image: lutrp/goodfood-productms
           imagePullPolicy: "Always"
                     
