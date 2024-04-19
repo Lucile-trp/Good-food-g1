@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: nginx
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+
+  strategy:
+    type: Recreate
+
+  template:
+    metadata:
+      labels:
+        app: nginx
+
+    spec:
+      containers:
+        - image: nginx:latest
+          name: nginx
+          ports:
+            - containerPort: 8081
+
+          volumeMounts:
+            - mountPath: /etc/nginx/nginx.conf
+              name: nginx-claim0
+              readOnly: true
+
+          resources:
+            limits:
+              cpu: 100m
+              memory: 200Mi
+
+      restartPolicy: Always
+      volumes:
+        - name: nginx-claim0
+          hostPath:
+            path: /run/desktop/mnt/host/c/Users/madler/Documents/Dev/Good-food-g1/nginx/nginx.conf
+
+status: {}
