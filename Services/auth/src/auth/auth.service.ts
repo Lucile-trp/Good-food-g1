@@ -26,7 +26,13 @@ export class AuthService {
     };
   }
 
+  // User creation. Call to userService
   async signUp(_email: string, _password: string) {
+    // TODO : Vériication email bine email et password bien password
+    // TODO : vérification email non existant
+    // TODO : Insertion en BDD du nouvel utilisateur
+    // TODO : Envoyer un mail de confirmation de création de compte
+    // TODO : retourner un code HTTP avec resutat
     console.log(_email, _password);
   }
 }
