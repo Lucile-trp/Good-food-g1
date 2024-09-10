@@ -32,6 +32,7 @@ func (r *ProductRepo) GetProducts(ctx context.Context) ([]entity.Dish, error) {
 		for j := 0; j < len(images); j++ {
 			if images[j].DishId == dishes[i].Id {
 				dishes[i].Images = append(dishes[i].Images, images[j])
+				continue
 			}
 		}
 	}
@@ -112,4 +113,60 @@ func (r *ProductRepo) GetImages(ctx context.Context) ([]entity.Image, error) {
 	}
 
 	return entities, nil
+}
+
+func (r *ProductRepo) InsertDish(ctx context.Context, dish entity.Dish) error {
+	query := `INSERT INTO Plat (id, titre, description, prix, restaurant_id) VALUES (@id, @titre, @description, @prix, @restaurant_id)`
+
+	_, err := r.Pool.Exec(ctx,
+		query,
+		args,
+		dish.Id,
+		dish.Title,
+		dish.Description,
+		dish.Cost,
+		dish.Restaurant.Id)
+
+	if err != nil {
+		return fmt.Errorf("unable to insert dish row: %w", err)
+	}
+
+	return nil
+}
+
+func (r *ProductRepo) InsertRestaurant(ctx context.Context, dish entity.Dish) error {
+	query := `INSERT INTO Restaurant (id, nom, description, address, code_postal, ville, pays) VALUES (@id, @nom, @description, @address, @code_postal, @ville, @pays)`
+
+	_, err := r.Pool.Exec(ctx,
+		query,
+		args,
+		dish.Restaurant.Id,
+		dish.Restaurant.Name,
+		dish.Restaurant.Description,
+		dish.Restaurant.Address,
+		dish.Restaurant.CP,
+		dish.Restaurant.City,
+		dish.Restaurant.Country)
+
+	if err != nil {
+		return fmt.Errorf("unable to insert restaurant row: %w", err)
+	}
+
+	return nil
+}
+
+func (r *ProductRepo) InsertImage(ctx context.Context, img entity.Image) error {
+	query := `INSERT INTO Image (id, url, description, plat_id) VALUES (@id, @url, @description, @plat_id)`
+	args := pgtype.NamedArgs{
+		"id":          img.Id,
+		"url":         img.Url,
+		"description": img.Description,
+		"plat_id":     img.DishId,
+	}
+	_, err := r.Pool.Exec(ctx, query, args)
+	if err != nil {
+		return fmt.Errorf("unable to insert image row: %w", err)
+	}
+
+	return nil
 }
