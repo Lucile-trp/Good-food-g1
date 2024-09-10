@@ -79,8 +79,6 @@ func (r *ProductRepo) GetDishes(ctx context.Context) ([]entity.Dish, error) {
 		entities = append(entities, e)
 	}
 
-	fmt.Print("Products : " + fmt.Sprint((len(entities))))
-
 	return entities, nil
 }
 
