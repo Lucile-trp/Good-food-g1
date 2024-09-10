@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"product/internal/repo"
 	"product/pkg/logger"
@@ -44,6 +45,8 @@ func (r productRoutes) GetProducts(c *gin.Context) {
 
 		return
 	}
+
+	r.l.Debug("Products : " + fmt.Sprint((len(products))))
 
 	c.JSON(http.StatusOK, products)
 }

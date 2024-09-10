@@ -19,6 +19,27 @@ func New(pg *postgres.Postgres) *ProductRepo {
 }
 
 func (r *ProductRepo) GetProducts(ctx context.Context) ([]entity.Dish, error) {
+	dishes, err := r.GetDishes(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	images, err := r.GetImages(ctx)
+	if err != nil {
+		return nil, err
+	}
+	for i := 0; i < len(dishes); i++ {
+		for j := 0; j < len(images); j++ {
+			if images[j].DishId == dishes[i].Id {
+				dishes[i].Images = append(dishes[i].Images, images[j])
+			}
+		}
+	}
+
+	return dishes, nil
+}
+
+func (r *ProductRepo) GetDishes(ctx context.Context) ([]entity.Dish, error) {
 	rows, err := r.Pool.Query(ctx,
 		`SELECT 
 			Plat.id As Id_Dish,
@@ -31,99 +52,66 @@ func (r *ProductRepo) GetProducts(ctx context.Context) ([]entity.Dish, error) {
 			Restaurant.adresse AS Address_Restaurant,
 			Restaurant.code_postal AS CP_Restaurant,
 			Restaurant.ville AS City_Restaurant,
-			Restaurant.pays AS Country_Restaurant,
-			Image.id AS Id_Image,
-			Image.url AS Url_Image,
-			Image.description AS Description_Image
+			Restaurant.pays AS Country_Restaurant
 		FROM 
 			Plat
 		JOIN 
-			Restaurant ON Plat.restaurant_id = Restaurant.id
-		LEFT JOIN 
-			Image ON Image.plat_id = Plat.id;`)
+			Restaurant ON Plat.restaurant_id = Restaurant.id`)
 
 	if err != nil {
-		return nil, fmt.Errorf("ProductRepo - GetHistory - r.Pool.Query: %w", err)
+		return nil, fmt.Errorf("ProductRepo - GetDishes - r.Pool.Query: %w", err)
 	}
 	defer rows.Close()
 
 	entities := make([]entity.Dish, 0, _defaultEntityCap)
 
 	for rows.Next() {
-		values, err := rows.Values()
+		e := entity.Dish{}
+		e.Restaurant = entity.Restaurant{}
+
+		err := rows.Scan(&e.Id, &e.Title, &e.Description, &e.Cost, &e.Restaurant.Id, &e.Restaurant.Name, &e.Restaurant.Description,
+			&e.Restaurant.Address, &e.Restaurant.CP, &e.Restaurant.City, &e.Restaurant.Country)
+
 		if err != nil {
-			return nil, fmt.Errorf("ProductRepo - GetHistory - rows.Scan: %w", err)
+			return nil, fmt.Errorf("ProductRepo - GetDishes - rows.Scan: %w", err)
 		}
 
-		newEntity := MapProduct(values)
-
-		duplicate := false
-
-		for i := 0; i < len(entities); i++ {
-			if entities[i].Id == newEntity.Id {
-				duplicate = true
-
-				imgExist := false
-
-				for j := 0; j < len(entities[i].Images); j++ {
-					if entities[i].Images[j].Id == newEntity.Images[0].Id {
-						imgExist = true
-					}
-				}
-
-				if !imgExist {
-					entities[i].Images = append(entities[i].Images, newEntity.Images[0])
-
-					continue
-				}
-
-				continue
-			}
-
-		}
-
-		if !duplicate {
-			entities = append(entities, newEntity)
-		}
+		entities = append(entities, e)
 	}
+
+	fmt.Print("Products : " + fmt.Sprint((len(entities))))
 
 	return entities, nil
 }
 
-func MapProduct(values []interface{}) entity.Dish {
-	dishId := values[0].(int)
-	dishTitle := values[1].(string)
-	dishDesc := values[2].(string)
-	dishCost := values[3].(float64)
-	resId := values[4].(int)
-	resName := values[5].(string)
-	resDesc := values[6].(string)
-	resAddr := values[7].(string)
-	resCP := values[8].(string)
-	resCity := values[9].(string)
-	resCountry := values[10].(string)
-	imgId := values[11].(int)
-	imgUrl := values[12].(string)
-	imgDesc := values[13].(string)
+func (r *ProductRepo) GetImages(ctx context.Context) ([]entity.Image, error) {
+	rows, err := r.Pool.Query(ctx,
+		`SELECT
+			Image.id AS Id_Image,
+			Image.url AS Url_Image,
+			Image.description AS Description_Image,
+			Image.plat_Id 
+		FROM 
+			Image;`)
 
-	return entity.Dish{
-		Id:          dishId,
-		Title:       dishTitle,
-		Description: dishDesc,
-		Cost:        dishCost,
-		Images: []entity.Image{
-			{
-				Id:          imgId,
-				Url:         imgUrl,
-				Description: imgDesc}},
-		Restaurant: entity.Restaurant{
-			Id:          resId,
-			Name:        resName,
-			Description: resDesc,
-			Address:     resAddr,
-			CP:          resCP,
-			City:        resCity,
-			Country:     resCountry,
-		},
+	if err != nil {
+		return nil, fmt.Errorf("ProductRepo - GetImages - r.Pool.Query: %w", err)
 	}
+	defer rows.Close()
+
+	entities := make([]entity.Image, 0, _defaultEntityCap)
+
+	for rows.Next() {
+		e := entity.Image{}
+
+		err := rows.Scan(&e.Id, &e.Url, &e.Description, &e.DishId)
+
+		if err != nil {
+			return nil, fmt.Errorf("ProductRepo - GetImages - rows.Scan: %w", err)
+		}
+
+		entities = append(entities, e)
+	}
+
+	return entities, nil
 }
