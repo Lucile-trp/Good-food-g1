@@ -4,13 +4,25 @@ namespace Host.Enums
 {
     public enum OrderState
     {
-        [Display(Name = "En cours de préparation")]
-        PreparationInProcess = 0,
+        [Display(Name = "En attente")]
+        Waiting = 0,
 
-        [Display(Name = "En cours de livraison")]
-        DeliveryInProcess = 1,
+        [Display(Name = "Validée par le restaurant")]
+        Validated = 1,
 
-        [Display(Name = "Livraison terminée")]
-        DeliveryCompleted = 2
+        [Display(Name = "Préparation")]
+        Preparation = 2,
+
+        [Display(Name = "Prête")]
+        Ready = 3,
+
+        [Display(Name = "Prise en charge")]
+        Support = 4,
+
+        [Display(Name = "Livrée")]
+        Delivered = 5,
+
+        [Display(Name = "Annulé")]
+        Canceled = 6
     }
 }
