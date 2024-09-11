@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Host.Enums;
 
 namespace Host.Models
 {
@@ -21,5 +22,11 @@ namespace Host.Models
 
         [Column("quantity")]
         public int Quantity { get; set; }
+        
+        [Column("product_type")]
+        public ProductType ProductType { get; set; }
+
+        [ForeignKey("supplier_id")]
+        public Supplier SupplierId { get; set; }   
     }
 }
