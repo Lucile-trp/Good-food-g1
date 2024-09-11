@@ -19,12 +19,12 @@ func New(pg *postgres.Postgres) *ProductRepo {
 }
 
 func (r *ProductRepo) GetProducts(ctx context.Context) ([]entity.Dish, error) {
-	dishes, err := r.GetDishes(ctx)
+	dishes, err := GetDishes(ctx, r)
 	if err != nil {
 		return nil, err
 	}
 
-	images, err := r.GetImages(ctx)
+	images, err := GetImages(ctx, r)
 	if err != nil {
 		return nil, err
 	}
@@ -40,7 +40,7 @@ func (r *ProductRepo) GetProducts(ctx context.Context) ([]entity.Dish, error) {
 	return dishes, nil
 }
 
-func (r *ProductRepo) GetDishes(ctx context.Context) ([]entity.Dish, error) {
+func GetDishes(ctx context.Context, r *ProductRepo) ([]entity.Dish, error) {
 	rows, err := r.Pool.Query(ctx,
 		`SELECT 
 			Plat.id As Id_Dish,
@@ -83,7 +83,7 @@ func (r *ProductRepo) GetDishes(ctx context.Context) ([]entity.Dish, error) {
 	return entities, nil
 }
 
-func (r *ProductRepo) GetImages(ctx context.Context) ([]entity.Image, error) {
+func GetImages(ctx context.Context, r *ProductRepo) ([]entity.Image, error) {
 	rows, err := r.Pool.Query(ctx,
 		`SELECT
 			Image.id AS Id_Image,
@@ -115,13 +115,26 @@ func (r *ProductRepo) GetImages(ctx context.Context) ([]entity.Image, error) {
 	return entities, nil
 }
 
-func (r *ProductRepo) InsertDish(ctx context.Context, dish entity.Dish) error {
-	query := `INSERT INTO Plat (id, titre, description, prix, restaurant_id) VALUES (@id, @titre, @description, @prix, @restaurant_id)`
+func (r *ProductRepo) InsertProduct(ctx context.Context, entity entity.Dish) error {
+	_ = InsertRestaurant(ctx, r, entity.Restaurant)
 
-	_, err := r.Pool.Exec(ctx,
-		query,
-		args,
-		dish.Id,
+	err := InsertDish(ctx, r, entity)
+
+	if err != nil {
+		return err
+	}
+
+	for i := 0; i < len(entity.Images); i++ {
+		InsertImage(ctx, r, entity.Images[i])
+	}
+
+	return nil
+}
+
+func InsertDish(ctx context.Context, r *ProductRepo, dish entity.Dish) error {
+	query := `INSERT INTO Plat (titre, description, prix, restaurant_id) VALUES (@titre, @description, @prix, @restaurant_id)`
+
+	_, err := r.Pool.Exec(ctx, query,
 		dish.Title,
 		dish.Description,
 		dish.Cost,
@@ -134,19 +147,16 @@ func (r *ProductRepo) InsertDish(ctx context.Context, dish entity.Dish) error {
 	return nil
 }
 
-func (r *ProductRepo) InsertRestaurant(ctx context.Context, dish entity.Dish) error {
-	query := `INSERT INTO Restaurant (id, nom, description, address, code_postal, ville, pays) VALUES (@id, @nom, @description, @address, @code_postal, @ville, @pays)`
+func InsertRestaurant(ctx context.Context, r *ProductRepo, restaurant entity.Restaurant) error {
+	query := `INSERT INTO Restaurant (nom, description, address, code_postal, ville, pays) VALUES (@nom, @description, @address, @code_postal, @ville, @pays)`
 
-	_, err := r.Pool.Exec(ctx,
-		query,
-		args,
-		dish.Restaurant.Id,
-		dish.Restaurant.Name,
-		dish.Restaurant.Description,
-		dish.Restaurant.Address,
-		dish.Restaurant.CP,
-		dish.Restaurant.City,
-		dish.Restaurant.Country)
+	_, err := r.Pool.Exec(ctx, query,
+		restaurant.Name,
+		restaurant.Description,
+		restaurant.Address,
+		restaurant.CP,
+		restaurant.City,
+		restaurant.Country)
 
 	if err != nil {
 		return fmt.Errorf("unable to insert restaurant row: %w", err)
@@ -155,15 +165,14 @@ func (r *ProductRepo) InsertRestaurant(ctx context.Context, dish entity.Dish) er
 	return nil
 }
 
-func (r *ProductRepo) InsertImage(ctx context.Context, img entity.Image) error {
-	query := `INSERT INTO Image (id, url, description, plat_id) VALUES (@id, @url, @description, @plat_id)`
-	args := pgtype.NamedArgs{
-		"id":          img.Id,
-		"url":         img.Url,
-		"description": img.Description,
-		"plat_id":     img.DishId,
-	}
-	_, err := r.Pool.Exec(ctx, query, args)
+func InsertImage(ctx context.Context, r *ProductRepo, img entity.Image) error {
+	query := `INSERT INTO Image (url, description, plat_id) VALUES (@url, @description, @plat_id)`
+
+	_, err := r.Pool.Exec(ctx, query,
+		img.Url,
+		img.Description,
+		img.DishId)
+
 	if err != nil {
 		return fmt.Errorf("unable to insert image row: %w", err)
 	}
