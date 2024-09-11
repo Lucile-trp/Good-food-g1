@@ -27,6 +27,6 @@ namespace Host.Models
         public ProductType ProductType { get; set; }
 
         [ForeignKey("supplier_id")]
-        public Supplier SupplierId { get; set; }   
+        public Supplier Supplier { get; set; }   
     }
 }

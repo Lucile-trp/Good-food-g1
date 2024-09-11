@@ -45,6 +45,7 @@ namespace Host.Models
         [Column("country")]
         public string Country { get; set; }
 
+        [InverseProperty("Supplier")]
         public List<Order> Orders { get; } = new List<Order>();
     }
 }
