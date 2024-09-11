@@ -29,5 +29,7 @@ namespace Host.Models
         [MaxLength(20)]
         [Column("country")]
         public string Country { get; set; }
+
+        public List<Order> Orders { get; } = new List<Order>();
     }
 }

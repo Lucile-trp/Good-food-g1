@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Host.Enums;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,5 +16,10 @@ namespace Host.Models
         [Column("date")]
         public DateTime Date { get; set; } = DateTime.Now;
 
+        [Column("order_state")]
+        public OrderState OrderState { get; set; }
+
+        [ForeignKey("delivery_adresss_id")]
+        public DeliveryAddress DeliveryAddressId { get; set; }   
     }
 }
