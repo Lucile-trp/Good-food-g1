@@ -29,5 +29,8 @@ namespace Host.Models
         [MaxLength(20)]
         [Column("country")]
         public string Country { get; set; }
+        
+        [InverseProperty("DeliveryAddress")]
+        public List<Order> Orders { get; } = new List<Order>();
     }
 }
