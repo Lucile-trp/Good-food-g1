@@ -20,6 +20,6 @@ namespace Host.Models
         public OrderState OrderState { get; set; }
 
         [ForeignKey("delivery_adresss_id")]
-        public DeliveryAddress DeliveryAddressId { get; set; }   
+        public DeliveryAddress DeliveryAddress { get; set; }   
     }
 }
