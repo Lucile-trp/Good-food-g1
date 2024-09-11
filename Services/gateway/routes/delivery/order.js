@@ -5,12 +5,12 @@ const isAuthorized = require('../../middlewares/isAuthorized');
 
 const DELIVERY_API = process.env.DELIVERY_API;
 
-// Route pour obtenir la liste des deliverys
+// Route pour obtenir la liste des commandes
 router.get('/', isAuthorized, async (req, res, next) => {
   console.log(DELIVERY_API);
 
   try {
-    const response = await axios.get(DELIVERY_API + '/deliveries/');
+    const response = await axios.get(DELIVERY_API + '/api/v1/order/');
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
@@ -19,10 +19,10 @@ router.get('/', isAuthorized, async (req, res, next) => {
   }
 });
 
-// Route pour obtenir un delivery par son ID
-router.get("/:id", isAuthorized, async (req, res, next) => {
+// Route pour obtenir une commande par son ID
+router.get("/:id", async (req, res, next) => {
   try {
-    const response = await axios.get(`${DELIVERY_API}/deliveries/${req.params.id}`);
+    const response = await axios.get(`${DELIVERY_API}/api/v1/order/${req.params.id}`);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
@@ -31,10 +31,10 @@ router.get("/:id", isAuthorized, async (req, res, next) => {
   }
 });
 
-// Route pour créer un nouveau delivery
-router.post('/', isAuthorized, async (req, res, next) => {
+// Route pour créer une nouvelle commande
+router.post('/', async (req, res, next) => {
   try {
-    const response = await axios.post(DELIVERY_API + '/deliveries/', req.body);
+    const response = await axios.post(DELIVERY_API + '/api/v1/order/', req.body);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
@@ -43,10 +43,10 @@ router.post('/', isAuthorized, async (req, res, next) => {
   }
 });
 
-// Route pour mettre à jour un delivery existant
-router.put("/:id", isAuthorized, async (req, res, next) => {
+// Route pour mettre à jour une commande existant
+router.put("/:id", async (req, res, next) => {
   try {
-    const response = await axios.put(`${DELIVERY_API}/deliveries/${req.params.id}`, req.body);
+    const response = await axios.put(`${DELIVERY_API}/api/v1/order/${req.params.id}`, req.body);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
@@ -55,10 +55,10 @@ router.put("/:id", isAuthorized, async (req, res, next) => {
   }
 });
 
-// Route pour supprimer un delivery
-router.delete("/:id", isAuthorized, async (req, res, next) => {
+// Route pour supprimer une commande
+router.delete("/:id", async (req, res, next) => {
   try {
-    const response = await axios.delete(`${DELIVERY_API}/deliveries/${req.params.id}`);
+    const response = await axios.delete(`${DELIVERY_API}/api/v1/order/${req.params.id}`);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {

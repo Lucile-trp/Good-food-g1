@@ -7,10 +7,15 @@ using RabbitMQ.Client;
 using RabbitMQ.Connection;
 using RabbitMQ.EventBus;
 using Host.Core;
-using Host.Order;
-using Host.DataBase;
+using Host.Interfaces.Repository;
+using Host.Interfaces.Services;
+using Host.Services;
+using Host.Helpers;
+using Host.Repository;
+using Host.Data;
 using Host.Models;
 using Host.Extensions;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +27,20 @@ builder.Services.AddDbContext<DeliveryDbContext>(options =>
 });
 
 
-/*builder.Services.AddHostedService<IRabbitMQPersistentConnection>(pc =>
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IDeliveryAddressService, DeliveryAddressService>();
+
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IDeliveryAddressRepository, DeliveryAddressRepository>();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddControllersWithViews()
+                .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddHostedService<IRabbitMQPersistentConnection>(pc =>
 {
     var settings = new RabbitMQSettings()
     {
@@ -33,7 +51,17 @@ builder.Services.AddDbContext<DeliveryDbContext>(options =>
     };
 
     return new RabbitMQPersistentConnection(settings);
-});*/
+});
+
+builder.Services.AddControllers();
+builder.Services.AddHttpClient();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.ReportApiVersions = true;
+});
 
 var app = builder.Build();
 

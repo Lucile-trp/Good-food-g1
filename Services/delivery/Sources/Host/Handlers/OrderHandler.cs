@@ -4,7 +4,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Connection;
 using System.Text;
 
-namespace Host.Order
+namespace Host.Handlers
 {
     public class OrderHandler : RabbitMQMessageHandler
     {
