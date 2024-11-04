@@ -10,6 +10,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  // Connection user.
   async signIn(
     _email: string,
     _password: string,
@@ -34,5 +35,9 @@ export class AuthService {
     // TODO : Envoyer un mail de confirmation de création de compte
     // TODO : retourner un code HTTP avec resutat
     console.log(_email, _password);
+  }
+
+  async verifyUser(){
+
   }
 }
