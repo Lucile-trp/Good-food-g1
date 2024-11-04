@@ -12,7 +12,6 @@ import {
 import { UserService } from './users.service';
 import { User } from './users.model';
 import { hashPassword } from 'src/helpers/hashPassword';
-import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @Controller('users')
 export class UserController {
