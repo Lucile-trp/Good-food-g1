@@ -37,7 +37,6 @@ export class UserController {
   }
 
   @Put()
-  @UseGuards(JwtAuthGuard)
   async updateUser(
     @Query('id') id: string,
     @Body('email') email?: string,
