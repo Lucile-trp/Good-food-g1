@@ -6,10 +6,13 @@ import {
   Post,
   Put,
   Query,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './users.service';
 import { User } from './users.model';
 import { hashPassword } from 'src/helpers/hashPassword';
+import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @Controller('users')
 export class UserController {
@@ -35,6 +38,7 @@ export class UserController {
   }
 
   @Put()
+  @UseGuards(JwtAuthGuard)
   async updateUser(
     @Query('id') id: string,
     @Body('email') email?: string,

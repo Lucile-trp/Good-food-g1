@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   ConflictException,
   Controller,
@@ -8,11 +9,15 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { UserService } from '../users/users.service';
 import { AuthResponse } from 'src/types/authResponse';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private usersService: UserService,
+  ) {}
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
@@ -41,6 +46,39 @@ export class AuthController {
         return new AuthResponse(401, error.message);
       }
       return new AuthResponse(500, 'Erreur interne du serveur');
+    }
+  }
+
+  @Post('register')
+  @HttpCode(HttpStatus.OK)
+  async register(
+    @Body()
+    body: {
+      email: string;
+      password: string;
+      password_validate: string;
+    },
+  ): Promise<AuthResponse> {
+    try {
+      if (!body.email && !body.password && !body.password_validate) {
+        throw new BadRequestException('Champs manquants.');
+      }
+
+      const userExist = await this.usersService.getUserByEmail(body.email);
+
+      if (userExist) {
+        throw new BadRequestException('Adresse email non disponible.');
+      }
+
+      if (body.password !== body.password_validate) {
+        throw new BadRequestException('Les mots de passe sont différents.');
+      }
+
+      await this.authService.signUp(body.email, body.password);
+
+      return new AuthResponse(200, 'Utilisateur créé avec succès');
+    } catch (error) {
+      return new AuthResponse(error.status, error.message);
     }
   }
 }

@@ -18,7 +18,13 @@ export class AuthService {
     };
   }
 
-  // User validation pad
+  // Register User
+  async signUp(_email, _password) {
+    const res = await this.usersService.insertUser(_email, _password);
+    return res;
+  }
+
+  // User validation pass
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.usersService.getUserByEmail(email);
     if (user && (await compare(password, user.password))) {
