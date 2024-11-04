@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: delivery-postgres-db
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: delivery-postgres-db
+
+  template:
+    metadata:
+      labels:
+        app: delivery-postgres-db
+
+    spec:
+      containers:
+        - name: deliverypostgres
+          env:
+            - name: PGDATA
+              value: /data/delivery/postgres
+            - name: POSTGRES_PASSWORD
+              value: admin
+            - name: POSTGRES_USER
+              value: deliverypostgresadmin
+
+          image: postgres:latest
+
+          resources:
+            limits:
+              cpu: 100m
+              memory: 500Mi
+
+          ports:
+            - containerPort: 5432
+
+          volumeMounts:
+            - mountPath: /data/delivery/postgres
+              name: delivery
+      
+      volumes:
+        - name: delivery
+          persistentVolumeClaim:
+            claimName: delivery

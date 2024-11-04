@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: auth-host
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-host
+
+  template:
+    metadata:
+      labels:
+        app: auth-host
+
+    spec:
+      containers:
+        - name: authentificationhost
+
+          env:
+            - name: DATABASE_NAME
+              value: goodfood-auth
+            - name: DATABASE_PASS
+              value: admin
+            - name: DATABASE_URI
+              value: mongodb://auth-mongodb-service:27017
+            - name: DATABASE_USER
+              value: admin
+
+          image: lutrp/goodfood-authms
+          imagePullPolicy: "Always"
+
+          resources:
+            limits:
+              cpu: 100m
+              memory: 500Mi
+
+          ports:
+            - containerPort: 8080

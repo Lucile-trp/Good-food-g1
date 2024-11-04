@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: product-postgres-db
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product-postgres-db
+
+  template:
+    metadata:
+      labels:
+        app: product-postgres-db
+
+    spec:
+      containers:
+        - name: productpostgres
+          env:
+            - name: PGDATA
+              value: /data/product/postgres
+            - name: POSTGRES_PASSWORD
+              value: admin
+            - name: POSTGRES_USER
+              value: productpostgresadmin
+
+          image: postgres:latest
+
+          resources:
+            limits:
+              cpu: 100m
+              memory: 500Mi
+
+          ports:
+            - containerPort: 5432
+              
+          volumeMounts:
+            - mountPath: /data/product/postgres
+              name: product
+      
+      volumes:
+        - name: product
+          persistentVolumeClaim:
+            claimName: product

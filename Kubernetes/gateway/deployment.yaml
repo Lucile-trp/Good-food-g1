@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: api-gateway
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-gateway
+
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+
+    spec:
+      containers:
+        - name: apigateway
+
+          env:
+            - name: AUTH_API
+              value: http://auth-host-service:50001
+            - name: PRODUCT_API
+              value: http://product-host-service:50002
+            - name: DELIVERY_API
+              value: http://delivery-host-service:50003
+
+          image: lutrp/goodfood-gateway
+          imagePullPolicy: "Always"
+
+          resources:
+            limits:
+              cpu: 100m
+              memory: 200Mi
+
+          ports:
+            - containerPort: 8080

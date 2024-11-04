@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: rabbitmq
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+
+    spec:
+      containers:
+        - name: rabbitmq
+
+          env:
+            - name: RABBITMQ_DEFAULT_PASS
+              value: admin
+            - name: RABBITMQ_DEFAULT_USER
+              value: admin
+
+          image: rabbitmq:management
+
+          resources:
+            limits:
+              cpu: 100m
+              memory: 300Mi
+
+          ports:
+            - containerPort: 5672
+            - containerPort: 15672

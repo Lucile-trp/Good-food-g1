@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: auth-mongodb
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-mongodb
+
+  template:
+    metadata:
+      labels:
+        app: auth-mongodb
+
+    spec:
+      containers:
+        - name: authentificationmongo
+          env:
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: admin
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: admin
+
+          image: mongo:jammy
+          
+          resources:
+            limits:
+              cpu: 100m
+              memory: 500Mi
+
+          ports:
+            - containerPort: 27017
+              
+          volumeMounts:
+            - mountPath: /data/auth/mongodb
+              name: auth
+
+      volumes:
+        - name: auth
+          persistentVolumeClaim:
+            claimName: auth
