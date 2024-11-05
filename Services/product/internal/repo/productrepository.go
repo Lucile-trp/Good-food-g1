@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"product/internal/entity"
 	"product/pkg/postgres"
+
+	"github.com/jackc/pgx/v5"
 )
 
 const _defaultEntityCap = 64
@@ -64,7 +66,7 @@ func (r *ProductRepo) GetDish(ctx context.Context, id int) (entity.Dish, error) 
 		FROM
 			Plat
 		WHERE
-			Plat.id = $1`, id).Scan(&e.Id, &e.Title, &e.Description, &e.Cost, &e.RestaurantId)
+			Plat.id = $1;`, id).Scan(&e.Id, &e.Title, &e.Description, &e.Cost, &e.RestaurantId)
 
 	if err != nil {
 		return e, fmt.Errorf("ProductRepo - GetDish - rows.Scan: %w", err)
@@ -74,13 +76,17 @@ func (r *ProductRepo) GetDish(ctx context.Context, id int) (entity.Dish, error) 
 }
 
 func (r *ProductRepo) InsertDish(ctx context.Context, dish entity.Dish) error {
-	query := `INSERT INTO Plat (titre, description, prix, restaurant_id) VALUES (@titre, @description, @prix, @restaurant_id)`
+	query := `INSERT INTO Plat (titre, description, prix, restaurant_id) 
+		VALUES (@titre, @description, @prix, @restaurant_id);`
 
-	_, err := r.Pool.Exec(ctx, query,
-		dish.Title,
-		dish.Description,
-		dish.Cost,
-		dish.RestaurantId)
+	args := pgx.NamedArgs{
+		"titre":         dish.Title,
+		"description":   dish.Description,
+		"prix":          dish.Cost,
+		"restaurant_id": dish.RestaurantId,
+	}
+
+	_, err := r.Pool.Exec(ctx, query, args)
 
 	if err != nil {
 		return fmt.Errorf("unable to insert dish row: %w", err)
@@ -139,7 +145,7 @@ func (r *ProductRepo) GetRestaurant(ctx context.Context, id int) (entity.Restaur
 		FROM
 			Restaurant
 		WHERE
-			Restaurant.id = $1`, id).Scan(&e.Id, &e.Name, &e.Description, &e.Address, &e.CP, &e.City, &e.Country)
+			Restaurant.id = $1;`, id).Scan(&e.Id, &e.Name, &e.Description, &e.Address, &e.CP, &e.City, &e.Country)
 
 	if err != nil {
 		return e, fmt.Errorf("ProductRepo - GetRestaurant - rows.Scan: %w", err)
@@ -150,15 +156,17 @@ func (r *ProductRepo) GetRestaurant(ctx context.Context, id int) (entity.Restaur
 
 func (r *ProductRepo) InsertRestaurant(ctx context.Context, restaurant entity.Restaurant) error {
 	query := `INSERT INTO Restaurant (nom, description, adresse, code_postal, ville, pays) 
-		VALUES (@nom, @description, @address, @code_postal, @ville, @pays)`
+		VALUES (@nom, @description, @address, @code_postal, @ville, @pays);`
 
-	_, err := r.Pool.Exec(ctx, query,
-		restaurant.Name,
-		restaurant.Description,
-		restaurant.Address,
-		restaurant.CP,
-		restaurant.City,
-		restaurant.Country)
+	args := pgx.NamedArgs{
+		"nom":         restaurant.Name,
+		"description": restaurant.Description,
+		"address":     restaurant.Address,
+		"code_postal": restaurant.CP,
+		"ville":       restaurant.City,
+		"pays":        restaurant.Country,
+	}
+	_, err := r.Pool.Exec(ctx, query, args)
 
 	if err != nil {
 		return fmt.Errorf("unable to insert restaurant row: %w", err)
@@ -209,9 +217,9 @@ func (r *ProductRepo) GetImage(ctx context.Context, id int) (entity.Image, error
 			Image.description AS Description_Image,
 			Image.plat_Id 
 		FROM 
-			Image;
+			Image
 		WHERE
-			Image.id = $1`, id).Scan(&e.Id, &e.Url, &e.Description, &e.DishId)
+			Image.id = $1;`, id).Scan(&e.Id, &e.Url, &e.Description, &e.DishId)
 
 	if err != nil {
 		return e, fmt.Errorf("ProductRepo - GetImage - rows.Scan: %w", err)
@@ -221,12 +229,14 @@ func (r *ProductRepo) GetImage(ctx context.Context, id int) (entity.Image, error
 }
 
 func (r *ProductRepo) InsertImage(ctx context.Context, img entity.Image) error {
-	query := `INSERT INTO Image (url, description, plat_id) VALUES (@url, @description, @plat_id)`
+	query := `INSERT INTO Image (url, description, plat_id) VALUES (@url, @description, @plat_id);`
 
-	_, err := r.Pool.Exec(ctx, query,
-		img.Url,
-		img.Description,
-		img.DishId)
+	args := pgx.NamedArgs{
+		"url":         img.Url,
+		"description": img.Description,
+		"plat_id":     img.DishId,
+	}
+	_, err := r.Pool.Exec(ctx, query, args)
 
 	if err != nil {
 		return fmt.Errorf("unable to insert image row: %w", err)
