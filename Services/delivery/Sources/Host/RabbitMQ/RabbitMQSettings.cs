@@ -1,5 +1,6 @@
 ﻿namespace RabbitMQ
 {
+#nullable enable
     public class RabbitMQSettings
     {
         public string? Username { get; set; }
