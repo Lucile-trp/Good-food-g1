@@ -96,7 +96,7 @@ func (r *ProductRepo) GetRestaurants(ctx context.Context) ([]entity.Restaurant, 
 			Restaurant.nom,
 			Restaurant.description,
 			Restaurant.adresse,
-			Restaurant.cp,
+			Restaurant.code_postal,
 			Restaurant.ville,
 			Restaurant.pays
 		FROM
@@ -133,7 +133,7 @@ func (r *ProductRepo) GetRestaurant(ctx context.Context, id int) (entity.Restaur
 			Restaurant.nom,
 			Restaurant.description,
 			Restaurant.adresse,
-			Restaurant.cp,
+			Restaurant.code_postal,
 			Restaurant.ville,
 			Restaurant.pays
 		FROM
