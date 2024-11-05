@@ -6,6 +6,8 @@ import {
   Post,
   Put,
   Query,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './users.service';
 import { User } from './users.model';

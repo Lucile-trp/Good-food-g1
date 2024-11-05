@@ -1,7 +1,7 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UserService } from '../users/users.service';
-import { hashPassword } from 'src/helpers/hashPassword';
 import { JwtService } from '@nestjs/jwt';
+import { compare } from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -10,22 +10,26 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(
-    _email: string,
-    _password: string,
-  ): Promise<{ access_token: string }> {
-    const user = await this.usersService.getUserByEmail(_email);
-    if (user?.password !== (await hashPassword(_password))) {
-      throw new UnauthorizedException();
-    }
-    // JWT generation & return
-    const payload = { sub: user._id };
+  // Connection user.
+  async signIn(_email: string, _id: string): Promise<{ access_token: string }> {
+    const payload = { email: _email, sub: _id };
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      access_token: this.jwtService.sign(payload),
     };
   }
 
-  async signUp(_email: string, _password: string) {
-    console.log(_email, _password);
+  // Register User
+  async signUp(_email, _password) {
+    const res = await this.usersService.insertUser(_email, _password);
+    return res;
+  }
+
+  // User validation pass
+  async validateUser(email: string, password: string): Promise<any> {
+    const user = await this.usersService.getUserByEmail(email);
+    if (user && (await compare(password, user.password))) {
+      return user;
+    }
+    return null;
   }
 }
