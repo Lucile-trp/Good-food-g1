@@ -4,6 +4,7 @@ using RabbitMQ.Connection;
 
 namespace Host.RabbitMQ.Handler
 {
+#nullable enable
     public abstract class RabbitMQMessageHandler
     {
         private readonly IRabbitMQPersistentConnection PersistentConnection;
