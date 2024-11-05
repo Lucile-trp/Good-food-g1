@@ -3,14 +3,12 @@ const router = express.Router();
 const axios = require('axios');
 const isAuthorized = require('../../middlewares/isAuthorized');
 
-const DELIVERY_API = process.env.DELIVERY_API;
+const FRANCHISE_API = process.env.FRANCHISE_API;
 
-// Route pour obtenir la liste des deliverys
-router.get('/', isAuthorized, async (req, res, next) => {
-  console.log(DELIVERY_API);
-
+// Route pour obtenir la liste des franchises
+router.get('/', async (req, res, next) => {
   try {
-    const response = await axios.get(DELIVERY_API + '/deliveries/');
+    const response = await axios.get(FRANCHISE_API + '/api/v1/order');
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
@@ -19,10 +17,10 @@ router.get('/', isAuthorized, async (req, res, next) => {
   }
 });
 
-// Route pour obtenir un delivery par son ID
-router.get("/:id", isAuthorized, async (req, res, next) => {
+// Route pour obtenir un franchise par son ID
+router.get("/:id", async (req, res, next) => {
   try {
-    const response = await axios.get(`${DELIVERY_API}/deliveries/${req.params.id}`);
+    const response = await axios.get(`${FRANCHISE_API}/api/v1/order/${req.params.id}`);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
@@ -31,10 +29,10 @@ router.get("/:id", isAuthorized, async (req, res, next) => {
   }
 });
 
-// Route pour créer un nouveau delivery
-router.post('/', isAuthorized, async (req, res, next) => {
+// Route pour créer un nouveau franchise
+router.post('/', async (req, res, next) => {
   try {
-    const response = await axios.post(DELIVERY_API + '/deliveries/', req.body);
+    const response = await axios.post(FRANCHISE_API + '/api/v1/order', req.body);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
@@ -43,10 +41,10 @@ router.post('/', isAuthorized, async (req, res, next) => {
   }
 });
 
-// Route pour mettre à jour un delivery existant
-router.put("/:id", isAuthorized, async (req, res, next) => {
+// Route pour mettre à jour un franchise existant
+router.put("/:id", async (req, res, next) => {
   try {
-    const response = await axios.put(`${DELIVERY_API}/deliveries/${req.params.id}`, req.body);
+    const response = await axios.put(`${FRANCHISE_API}/api/v1/order/${req.params.id}`, req.body);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
@@ -55,10 +53,10 @@ router.put("/:id", isAuthorized, async (req, res, next) => {
   }
 });
 
-// Route pour supprimer un delivery
+// Route pour supprimer un franchise
 router.delete("/:id", isAuthorized, async (req, res, next) => {
   try {
-    const response = await axios.delete(`${DELIVERY_API}/deliveries/${req.params.id}`);
+    const response = await axios.delete(`${FRANCHISE_API}/api/v1/order/${req.params.id}`);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
