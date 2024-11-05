@@ -6,25 +6,22 @@ import (
 	"fmt"
 	"log"
 	"product/internal/repo"
+	"product/pkg/logger"
+	"strconv"
 
 	"github.com/streadway/amqp"
 )
-
-type Rabbit struct {
-	channel *amqp.Channel
-	query   string
-}
 
 func (r Rabbit) Close() error {
 	return r.channel.Close()
 }
 
-func (r Rabbit) Listen(p *repo.ProductRepo) error {
+func (r Rabbit) Listen(l logger.Interface, p *repo.ProductRepo) error {
 
 	msg, err := r.channel.Consume(
-		r.query,
+		r.queue,
 		"",
-		true,
+		false,
 		false,
 		false,
 		false,
@@ -35,32 +32,43 @@ func (r Rabbit) Listen(p *repo.ProductRepo) error {
 		return fmt.Errorf("consuming channel: %w", err)
 	}
 
-	log.Println("Listening Started")
+	l.Info("Listening Started")
 
 	for m := range msg {
-		log.Println("Update Started")
+		l.Info("Update Started")
 
 		var currencies = map[string]string{}
 		err = json.Unmarshal(m.Body, &currencies)
 		if err != nil {
-			log.Println(fmt.Errorf("rabbitmq: unmarshal to map: %w", err))
+			l.Error(fmt.Errorf("rabbitmq: unmarshal to map: %w", err))
 			continue
 		}
 
-		dish, err := p.GetDish(context.Background(), 1)
+		id, err := strconv.Atoi(currencies["dishId"])
 		if err != nil {
-			log.Println(fmt.Errorf("postgres: insert: %w", err))
+			l.Error(fmt.Errorf("rabbitmq: convert to id: %w", err))
 			continue
+		}
+
+		dish, err := p.GetDish(context.Background(), id)
+		if err != nil {
+			l.Error(fmt.Errorf("postgres: get dish: %w", err))
+			continue
+		}
+
+		data, err := json.Marshal(dish)
+		if err != nil {
+			log.Println("map marshalling: ", err)
 		}
 
 		err = r.channel.Publish(
-			"currs.fanout",
-			"queue",
+			"goodfood.exchange",
+			r.queue,
 			false,
 			false,
 			amqp.Publishing{
 				ContentType: "application/json",
-				Body:        dish,
+				Body:        data,
 			},
 		)
 
