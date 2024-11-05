@@ -26,9 +26,9 @@ namespace Host.Controllers
         [HttpGet]
         [MapToApiVersion("1.0")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<UserDto>))]
-        public IActionResult GetUseresV1()
+        public IActionResult GetUsersV1()
         {
-            var useres = _userService.GetUseres();
+            var useres = _userService.GetUsers();
             var userDtos = _mapper.Map<IEnumerable<UserDto>>(useres);
 
             if (!ModelState.IsValid)

@@ -15,9 +15,9 @@ namespace Host.Services
         }
 
         // GET
-        public ICollection<User> GetUseres()
+        public ICollection<User> GetUsers()
         {
-            return _userRepository.GetUseres();
+            return _userRepository.GetUsers();
         }
 
         public User GetUserById(int userId)

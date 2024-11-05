@@ -16,7 +16,7 @@ namespace Host.Repository
         }
 
         // GET 
-        public ICollection<User> GetUseres()
+        public ICollection<User> GetUsers()
         {
             return _context.Users.ToList();
         }

@@ -5,7 +5,7 @@ namespace Host.Interfaces.Repository
 {
     public interface IUserRepository
     {
-        ICollection<User> GetUseres();
+        ICollection<User> GetUsers();
         User GetUserById(int userId);
         bool CreateUser(User user);
         bool UpdateUser(User user);
