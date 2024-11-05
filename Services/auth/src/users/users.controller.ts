@@ -6,6 +6,8 @@ import {
   Post,
   Put,
   Query,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './users.service';
 import { User } from './users.model';
@@ -18,11 +20,11 @@ export class UserController {
   @Get()
   async get(@Query('id') id: string): Promise</*User | User[]*/string> {
     if (id) {
-      //const res = await this.userService.getUserWithId(id);
-      return 'Hello World !';
+      const res = await this.userService.getUserWithId(id);
+      return '';
     }
     //const res = await this.userService.getAllUsers();
-    return 'Hello World !';
+    return 'Hello CESI ! called by authentification';
   }
 
   @Post()

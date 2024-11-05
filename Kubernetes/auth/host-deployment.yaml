@@ -30,6 +30,7 @@ spec:
               value: admin
 
           image: lutrp/goodfood-authms
+          imagePullPolicy: "Always"
 
           resources:
             limits:

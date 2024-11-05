@@ -30,7 +30,8 @@ spec:
               value: admin
 
           image: lutrp/goodfood-deliveryms
-
+          imagePullPolicy: "Always"
+          
           resources:
             limits:
               cpu: 100m
