@@ -97,7 +97,7 @@ func (r *ProductRepo) InsertDish(ctx context.Context, dish entity.Dish) error {
 
 func (r *ProductRepo) GetRestaurants(ctx context.Context) ([]entity.Restaurant, error) {
 	rows, err := r.Pool.Query(ctx,
-		`SELECT 
+		`SELECT
 			Restaurant.id,
 			Restaurant.nom,
 			Restaurant.description,
