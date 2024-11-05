@@ -44,13 +44,13 @@ Concevoir une solution applicative en microservice avec une application client w
 Utiliser docker pour executé les microservices et l'api gateway avec cette commande :
 
 ```shell
-docker-compose -f ./Services/docker-compose.services.yml up
+docker-compose -f ./Services/docker-compose.services.yaml up -d
 ```
 
 Utiliser docker pour executé l'application client web et le build de l'application mobile avec cette commande :
 
 ```shell
-docker-compose -f ./Apps/docker-compose.apps.yml up
+docker-compose -f ./Apps/docker-compose.apps.yaml up -d
 ```
 
 ### Kubernetes
