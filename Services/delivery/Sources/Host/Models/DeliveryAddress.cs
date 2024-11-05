@@ -1,5 +1,8 @@
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace Host.Models
 {
@@ -29,6 +32,10 @@ namespace Host.Models
         [MaxLength(20)]
         [Column("country")]
         public string Country { get; set; }
+
+        [Required]
+        [ForeignKey("customer_id")]
+        public User Customer { get; set; }
         
         [InverseProperty("DeliveryAddress")]
         public List<Order> Orders { get; } = new List<Order>();
