@@ -19,7 +19,7 @@ namespace Host.Models
         public string Address { get; set; }
 
         [Required]
-        [MaxLength(5)]
+        [MaxLength(10)]
         [Column("zip")]
         public string Zip { get; set; }
         

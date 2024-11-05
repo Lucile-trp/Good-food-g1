@@ -10,6 +10,7 @@ namespace Host.Helpers
         {
             CreateMap<Order, OrderDto>();
             CreateMap<DeliveryAddress, DeliveryAddressDto>();
+            CreateMap<User, UserDto>();
         }
     }
 }

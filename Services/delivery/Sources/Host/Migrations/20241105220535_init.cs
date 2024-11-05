@@ -13,24 +13,24 @@ namespace Host.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "user",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Password = table.Column<string>(type: "text", nullable: false),
-                    FirstName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Phone = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: true),
-                    Address = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
-                    Zip = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),
-                    City = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-                    Country = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true)
+                    email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    password = table.Column<string>(type: "text", nullable: false),
+                    first_name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    last_name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    phone = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: true),
+                    address = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    zip = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),
+                    city = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    country = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
+                    table.PrimaryKey("PK_user", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -40,7 +40,7 @@ namespace Host.Migrations
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     address = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    zip = table.Column<string>(type: "character varying(5)", maxLength: 5, nullable: false),
+                    zip = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
                     city = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
                     country = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     customer_id = table.Column<int>(type: "integer", nullable: false)
@@ -49,10 +49,10 @@ namespace Host.Migrations
                 {
                     table.PrimaryKey("PK_delivery_address", x => x.id);
                     table.ForeignKey(
-                        name: "FK_delivery_address_Users_customer_id",
+                        name: "FK_delivery_address_user_customer_id",
                         column: x => x.customer_id,
-                        principalTable: "Users",
-                        principalColumn: "UserId",
+                        principalTable: "user",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -72,20 +72,20 @@ namespace Host.Migrations
                 {
                     table.PrimaryKey("PK_order", x => x.id);
                     table.ForeignKey(
-                        name: "FK_order_Users_customer_id",
-                        column: x => x.customer_id,
-                        principalTable: "Users",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_order_Users_deliverer_id",
-                        column: x => x.deliverer_id,
-                        principalTable: "Users",
-                        principalColumn: "UserId");
-                    table.ForeignKey(
                         name: "FK_order_delivery_address_delivery_adresss_id",
                         column: x => x.delivery_adresss_id,
                         principalTable: "delivery_address",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_order_user_customer_id",
+                        column: x => x.customer_id,
+                        principalTable: "user",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_order_user_deliverer_id",
+                        column: x => x.deliverer_id,
+                        principalTable: "user",
                         principalColumn: "id");
                 });
 
@@ -120,7 +120,7 @@ namespace Host.Migrations
                 name: "delivery_address");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "user");
         }
     }
 }
