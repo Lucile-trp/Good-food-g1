@@ -20,20 +20,46 @@ func NewRouter(l logger.Interface, p repo.ProductRepo) map[string]server.CallHan
 
 	routes := make(map[string]server.CallHandler)
 	{
-		routes["getProducts"] = r.GetProducts()
+		routes["getDishes"] = r.GetDishes()
+		routes["getRestaurants"] = r.GetRestaurants()
+		routes["getImages"] = r.GetImages()
 	}
 
 	return routes
 }
 
-func (r productRoutes) GetProducts() server.CallHandler {
+func (r productRoutes) GetDishes() server.CallHandler {
 	return func(d *amqp.Delivery) (interface{}, error) {
-		products, err := r.p.GetProducts(context.Background())
+		dishes, err := r.p.GetDishes(context.Background())
 		if err != nil {
-			r.l.Error(err, "GetProducts on product")
-			return nil, fmt.Errorf("productRoutes - GetProducts - r.p.GetProducts: %w", err)
+			r.l.Error(err, "GetDishes on dish")
+			return nil, fmt.Errorf("productRoutes - GetDishes - r.p.GetDishes: %w", err)
 		}
 
-		return products, nil
+		return dishes, nil
+	}
+}
+
+func (r productRoutes) GetRestaurants() server.CallHandler {
+	return func(d *amqp.Delivery) (interface{}, error) {
+		restaurants, err := r.p.GetRestaurants(context.Background())
+		if err != nil {
+			r.l.Error(err, "GetRestaurants on restaurants")
+			return nil, fmt.Errorf("productRoutes - GetRestaurants - r.p.GetRestaurants: %w", err)
+		}
+
+		return restaurants, nil
+	}
+}
+
+func (r productRoutes) GetImages() server.CallHandler {
+	return func(d *amqp.Delivery) (interface{}, error) {
+		images, err := r.p.GetImages(context.Background())
+		if err != nil {
+			r.l.Error(err, "GetImages on images")
+			return nil, fmt.Errorf("productRoutes - GetImages - r.p.GetImages: %w", err)
+		}
+
+		return images, nil
 	}
 }
