@@ -149,7 +149,7 @@ func (r *ProductRepo) GetRestaurant(ctx context.Context, id int) (entity.Restaur
 }
 
 func (r *ProductRepo) InsertRestaurant(ctx context.Context, restaurant entity.Restaurant) error {
-	query := `INSERT INTO Restaurant (nom, description, address, code_postal, ville, pays) 
+	query := `INSERT INTO Restaurant (nom, description, adresse, code_postal, ville, pays) 
 		VALUES (@nom, @description, @address, @code_postal, @ville, @pays)`
 
 	_, err := r.Pool.Exec(ctx, query,
