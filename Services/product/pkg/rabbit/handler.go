@@ -33,8 +33,6 @@ func (r Rabbit) Listen(l logger.Interface, p *repo.ProductRepo) error {
 
 	l.Info("Listening Started")
 
-	forever := make(chan bool)
-
 	for m := range msg {
 
 		var currencies = map[string]string{}
@@ -48,36 +46,42 @@ func (r Rabbit) Listen(l logger.Interface, p *repo.ProductRepo) error {
 			l.Error(fmt.Errorf("rabbitmq: convert to id: %w", err))
 		}
 
-		dish, err := p.GetDish(context.Background(), id)
-		if err != nil {
-			l.Error(fmt.Errorf("postgres: get dish: %w", err))
-		}
-
-		data, err := json.Marshal(dish)
-		if err != nil {
-			l.Error(fmt.Errorf("map marshalling: ", err))
-		}
-
-		l.Info(fmt.Sprintln("get dish: ", data))
-
-		err = r.channel.Publish(
-			"goodfood.exchange",
-			r.queuePublish,
-			false,
-			false,
-			amqp.Publishing{
-				ContentType: "application/json",
-				Body:        data,
-			},
-		)
-
-		if err != nil {
-			l.Error(fmt.Errorf("publishing: %w", err))
+		if err == nil && m.Body != nil {
+			err = r.PublishDish(l, p, id)
+			if err != nil {
+				l.Error(fmt.Errorf("rabbitmq: convert to id: %w", err))
+			}
 		}
 	}
-	
 
-	<-forever
+	return nil
+}
+
+func (r Rabbit) PublishDish(l logger.Interface, p *repo.ProductRepo, id int) error {
+	dish, err := p.GetDish(context.Background(), id)
+	if err != nil {
+		return fmt.Errorf("postgres: get dish: %w", err)
+	}
+
+	data, err := json.Marshal(dish)
+	if err != nil {
+		return fmt.Errorf("map marshalling: %w", err)
+	}
+
+	err = r.channel.Publish(
+		"goodfood.exchange",
+		r.queuePublish,
+		false,
+		false,
+		amqp.Publishing{
+			ContentType: "application/json",
+			Body:        data,
+		},
+	)
+
+	if err != nil {
+		return fmt.Errorf("publishing: %w", err)
+	}
 
 	return nil
 }

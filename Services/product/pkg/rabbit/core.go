@@ -45,7 +45,7 @@ func Start(amqpUrl string) (*Rabbit, error) {
 
 	queuePublish, err := DeclareQueue(ch, "goodfood.queue.getdish")
 	if err != nil {
-		return nil, fmt.Errorf("declaring consumer queue: %w", err)
+		return nil, fmt.Errorf("declaring publisher queue: %w", err)
 	}
 
 	return &Rabbit{
