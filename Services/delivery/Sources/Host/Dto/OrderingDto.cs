@@ -1,6 +1,6 @@
 namespace Host.Dto
 {
-    public class Ordering
+    public class OrderingDto
     {
         public int DishId { get; set; }
         
