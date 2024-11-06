@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"product/internal/repo"
 	"product/pkg/logger"
 	"strconv"
@@ -19,9 +18,9 @@ func (r Rabbit) Close() error {
 func (r Rabbit) Listen(l logger.Interface, p *repo.ProductRepo) error {
 
 	msg, err := r.channel.Consume(
-		r.queue,
+		r.queueConsume,
 		"",
-		false,
+		true,
 		false,
 		false,
 		false,
@@ -34,36 +33,36 @@ func (r Rabbit) Listen(l logger.Interface, p *repo.ProductRepo) error {
 
 	l.Info("Listening Started")
 
+	forever := make(chan bool)
+
 	for m := range msg {
-		l.Info("Update Started")
 
 		var currencies = map[string]string{}
 		err = json.Unmarshal(m.Body, &currencies)
 		if err != nil {
 			l.Error(fmt.Errorf("rabbitmq: unmarshal to map: %w", err))
-			continue
 		}
 
 		id, err := strconv.Atoi(currencies["dishId"])
 		if err != nil {
 			l.Error(fmt.Errorf("rabbitmq: convert to id: %w", err))
-			continue
 		}
 
 		dish, err := p.GetDish(context.Background(), id)
 		if err != nil {
 			l.Error(fmt.Errorf("postgres: get dish: %w", err))
-			continue
 		}
 
 		data, err := json.Marshal(dish)
 		if err != nil {
-			log.Println("map marshalling: ", err)
+			l.Error(fmt.Errorf("map marshalling: ", err))
 		}
+
+		l.Info(fmt.Sprintln("get dish: ", data))
 
 		err = r.channel.Publish(
 			"goodfood.exchange",
-			r.queue,
+			r.queuePublish,
 			false,
 			false,
 			amqp.Publishing{
@@ -73,11 +72,12 @@ func (r Rabbit) Listen(l logger.Interface, p *repo.ProductRepo) error {
 		)
 
 		if err != nil {
-			return fmt.Errorf("publishing: %w", err)
+			l.Error(fmt.Errorf("publishing: %w", err))
 		}
-
-		return nil
 	}
+	
+
+	<-forever
 
 	return nil
 }
