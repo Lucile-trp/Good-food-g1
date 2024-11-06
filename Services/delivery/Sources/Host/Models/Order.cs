@@ -14,7 +14,7 @@ namespace Host.Models
 
         [Required]
         [Column("date")]
-        public DateTime Date { get; set; } = DateTime.Now;
+        public DateTime Date { get; set; } = DateTime.UtcNow;
 
         [Column("order_state")]
         public OrderState OrderState { get; set; }
@@ -28,5 +28,7 @@ namespace Host.Models
 
         [ForeignKey("delivery_adresss_id")]
         public DeliveryAddress DeliveryAddress { get; set; }   
+
+        public List<Ordering> Orderings { get; } = new List<Ordering>();
     }
 }

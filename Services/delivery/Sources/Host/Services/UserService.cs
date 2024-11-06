@@ -20,6 +20,11 @@ namespace Host.Services
             return _userRepository.GetUsers();
         }
 
+        public User GetUserByIdAsNoTracking(int userId)
+        {
+            return _userRepository.GetUserByIdAsNoTracking(userId);
+        }
+
         public User GetUserById(int userId)
         {
             return _userRepository.GetUserById(userId);

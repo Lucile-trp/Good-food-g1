@@ -20,9 +20,24 @@ namespace Host.Services
             return _deliveryAddressRepository.GetDeliveryAddresses();
         }
 
+        public DeliveryAddress GetDeliveryAddressByIdAsNoTracking(int deliveryAddressId)
+        {
+            return _deliveryAddressRepository.GetDeliveryAddressByIdAsNoTracking(deliveryAddressId);
+        }
+
         public DeliveryAddress GetDeliveryAddressById(int deliveryAddressId)
         {
             return _deliveryAddressRepository.GetDeliveryAddressById(deliveryAddressId);
+        }
+
+        public ICollection<DeliveryAddress> GetDeliveryAddressesByCustomer(int customerId)
+        {
+            return _deliveryAddressRepository.GetDeliveryAddressesByCustomer(customerId);
+        }
+
+        public DeliveryAddress GetDeliveryAddressByOrder(int orderId)
+        {
+            return _deliveryAddressRepository.GetDeliveryAddressByOrder(orderId);
         }
 
         // CREATE

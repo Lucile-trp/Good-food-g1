@@ -3,6 +3,7 @@ using Host.Interfaces.Repository;
 using Host.Models;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Host.Repository
 {
@@ -21,9 +22,17 @@ namespace Host.Repository
             return _context.Users.ToList();
         }
 
+        public User GetUserByIdAsNoTracking(int userId)
+        {
+            return _context.Users
+            .AsNoTracking() 
+            .FirstOrDefault(u => u.UserId == userId);
+        }
+
         public User GetUserById(int userId)
         {
-            return _context.Users.FirstOrDefault(u => u.UserId == userId);
+            return _context.Users
+            .FirstOrDefault(u => u.UserId == userId);
         }
 
         // CREATE 

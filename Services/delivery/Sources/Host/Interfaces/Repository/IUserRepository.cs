@@ -6,6 +6,7 @@ namespace Host.Interfaces.Repository
     public interface IUserRepository
     {
         ICollection<User> GetUsers();
+        User GetUserByIdAsNoTracking(int userId);
         User GetUserById(int userId);
         bool CreateUser(User user);
         bool UpdateUser(User user);

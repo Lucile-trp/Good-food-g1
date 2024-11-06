@@ -13,6 +13,22 @@ namespace Host.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "dish",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    title = table.Column<string>(type: "text", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: true),
+                    cost = table.Column<double>(type: "double precision", nullable: false),
+                    restaurant_id = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_dish", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "user",
                 columns: table => new
                 {
@@ -89,6 +105,31 @@ namespace Host.Migrations
                         principalColumn: "id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ordering",
+                columns: table => new
+                {
+                    dish_id = table.Column<int>(type: "integer", nullable: false),
+                    order_id = table.Column<int>(type: "integer", nullable: false),
+                    quantity = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ordering", x => new { x.order_id, x.dish_id });
+                    table.ForeignKey(
+                        name: "FK_ordering_dish_dish_id",
+                        column: x => x.dish_id,
+                        principalTable: "dish",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ordering_order_order_id",
+                        column: x => x.order_id,
+                        principalTable: "order",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_delivery_address_customer_id",
                 table: "delivery_address",
@@ -108,11 +149,22 @@ namespace Host.Migrations
                 name: "IX_order_delivery_adresss_id",
                 table: "order",
                 column: "delivery_adresss_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ordering_dish_id",
+                table: "ordering",
+                column: "dish_id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ordering");
+
+            migrationBuilder.DropTable(
+                name: "dish");
+
             migrationBuilder.DropTable(
                 name: "order");
 

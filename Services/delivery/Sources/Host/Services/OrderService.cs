@@ -20,9 +20,34 @@ namespace Host.Services
             return _orderRepository.GetOrders();
         }
 
+        public Order GetOrderByIdAsNoTracking(int orderId)
+        {
+            return _orderRepository.GetOrderByIdAsNoTracking(orderId);
+        }
+
         public Order GetOrderById(int orderId)
         {
             return _orderRepository.GetOrderById(orderId);
+        }
+
+        public ICollection<Order> GetOrdersByCustomer(int customerId)
+        {
+            return _orderRepository.GetOrdersByCustomer(customerId);
+        }
+
+        public ICollection<Order> GetOrdersByDeliverer(int delivererId)
+        {
+            return _orderRepository.GetOrdersByDeliverer(delivererId);
+        }
+
+        public ICollection<Order> GetOrdersByDeliveryAddress(int deliveryAddressId)
+        {
+            return _orderRepository.GetOrdersByDeliveryAddress(deliveryAddressId);
+        }
+
+        public ICollection<Order> GetOrdersByState(int state)
+        {
+            return _orderRepository.GetOrdersByState(state);
         }
 
         // CREATE

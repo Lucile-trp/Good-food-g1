@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Host.Migrations
 {
     [DbContext(typeof(DeliveryDbContext))]
-    [Migration("20241105220535_init")]
+    [Migration("20241106193401_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -68,6 +68,37 @@ namespace Host.Migrations
                     b.ToTable("delivery_address");
                 });
 
+            modelBuilder.Entity("Host.Models.Dish", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Cost")
+                        .HasColumnType("double precision")
+                        .HasColumnName("cost");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<int>("RestaurantId")
+                        .HasColumnType("integer")
+                        .HasColumnName("restaurant_id");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("title");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("dish");
+                });
+
             modelBuilder.Entity("Host.Models.Order", b =>
                 {
                     b.Property<int>("OrderId")
@@ -103,6 +134,27 @@ namespace Host.Migrations
                     b.HasIndex("delivery_adresss_id");
 
                     b.ToTable("order");
+                });
+
+            modelBuilder.Entity("Host.Models.Ordering", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .HasColumnType("integer")
+                        .HasColumnName("order_id");
+
+                    b.Property<int>("DishId")
+                        .HasColumnType("integer")
+                        .HasColumnName("dish_id");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("quantity");
+
+                    b.HasKey("OrderId", "DishId");
+
+                    b.HasIndex("DishId");
+
+                    b.ToTable("ordering");
                 });
 
             modelBuilder.Entity("Host.Models.User", b =>
@@ -201,9 +253,38 @@ namespace Host.Migrations
                     b.Navigation("DeliveryAddress");
                 });
 
+            modelBuilder.Entity("Host.Models.Ordering", b =>
+                {
+                    b.HasOne("Host.Models.Dish", "Dish")
+                        .WithMany("Orderings")
+                        .HasForeignKey("DishId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Host.Models.Order", "Order")
+                        .WithMany("Orderings")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Dish");
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("Host.Models.DeliveryAddress", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("Host.Models.Dish", b =>
+                {
+                    b.Navigation("Orderings");
+                });
+
+            modelBuilder.Entity("Host.Models.Order", b =>
+                {
+                    b.Navigation("Orderings");
                 });
 
             modelBuilder.Entity("Host.Models.User", b =>
