@@ -125,7 +125,7 @@ namespace Host.Controllers
             return Ok(orderDtos);
         }
 
-        [HttpPost("{customerId}/{delivererId}/{deliveryAddressId}")]
+        [HttpPost("{customerId}/deliverer/{delivererId}/deliveryAddress/{deliveryAddressId}")]
         [MapToApiVersion("1")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
@@ -169,7 +169,7 @@ namespace Host.Controllers
 
 
 
-        [HttpPut("{orderId}/{delivererId}/{deliveryAddressId}")]
+        [HttpPut("{orderId}/deliverer/{delivererId}/deliveryAddress/{deliveryAddressId}")]
         [MapToApiVersion("1")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
