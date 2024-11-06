@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"product/internal/repo"
 	"product/pkg/logger"
 	"strconv"
@@ -19,9 +18,9 @@ func (r Rabbit) Close() error {
 func (r Rabbit) Listen(l logger.Interface, p *repo.ProductRepo) error {
 
 	msg, err := r.channel.Consume(
-		r.queue,
+		r.queueConsume,
 		"",
-		false,
+		true,
 		false,
 		false,
 		false,
@@ -35,48 +34,53 @@ func (r Rabbit) Listen(l logger.Interface, p *repo.ProductRepo) error {
 	l.Info("Listening Started")
 
 	for m := range msg {
-		l.Info("Update Started")
 
 		var currencies = map[string]string{}
 		err = json.Unmarshal(m.Body, &currencies)
 		if err != nil {
 			l.Error(fmt.Errorf("rabbitmq: unmarshal to map: %w", err))
-			continue
 		}
 
 		id, err := strconv.Atoi(currencies["dishId"])
 		if err != nil {
 			l.Error(fmt.Errorf("rabbitmq: convert to id: %w", err))
-			continue
 		}
 
-		dish, err := p.GetDish(context.Background(), id)
-		if err != nil {
-			l.Error(fmt.Errorf("postgres: get dish: %w", err))
-			continue
+		if err == nil && m.Body != nil {
+			err = r.PublishDish(l, p, id)
+			if err != nil {
+				l.Error(fmt.Errorf("rabbitmq: convert to id: %w", err))
+			}
 		}
+	}
 
-		data, err := json.Marshal(dish)
-		if err != nil {
-			log.Println("map marshalling: ", err)
-		}
+	return nil
+}
 
-		err = r.channel.Publish(
-			"goodfood.exchange",
-			r.queue,
-			false,
-			false,
-			amqp.Publishing{
-				ContentType: "application/json",
-				Body:        data,
-			},
-		)
+func (r Rabbit) PublishDish(l logger.Interface, p *repo.ProductRepo, id int) error {
+	dish, err := p.GetDish(context.Background(), id)
+	if err != nil {
+		return fmt.Errorf("postgres: get dish: %w", err)
+	}
 
-		if err != nil {
-			return fmt.Errorf("publishing: %w", err)
-		}
+	data, err := json.Marshal(dish)
+	if err != nil {
+		return fmt.Errorf("map marshalling: %w", err)
+	}
 
-		return nil
+	err = r.channel.Publish(
+		"goodfood.exchange",
+		r.queuePublish,
+		false,
+		false,
+		amqp.Publishing{
+			ContentType: "application/json",
+			Body:        data,
+		},
+	)
+
+	if err != nil {
+		return fmt.Errorf("publishing: %w", err)
 	}
 
 	return nil
