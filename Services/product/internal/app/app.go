@@ -26,7 +26,7 @@ func Run(cfg config.Config) {
 	// RabbitMQ RPC Server
 	r, err := rabbit.Start(cfg.RmqURL)
 	if err != nil {
-		l.Fatal("app - Run - connecting to rabbitmq: ", err)
+		l.Fatal("app - Run - connecting to rabbitmq: %w", err)
 	}
 
 	// HTTP Server
