@@ -80,7 +80,7 @@ namespace Host.Controllers
             return Ok(deliveryAddressDto);
         }
 
-        [HttpPost("{customerId}")]
+        [HttpPost("customer/{customerId}")]
         [MapToApiVersion("1")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
