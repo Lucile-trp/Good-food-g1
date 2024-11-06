@@ -1,4 +1,4 @@
-﻿namespace Host.Core
+﻿namespace RabbitMQ
 {
     public static class Queues
     {
