@@ -22,14 +22,14 @@ app.use('/api/user/', authRoutes);
 app.use('/api/product/', productRoutes);
 
 // Routes du MS-DELIVERY 
-app.use('/api/order/', orderDeliveryRoutes);
-app.use('/api/deliveryAddress/', deliveryAddressRoutes);
-app.use('/api/orderState/', orderStateRoutes);
+app.use('/api/v1/order/', orderDeliveryRoutes);
+app.use('/api/v1/deliveryAddress/', deliveryAddressRoutes);
+app.use('/api/v1/orderState/', orderStateRoutes);
 
 // Routes du MS-FRANCHISE 
-app.use('/api/supplier/', supplierRoutes);
-app.use('/api/order', orderFranchiseRoutes);
-app.use('/api/productType/', productTypeRoutes);
+app.use('/api/v1/supplier/', supplierRoutes);
+app.use('/api/v1/order', orderFranchiseRoutes);
+app.use('/api/v1/productType/', productTypeRoutes);
 
 // Routes du MS-MAILING 
 app.use('/api/mailing/', mailingRoutes);
