@@ -125,11 +125,11 @@ namespace Host.Controllers
             return Ok(orderDtos);
         }
 
-        [HttpPost("{customerId}/deliverer/{delivererId}/deliveryAddress/{deliveryAddressId}")]
+        [HttpPost]
         [MapToApiVersion("1")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public IActionResult CreateOrderV1(int customerId, int delivererId, int deliveryAddressId, [FromBody] OrderDto orderCreate)
+        public IActionResult CreateOrderV1([FromQuery] int customerId, [FromQuery] int delivererId, [FromQuery] int deliveryAddressId, [FromBody] OrderDto orderCreate)
         {
             if (orderCreate == null)
                 return BadRequest("Invalid order data.");
@@ -169,12 +169,12 @@ namespace Host.Controllers
 
 
 
-        [HttpPut("{orderId}/deliverer/{delivererId}/deliveryAddress/{deliveryAddressId}")]
+        [HttpPut("{orderId}")]
         [MapToApiVersion("1")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateOrderV1(int orderId, int delivererId, int deliveryAddressId, [FromBody] OrderDto orderUpdate)
+        public IActionResult UpdateOrderV1(int orderId, [FromQuery] int delivererId, [FromQuery] int deliveryAddressId, [FromBody] OrderDto orderUpdate)
         {
             if (orderUpdate == null || orderId <= 0)
                 return BadRequest(ModelState);

@@ -80,11 +80,11 @@ namespace Host.Controllers
             return Ok(deliveryAddressDto);
         }
 
-        [HttpPost("customer/{customerId}")]
+        [HttpPost]
         [MapToApiVersion("1")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public IActionResult CreateDeliveryAddressV1(int customerId, [FromBody] DeliveryAddressDto deliveryAddressCreate)
+        public IActionResult CreateDeliveryAddressV1([FromQuery] int customerId, [FromBody] DeliveryAddressDto deliveryAddressCreate)
         {
             if (deliveryAddressCreate == null)
                 return BadRequest("Invalid data.");
@@ -118,7 +118,7 @@ namespace Host.Controllers
             if (!_deliveryAddressService.DeliveryAddressExists(deliveryAddressId))
                 return NotFound("Delivery address not found.");
 
-            var existingAddress = _deliveryAddressService.GetDeliveryAddressById(deliveryAddressId);
+            var existingAddress = _deliveryAddressService.GetDeliveryAddressByIdAsNoTracking(deliveryAddressId);
             if (existingAddress == null)
                 return NotFound("Delivery address not found.");
 
