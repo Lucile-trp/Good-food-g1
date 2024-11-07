@@ -1,14 +1,9 @@
-﻿using Host.Core;
-using Host.Handlers;
-using Host.Interfaces.Services;
+﻿using Host.Interfaces.Services;
 using Host.Dto;
 using Host.Models;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Asp.Versioning;
-using System.Collections.Generic;
-using RabbitMQ.Connection;
-using RabbitMQ.EventBus;
 
 namespace Host.Controllers
 {
@@ -16,28 +11,13 @@ namespace Host.Controllers
     [ApiController]
     public class OrderController : Controller
     {
-        private readonly IRabbitMQEventBus eventBus;
         private readonly IOrderService _orderService;
         private readonly IMapper _mapper;
 
-        public OrderController(IServiceProvider serviceProvider, ILoggerFactory loggerFactory, IOrderService orderService, IMapper mapper)
+        public OrderController(IOrderService orderService, IMapper mapper)
         {
             _orderService = orderService;
             _mapper = mapper;
-
-            var persistentConnection = serviceProvider.GetServices<IHostedService>().OfType<IRabbitMQPersistentConnection>().Single();
-            eventBus = new RabbitMQEventBus(persistentConnection, loggerFactory, Queues.Order);
-            eventBus.Subscribe(new OrderHandler(persistentConnection, loggerFactory));
-        }
-
-        //RABBITMQ
-        [HttpPost("send")]
-        [MapToApiVersion("1.0")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<OrderDto>))]
-        public ActionResult Send(OrderDto order)
-        {
-            eventBus.Publish(order);
-            return Ok();
         }
 
         // GET 

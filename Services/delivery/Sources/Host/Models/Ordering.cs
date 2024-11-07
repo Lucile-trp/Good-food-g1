@@ -7,12 +7,12 @@ namespace Host.Models
     public class Ordering
     {
         [Key]
-        [ForeignKey("order_id")]
-        public Order OrderId { get; set; }
+        [ForeignKey("dish_id")]
+        public Dish Dish { get; set; }
 
         [Key]
-        [ForeignKey("dish_id")]
-        public Dish DishId { get; set; }
+        [ForeignKey("order_id")]
+        public Order Order { get; set; }
 
         [Required]
         [Range(1, int.MaxValue)]
