@@ -11,6 +11,5 @@ namespace Host.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<DeliveryAddress> DeliveryAddresses { get; set; }
         public DbSet<Dish> Dishes { get; set; }
-        public DbSet<Ordering> Orderings { get; set; }
     }
 }

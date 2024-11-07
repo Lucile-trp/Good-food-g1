@@ -1,19 +1,11 @@
-using System;
-using System.IO;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
 using RabbitMQ;
-using RabbitMQ.Client;
 using RabbitMQ.Connection;
-using RabbitMQ.EventBus;
-using Host.Core;
 using Host.Interfaces.Repository;
 using Host.Interfaces.Services;
 using Host.Services;
-using Host.Helpers;
 using Host.Repository;
 using Host.Data;
-using Host.Models;
 using Host.Extensions;
 using System.Text.Json.Serialization;
 

@@ -23,5 +23,8 @@ namespace Host.Models
 
         [Column("restaurant_id")]
         public int RestaurantId { get; set; }
+
+        [ForeignKey("order_id")]
+        public Order Order { get; set; }
     }
 }

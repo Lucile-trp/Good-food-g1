@@ -11,7 +11,6 @@ namespace Host.Helpers
             CreateMap<Order, OrderDto>();
             CreateMap<DeliveryAddress, DeliveryAddressDto>();
             CreateMap<Dish, DishDto>();
-            CreateMap<Ordering, OrderingDto>();
         }
     }
 }
