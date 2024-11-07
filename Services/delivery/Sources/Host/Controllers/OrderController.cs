@@ -197,6 +197,7 @@ namespace Host.Controllers
 
             var orderEntity = _mapper.Map<Order>(orderUpdate);
             orderEntity.OrderId = orderId;
+            orderEntity.Date = orderEntity.Date; 
             orderEntity.Customer = existingOrder.Customer; 
             orderEntity.Deliverer = deliverer;  
             orderEntity.DeliveryAddress = deliveryAddress; 
