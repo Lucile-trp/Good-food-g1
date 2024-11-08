@@ -9,8 +9,14 @@ namespace Host.Helpers
         public MappingProfiles()
         {
             CreateMap<Order, OrderDto>();
+            CreateMap<OrderDto, Order>();
+
             CreateMap<DeliveryAddress, DeliveryAddressDto>();
-            CreateMap<Dish, DishDto>();
+
+            CreateMap<DeliveryAddressDto, DeliveryAddress>();
+
+            CreateMap<User, UserDto>();
+            CreateMap<UserDto, User>();
         }
     }
 }

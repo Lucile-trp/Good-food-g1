@@ -3,66 +3,126 @@ const router = express.Router();
 const axios = require('axios');
 const isAuthorized = require('../../middlewares/isAuthorized');
 
-const DELIVERY_API = process.env.DELIVERY_API;
+const DELIVERY_API = process.env.DELIVERY_API; // URL de base pour le MS-DELIVERY
 
-// Route pour obtenir la liste des commandes
+// Route pour obtenir la liste de toutes les commandes
 router.get('/', isAuthorized, async (req, res, next) => {
-  console.log(DELIVERY_API);
-
   try {
-    const response = await axios.get(DELIVERY_API + '/api/v1/order/');
+    const response = await axios.get(`${DELIVERY_API}/api/v1/order/`);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
-    console.error(err); // Afficher l'erreur dans la console pour le débogage
+    console.error(err);
     next(err);
   }
 });
 
-// Route pour obtenir une commande par son ID
-router.get("/:id", async (req, res, next) => {
+// Route pour obtenir une commande par ID
+router.get('/:id', isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.get(`${DELIVERY_API}/api/v1/order/${req.params.id}`);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
-    console.error(err); // Afficher l'erreur dans la console pour le débogage
+    console.error(err);
+    next(err);
+  }
+});
+
+// Route pour obtenir les commandes par ID client
+router.get('/ByCustomer/:customerId', isAuthorized, async (req, res, next) => {
+  try {
+    const response = await axios.get(`${DELIVERY_API}/api/v1/order/ByCustomer/${req.params.customerId}`);
+    res.set(response.headers);
+    res.status(response.status).json(response.data);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+// Route pour obtenir les commandes par ID livreur
+router.get('/byDeliverer/:delivererId', isAuthorized, async (req, res, next) => {
+  try {
+    const response = await axios.get(`${DELIVERY_API}/api/v1/order/byDeliverer/${req.params.delivererId}`);
+    res.set(response.headers);
+    res.status(response.status).json(response.data);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+// Route pour obtenir les commandes par adresse de livraison
+router.get('/ByDeliveryAddress/:deliveryAddressId', isAuthorized, async (req, res, next) => {
+  try {
+    const response = await axios.get(`${DELIVERY_API}/api/v1/order/ByDeliveryAddress/${req.params.deliveryAddressId}`);
+    res.set(response.headers);
+    res.status(response.status).json(response.data);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+// Route pour obtenir les commandes par état
+router.get('/ByState/:state', isAuthorized, async (req, res, next) => {
+  try {
+    const response = await axios.get(`${DELIVERY_API}/api/v1/order/ByState/${req.params.state}`);
+    res.set(response.headers);
+    res.status(response.status).json(response.data);
+  } catch (err) {
+    console.error(err);
     next(err);
   }
 });
 
 // Route pour créer une nouvelle commande
-router.post('/', async (req, res, next) => {
+router.post('/', isAuthorized, async (req, res, next) => {
+  const { customerId, delivererId, deliveryAddressId } = req.query;
+  const body = req.body;
+
+  if (!customerId || !delivererId || !deliveryAddressId) {
+    return res.status(400).json({ error: "customerId, delivererId, and deliveryAddressId are required in query string" });
+  }
+
   try {
-    const response = await axios.post(DELIVERY_API + '/api/v1/order/', req.body);
+    const response = await axios.post(`${DELIVERY_API}/api/v1/order?customerId=${customerId}&delivererId=${delivererId}&deliveryAddressId=${deliveryAddressId}`, body);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
-    console.error(err); // Afficher l'erreur dans la console pour le débogage
-    next(err);
+    console.error(err);  
+    next(err);  
   }
 });
 
-// Route pour mettre à jour une commande existant
-router.put("/:id", async (req, res, next) => {
+// Route pour mettre à jour une commande existante
+router.put('/:orderId', isAuthorized, async (req, res, next) => {
+  const { delivererId, deliveryAddressId } = req.query;
+  const body = req.body;
+
+  if (!delivererId || !deliveryAddressId) {
+    return res.status(400).json({ error: "delivererId and deliveryAddressId are required in query string" });
+  }
+
   try {
-    const response = await axios.put(`${DELIVERY_API}/api/v1/order/${req.params.id}`, req.body);
+    const response = await axios.put(`${DELIVERY_API}/api/v1/order/${req.params.orderId}?delivererId=${delivererId}&deliveryAddressId=${deliveryAddressId}`, body);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
-    console.error(err); // Afficher l'erreur dans la console pour le débogage
+    console.error(err); 
     next(err);
   }
 });
 
 // Route pour supprimer une commande
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:orderId", isAuthorized, async (req, res, next) => {
   try {
-    const response = await axios.delete(`${DELIVERY_API}/api/v1/order/${req.params.id}`);
+    const response = await axios.delete(`${DELIVERY_API}/api/v1/order/${req.params.orderId}`);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
-    console.error(err); // Afficher l'erreur dans la console pour le débogage
+    console.error("DELETE error:", err.response ? err.response.data : err.message); // Log détaillé
     next(err);
   }
 });

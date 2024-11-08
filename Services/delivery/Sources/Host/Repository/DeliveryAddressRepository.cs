@@ -3,6 +3,7 @@ using Host.Interfaces.Repository;
 using Host.Models;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Host.Repository
 {
@@ -21,9 +22,34 @@ namespace Host.Repository
             return _context.DeliveryAddresses.ToList();
         }
 
+        public DeliveryAddress GetDeliveryAddressByIdAsNoTracking(int deliveryAddressId)
+        {
+            return _context.DeliveryAddresses
+            .AsNoTracking() 
+            .FirstOrDefault(d => d.DeliveryAddressId == deliveryAddressId);
+        }
+
         public DeliveryAddress GetDeliveryAddressById(int deliveryAddressId)
         {
-            return _context.DeliveryAddresses.FirstOrDefault(da => da.DeliveryAddressId == deliveryAddressId);
+            return _context.DeliveryAddresses
+            .FirstOrDefault(d => d.DeliveryAddressId == deliveryAddressId);
+        }
+
+        public ICollection<DeliveryAddress> GetDeliveryAddressesByCustomer(int customerId)
+        {
+            return _context.DeliveryAddresses
+                .Where(da => da.Customer.UserId == customerId)
+                .Include(da => da.Orders)
+                .ToList();
+        }
+
+        public DeliveryAddress GetDeliveryAddressByOrder(int orderId)
+        {
+            var delivery = _context.Orders
+                .Include(o => o.DeliveryAddress)  
+                .FirstOrDefault(o => o.OrderId == orderId);
+
+            return delivery?.DeliveryAddress; 
         }
 
         // CREATE 

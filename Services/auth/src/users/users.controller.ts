@@ -3,11 +3,10 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
   Post,
   Put,
   Query,
-  Request,
-  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './users.service';
 import { User } from './users.model';
@@ -18,13 +17,21 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  async get(@Query('id') id: string): Promise</*User | User[]*/string> {
-    if (id) {
-      const res = await this.userService.getUserWithId(id);
-      return '';
-    }
-    //const res = await this.userService.getAllUsers();
-    return 'Hello CESI ! called by authentification';
+  async getAll(): Promise<User | User[]> {
+    const res = await this.userService.getAllUsers();
+    return res;
+  }
+
+  @Get(':id')
+  async getById(@Param() params: string) {
+    const res = await this.userService.getUserWithId(params['id']);
+    return res;
+  }
+
+  @Get('byEmail/:email')
+  async getByEmail(@Param() params: string) {
+    const res = await this.userService.getUserByEmail(params['email']);
+    return res;
   }
 
   @Post()

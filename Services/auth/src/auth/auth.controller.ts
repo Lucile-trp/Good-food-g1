@@ -36,7 +36,11 @@ export class AuthController {
         );
       }
 
-      const res = await this.authService.signIn(user.email, user._id);
+      const res = await this.authService.signIn(
+        user.email,
+        user._id,
+        user.role,
+      );
       return new AuthResponse(200, '', res.access_token);
     } catch (error) {
       if (error instanceof ConflictException) {
@@ -77,6 +81,26 @@ export class AuthController {
       await this.authService.signUp(body.email, body.password);
 
       return new AuthResponse(200, 'Utilisateur créé avec succès');
+    } catch (error) {
+      return new AuthResponse(error.status, error.message);
+    }
+  }
+
+  @Post('verifyAuthorization')
+  @HttpCode(HttpStatus.OK)
+  async verifyAuthorization(@Body() body: { access_token: string }) {
+    try {
+      if (!body.access_token) {
+        throw new BadRequestException('Champs manquants.');
+      }
+
+      const res = await this.authService.verifyUserAuthorization(
+        body.access_token,
+      );
+
+      if (res == true) {
+        return new AuthResponse(200, 'Token verifié avec succès.');
+      }
     } catch (error) {
       return new AuthResponse(error.status, error.message);
     }
