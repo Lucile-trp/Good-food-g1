@@ -29,6 +29,6 @@ namespace Host.Models
         [ForeignKey("delivery_adresss_id")]
         public DeliveryAddress DeliveryAddress { get; set; }   
 
-        public List<Ordering> Orderings { get; } = new List<Ordering>();
+        //public List<Ordering> Orderings { get; } = new List<Ordering>();
     }
 }

@@ -21,7 +21,7 @@ namespace Host.Controllers
             _userService = userService;
             _mapper = mapper;
         }
-
+        /**
         // GET 
         [HttpGet]
         [MapToApiVersion("1.0")]
@@ -118,5 +118,6 @@ namespace Host.Controllers
 
             return NoContent();
         }
+    **/
     }
 }

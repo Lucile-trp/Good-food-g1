@@ -1,6 +1,7 @@
 ﻿using Host.Core;
 using Host.Interfaces.Services;
 using Host.Dto;
+using Host.Enums;
 using Host.Models;
 using System;
 using Microsoft.AspNetCore.Mvc;
@@ -156,6 +157,7 @@ namespace Host.Controllers
             // Si l'adresse de livraison existe, on peut l'utiliser pour la commande
             var orderEntity = _mapper.Map<Order>(orderCreate);
             orderEntity.Customer = customer;
+            orderEntity.OrderState = OrderState.Waiting;
             orderEntity.Deliverer = deliverer;
             orderEntity.DeliveryAddress = deliveryAddress;
             orderEntity.Date = DateTime.UtcNow;

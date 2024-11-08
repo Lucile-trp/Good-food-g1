@@ -1,4 +1,5 @@
 using System;
+using Host.Enums;
 
 namespace Host.Dto
 {
@@ -6,5 +7,6 @@ namespace Host.Dto
     {
         public int OrderId { get; set; }
         public DateTime Date { get; set; }
+        public OrderState OrderState { get; set; }
     }
 }
