@@ -27,8 +27,6 @@ namespace Host.Controllers
             _mapper = mapper;
 
             var persistentConnection = serviceProvider.GetServices<IHostedService>().OfType<IRabbitMQPersistentConnection>().Single();
-            eventBusGetDish = new RabbitMQEventBus(persistentConnection, loggerFactory, Queues.GetDish);
-            eventBusGetDish.Subscribe(new OrderingHandler(persistentConnection, loggerFactory));
 
             eventBusSendDish = new RabbitMQEventBus(persistentConnection, loggerFactory, Queues.SendDish);
         }
@@ -53,7 +51,7 @@ namespace Host.Controllers
 
             foreach (var dishId in dishesIds)
             {
-                eventBusSendDish.Publish(new OrderingSenderDto() { DishId = dishId, OrderId = orderEntity.OrderId});
+                eventBusSendDish.Publish(new OrderingSenderDto() { DishId = dishId.ToString(), OrderId = orderEntity.OrderId.ToString()});
             }
 
             return Ok();

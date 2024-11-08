@@ -1,8 +1,13 @@
+using Newtonsoft.Json;
+
 namespace Host.Dto.Rpc
 {
     public class OrderingSenderDto
     {
-        public int DishId { get; set; }
-        public int OrderId { get; set; }        
+        [JsonProperty("dishId")]
+        public string DishId { get; set; }
+
+        [JsonProperty("orderId")]
+        public string OrderId { get; set; }        
     }
 }

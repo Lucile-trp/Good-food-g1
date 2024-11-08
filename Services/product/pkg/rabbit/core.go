@@ -7,9 +7,9 @@ import (
 )
 
 type Rabbit struct {
-	channel *amqp.Channel
-	queueConsume   string
-	queuePublish   string
+	channel      *amqp.Channel
+	queueConsume string
+	queuePublish string
 }
 
 func Start(amqpUrl string) (*Rabbit, error) {
@@ -43,15 +43,10 @@ func Start(amqpUrl string) (*Rabbit, error) {
 		return nil, fmt.Errorf("declaring consumer queue: %w", err)
 	}
 
-	queuePublish, err := DeclareQueue(ch, "goodfood.queue.getdish")
-	if err != nil {
-		return nil, fmt.Errorf("declaring publisher queue: %w", err)
-	}
-
 	return &Rabbit{
-		channel: ch,
+		channel:      ch,
 		queueConsume: queueConsume,
-		queuePublish: queuePublish,
+		queuePublish: "goodfood.queue.getdish",
 	}, nil
 }
 
@@ -69,8 +64,8 @@ func DeclareQueue(ch *amqp.Channel, queue string) (string, error) {
 	}
 
 	err = ch.QueueBind(
-		q.Name,              //queue name
-		"goodfood.queue.*",  //routing key
+		queue,               //queue name
+		"",                  //routing key
 		"goodfood.exchange", //exchange
 		false,
 		nil,

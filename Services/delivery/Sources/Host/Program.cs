@@ -8,6 +8,8 @@ using Host.Repository;
 using Host.Data;
 using Host.Extensions;
 using System.Text.Json.Serialization;
+using RabbitMQ.EventBus;
+using Host.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,12 +65,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-/*
-// TODO: Delete
+
 var persistentConnection = app.Services.GetServices<IHostedService>().OfType<IRabbitMQPersistentConnection>().Single();
-var eventBus = new RabbitMQEventBus(persistentConnection, app.Logger, Queues.Order);
-eventBus.Subscribe(new OrderHandler(persistentConnection, app.Logger));
-*/
+var eventBus = new RabbitMQEventBus(persistentConnection, app.Logger, Queues.GetDish);
+eventBus.Subscribe(new OrderingHandler(persistentConnection, app.Logger));
 
 app.ApplyMigrations();
 

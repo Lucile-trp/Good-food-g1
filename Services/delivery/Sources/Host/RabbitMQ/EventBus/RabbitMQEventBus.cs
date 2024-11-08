@@ -38,9 +38,13 @@ namespace RabbitMQ.EventBus
             }
 
             string body = JsonConvert.SerializeObject(message);
+            Logger.LogInformation(body);
             var bytes = Encoding.UTF8.GetBytes(body);
-            
-            Channel.BasicPublish(exchange: string.Empty, routingKey: QueueName, basicProperties: null, body: bytes);
+
+            var props = Channel.CreateBasicProperties();
+            props.ContentType = "application/json";
+
+            Channel.BasicPublish(exchange: "", routingKey: QueueName, props, body: bytes);
 
             Channel.BasicAcks += (sender, eventArgs) =>
             {

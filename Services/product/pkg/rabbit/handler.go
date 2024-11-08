@@ -4,9 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"product/internal/entity"
 	"product/internal/repo"
 	"product/pkg/logger"
 	"strconv"
+	"strings"
 
 	"github.com/streadway/amqp"
 )
@@ -34,9 +36,12 @@ func (r Rabbit) Listen(l logger.Interface, p *repo.ProductRepo) error {
 	l.Info("Listening Started")
 
 	for m := range msg {
+		str := strings.Replace(string(m.Body), "\\", "", -1)
+
+		l.Info(str)
 
 		var currencies = map[string]string{}
-		err = json.Unmarshal(m.Body, &currencies)
+		err = json.Unmarshal([]byte(str), &currencies)
 		if err != nil {
 			l.Error(fmt.Errorf("rabbitmq: unmarshal to map: %w", err))
 		}
@@ -46,8 +51,13 @@ func (r Rabbit) Listen(l logger.Interface, p *repo.ProductRepo) error {
 			l.Error(fmt.Errorf("rabbitmq: convert to id: %w", err))
 		}
 
+		orderId, err := strconv.Atoi(currencies["orderId"])
+		if err != nil {
+			l.Error(fmt.Errorf("rabbitmq: convert to id: %w", err))
+		}
+
 		if err == nil && m.Body != nil {
-			err = r.PublishDish(l, p, id)
+			err = r.PublishDish(l, p, id, orderId)
 			if err != nil {
 				l.Error(fmt.Errorf("rabbitmq: convert to id: %w", err))
 			}
@@ -57,19 +67,26 @@ func (r Rabbit) Listen(l logger.Interface, p *repo.ProductRepo) error {
 	return nil
 }
 
-func (r Rabbit) PublishDish(l logger.Interface, p *repo.ProductRepo, id int) error {
+func (r Rabbit) PublishDish(l logger.Interface, p *repo.ProductRepo, id int, orderId int) error {
 	dish, err := p.GetDish(context.Background(), id)
 	if err != nil {
 		return fmt.Errorf("postgres: get dish: %w", err)
 	}
 
-	data, err := json.Marshal(dish)
+	ordering := entity.Ordering{
+		Dish:    dish,
+		OrderId: orderId,
+	}
+
+	data, err := json.Marshal(ordering)
 	if err != nil {
 		return fmt.Errorf("map marshalling: %w", err)
 	}
 
+	l.Info(string(data))
+
 	err = r.channel.Publish(
-		"goodfood.exchange",
+		"",
 		r.queuePublish,
 		false,
 		false,

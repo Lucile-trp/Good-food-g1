@@ -12,6 +12,7 @@ namespace RabbitMQ.Connection
 
         public IModel Channel { get; private set; }
 
+        private readonly ILogger Logger;
         private readonly IConnectionFactory ConnectionFactory;
         private IConnection Connection;
         private bool Disposed;
@@ -45,10 +46,12 @@ namespace RabbitMQ.Connection
 
             Channel.ExchangeDeclare("goodfood.exchange", ExchangeType.Topic);
 
+            Console.WriteLine($"Subscribers {Subscribers.Count}");
+
             foreach (var subscriber in Subscribers)
             {
                 Channel.QueueDeclare(subscriber.Key, false, false, false, null);
-                Channel.QueueBind(subscriber.Key, "goodfood.exchange", string.Concat(Queues.QueueBase, "*"), null);
+                Channel.QueueBind(subscriber.Key, "goodfood.exchange", string.Empty, null);
                 Channel.BasicQos(0, 1, false);
 
                 var consumer = new EventingBasicConsumer(Channel);
@@ -59,7 +62,7 @@ namespace RabbitMQ.Connection
                 consumer.Unregistered += subscriber.Value.OnConsumerUnregistered;
                 consumer.ConsumerCancelled += subscriber.Value.OnConsumerConsumerCancelled;
 
-                Channel.BasicConsume(subscriber.Key, false, consumer);
+                Channel.BasicConsume(subscriber.Key, true, consumer);
             }
         }
 
