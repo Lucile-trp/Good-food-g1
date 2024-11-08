@@ -3,9 +3,10 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
   Post,
   Put,
-  Query
+  Query,
 } from '@nestjs/common';
 import { UserService } from './users.service';
 import { User } from './users.model';
@@ -16,16 +17,20 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  async get(@Query('id') id: string, @Query('email') email: string): Promise<User | User[]> {
-    if (id) {
-      const res = await this.userService.getUserWithId(id);
-      return res;
-    }
-    if (email) {
-      const res = await this.userService.getUserByEmail(email);
-      return res;
-    }
+  async getAll(): Promise<User | User[]> {
     const res = await this.userService.getAllUsers();
+    return res;
+  }
+
+  @Get(':id')
+  async getById(@Param() params: string) {
+    const res = await this.userService.getUserWithId(params['id']);
+    return res;
+  }
+
+  @Get('byEmail/:email')
+  async getByEmail(@Param() params: string) {
+    const res = await this.userService.getUserByEmail(params['email']);
     return res;
   }
 
