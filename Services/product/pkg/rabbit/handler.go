@@ -9,8 +9,9 @@ import (
 	"product/pkg/logger"
 	"strconv"
 	"strings"
+	"time"
 
-	"github.com/streadway/amqp"
+	amqp "github.com/rabbitmq/amqp091-go"
 )
 
 func (r Rabbit) Close() error {
@@ -85,8 +86,11 @@ func (r Rabbit) PublishDish(l logger.Interface, p *repo.ProductRepo, id int, ord
 
 	l.Info(string(data))
 
-	err = r.channel.Publish(
-		"",
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	err = r.channel.PublishWithContext(ctx,
+		"goodfood.exchange",
 		r.queuePublish,
 		false,
 		false,
