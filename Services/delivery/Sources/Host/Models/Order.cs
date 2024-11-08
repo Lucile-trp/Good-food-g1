@@ -14,12 +14,21 @@ namespace Host.Models
 
         [Required]
         [Column("date")]
-        public DateTime Date { get; set; } = DateTime.Now;
+        public DateTime Date { get; set; } = DateTime.UtcNow;
 
         [Column("order_state")]
         public OrderState OrderState { get; set; }
 
+        [Required]
+        [ForeignKey("customer_id")]
+        public User Customer { get; set; }
+
+        [ForeignKey("deliverer_id")]
+        public User? Deliverer { get; set; }
+
         [ForeignKey("delivery_adresss_id")]
         public DeliveryAddress DeliveryAddress { get; set; }   
+
+        //public List<Ordering> Orderings { get; } = new List<Ordering>();
     }
 }
