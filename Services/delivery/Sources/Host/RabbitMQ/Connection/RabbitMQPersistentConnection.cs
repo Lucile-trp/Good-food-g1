@@ -52,7 +52,6 @@ namespace RabbitMQ.Connection
             {
                 Channel.QueueDeclare(subscriber.Key, false, false, false, null);
                 Channel.QueueBind(subscriber.Key, "goodfood.exchange", string.Empty, null);
-                Channel.BasicQos(0, 1, false);
 
                 var consumer = new EventingBasicConsumer(Channel);
 
