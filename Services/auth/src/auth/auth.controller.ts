@@ -36,7 +36,7 @@ export class AuthController {
         );
       }
 
-      const res = await this.authService.signIn(user.email, user._id);
+      const res = await this.authService.signIn(user.email, user._id, user.role);
       return new AuthResponse(200, '', res.access_token);
     } catch (error) {
       if (error instanceof ConflictException) {

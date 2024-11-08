@@ -11,8 +11,8 @@ export class AuthService {
   ) {}
 
   // Connection user.
-  async signIn(_email: string, _id: string): Promise<{ access_token: string }> {
-    const payload = { email: _email, sub: _id };
+  async signIn(_email: string, _id: string, _role: string): Promise<{ access_token: string }> {
+    const payload = { email: _email, sub: _id, role: _role};
     return {
       access_token: this.jwtService.sign(payload),
     };
@@ -32,4 +32,11 @@ export class AuthService {
     }
     return null;
   }
+
+  async verifyUserAuthorization(access_token: string){
+    //TODO vérification de la signtaure et du rôle
+    return access_token;
+
+  }
 }
+
