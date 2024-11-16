@@ -10,6 +10,8 @@ using System.Linq;
 using Asp.Versioning;
 using RabbitMQ.Connection;
 using RabbitMQ.EventBus;
+using RabbitMQ;
+using Host.Dto.Rpc;
 
 namespace Host.Controllers
 {
@@ -21,13 +23,22 @@ namespace Host.Controllers
         private readonly IUserService _userService; 
         private readonly IDeliveryAddressService _deliveryAddressService; 
         private readonly IMapper _mapper;
+        private readonly IRabbitMQEventBus _eventBusGetDish;
 
-        public OrderController(IOrderService orderService, IUserService userService, IDeliveryAddressService deliveryAddressService, IMapper mapper)
+        public OrderController(IServiceProvider serviceProvider,
+            ILoggerFactory loggerFactory,
+            IOrderService orderService, 
+            IUserService userService, 
+            IDeliveryAddressService deliveryAddressService, 
+            IMapper mapper)
         {
             _orderService = orderService;
             _userService = userService;
             _deliveryAddressService = deliveryAddressService;
             _mapper = mapper;
+
+            var persistentConnection = serviceProvider.GetServices<IHostedService>().OfType<IRabbitMQPersistentConnection>().Single();
+            _eventBusGetDish = new RabbitMQEventBus(persistentConnection, loggerFactory, Queues.SendDish);
         }
 
         // GET 
@@ -124,43 +135,21 @@ namespace Host.Controllers
         [MapToApiVersion("1")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public IActionResult CreateOrderV1([FromQuery] int customerId, [FromQuery] int delivererId, [FromQuery] int deliveryAddressId, [FromBody] OrderDto orderCreate)
+        public IActionResult CreateOrderV1([FromBody] OrderSendDto order)
         {
-            if (orderCreate == null)
-                return BadRequest("Invalid order data.");
-
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var customer = _userService.GetUserById(customerId);
-            if (customer == null)
-                return BadRequest("Customer not found.");
-
-            var deliverer = _userService.GetUserById(delivererId);
-            if (deliverer == null)
-                return BadRequest("Deliverer not found.");
-
-            // Vérification de l'existence de l'adresse de livraison
-            var deliveryAddress = _deliveryAddressService.GetDeliveryAddressById(deliveryAddressId);
-            if (deliveryAddress == null)
+            try
             {
-                // Si l'adresse de livraison n'existe pas, retourner une erreur ou en créer une nouvelle
-                return BadRequest("Delivery address not found.");
+                _eventBusGetDish.Publish(order);
+            }
+            catch (System.Exception)
+            {
+                return BadRequest("Error sending the order.");
             }
 
-            // Si l'adresse de livraison existe, on peut l'utiliser pour la commande
-            var orderEntity = _mapper.Map<Order>(orderCreate);
-            orderEntity.Customer = customer;
-            orderEntity.OrderState = OrderState.Waiting;
-            orderEntity.Deliverer = deliverer;
-            orderEntity.DeliveryAddress = deliveryAddress;
-            orderEntity.Date = DateTime.UtcNow;
-
-            var success = _orderService.CreateOrder(orderEntity);
-            if (!success)
-                return BadRequest("Error creating the order.");
-
-            return StatusCode(201, "Successfully created");
+            return Ok();
         }
 
 
