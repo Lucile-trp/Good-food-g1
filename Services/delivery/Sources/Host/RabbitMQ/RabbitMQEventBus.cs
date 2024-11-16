@@ -45,11 +45,6 @@ namespace RabbitMQ.EventBus
             props.ContentType = "application/json";
 
             Channel.BasicPublish(exchange: "", routingKey: QueueName, props, body: bytes);
-
-            Channel.BasicAcks += (sender, eventArgs) =>
-            {
-                Logger.LogInformation("Sent RabbitMQ");
-            };
         }
 
         public void Subscribe(RabbitMQMessageHandler eventHandler)
