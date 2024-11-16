@@ -1,27 +1,17 @@
 package rabbit
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
-	"product/internal/entity"
 	"product/internal/repo"
 	"product/pkg/logger"
 	"strconv"
 	"strings"
-	"time"
-
-	amqp "github.com/rabbitmq/amqp091-go"
 )
 
-func (r Rabbit) Close() error {
-	return r.channel.Close()
-}
-
 func (r Rabbit) Listen(l logger.Interface, p *repo.ProductRepo) error {
-
-	msg, err := r.channel.Consume(
-		r.queueConsume,
+	msg, err := r.consume.channel.Consume(
+		r.consume.queue,
 		"",
 		true,
 		false,
@@ -58,50 +48,11 @@ func (r Rabbit) Listen(l logger.Interface, p *repo.ProductRepo) error {
 		}
 
 		if err == nil && m.Body != nil {
-			err = r.PublishDish(l, p, id, orderId)
+			err = r.publish.Publish(l, p, id, orderId)
 			if err != nil {
 				l.Error(fmt.Errorf("rabbitmq: convert to id: %w", err))
 			}
 		}
-	}
-
-	return nil
-}
-
-func (r Rabbit) PublishDish(l logger.Interface, p *repo.ProductRepo, id int, orderId int) error {
-	dish, err := p.GetDish(context.Background(), id)
-	if err != nil {
-		return fmt.Errorf("postgres: get dish: %w", err)
-	}
-
-	ordering := entity.Ordering{
-		Dish:    dish,
-		OrderId: orderId,
-	}
-
-	data, err := json.Marshal(ordering)
-	if err != nil {
-		return fmt.Errorf("map marshalling: %w", err)
-	}
-
-	l.Info(string(data))
-
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
-	err = r.channel.PublishWithContext(ctx,
-		"goodfood.exchange",
-		r.queuePublish,
-		false,
-		false,
-		amqp.Publishing{
-			ContentType: "application/json",
-			Body:        data,
-		},
-	)
-
-	if err != nil {
-		return fmt.Errorf("publishing: %w", err)
 	}
 
 	return nil
