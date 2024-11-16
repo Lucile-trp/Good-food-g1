@@ -17,23 +17,6 @@ namespace Host.RabbitMQ.Handler
         {
             var content = System.Text.Encoding.UTF8.GetString(ea.Body.ToArray());
             HandleMessage(content);
-            PersistentConnection.Channel.BasicAck(ea.DeliveryTag, false);
-        }
-        public void OnConsumerConsumerCancelled(object? sender, ConsumerEventArgs e) 
-        {
-
-        }
-        public void OnConsumerUnregistered(object? sender, ConsumerEventArgs e) 
-        { 
-            
-        }
-        public void OnConsumerRegistered(object? sender, ConsumerEventArgs e) 
-        { 
-            
-        }
-        public void OnConsumerShutdown(object? sender, ShutdownEventArgs e) 
-        { 
-            
         }
 
         public abstract void HandleMessage(string content);

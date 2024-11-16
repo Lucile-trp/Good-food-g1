@@ -50,10 +50,6 @@ namespace RabbitMQ.Connection
                 var consumer = new EventingBasicConsumer(Channel);
 
                 consumer.Received += subscriber.Value.OnConsumerReceived;
-                consumer.Shutdown += subscriber.Value.OnConsumerShutdown;
-                consumer.Registered += subscriber.Value.OnConsumerRegistered;
-                consumer.Unregistered += subscriber.Value.OnConsumerUnregistered;
-                consumer.ConsumerCancelled += subscriber.Value.OnConsumerConsumerCancelled;
 
                 Channel.BasicConsume(subscriber.Key, true, consumer);
             }

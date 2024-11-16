@@ -18,7 +18,6 @@ func (r Rabbit) PublishDish(l logger.Interface, p *repo.ProductRepo, order rpcEn
 	var dishes []entity.Dish
 
 	for _, dishId := range order.DishesId {
-		l.Info("Id dish: ", dishId)
 		dish, err := p.GetDish(context.Background(), dishId)
 
 		if err != nil {
