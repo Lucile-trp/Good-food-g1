@@ -1,4 +1,6 @@
+
 import Link from "next/link";
+
 
 export default function Home() {
   return (
@@ -53,7 +55,6 @@ export default function Home() {
       <section className="">
         <div className="my-10 mx-auto flex gap-8">
           <div className="relative">
-
             <img
               src="/images/img2.jpg"
               alt="Livreur"
