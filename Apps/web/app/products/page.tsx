@@ -9,7 +9,7 @@ export default function ProductPage() {
 
   return (
     <main className="grow flex flex-col text-black md:px-8 xl:px-64 relative">
-        <div className="absolute left-0 bg-[#D9D9D9] h-64 w-full z-0"></div>
+      <div className="absolute left-0 bg-[#D9D9D9] h-64 w-full z-0"></div>
       {/* HOME SECTION */}
       <section className="relative z-10">
         {/* GRID */}
@@ -58,10 +58,10 @@ export default function ProductPage() {
       <div className="h-px w-full bg-dark_gray mt-10" />
 
       {/* DESSERTS */}
-      <section className="relative w-fit py-5">
-        <div>
-        <h1 className="relative z-10">Les desserts</h1>
-        <div className="absolute z-0 top-7 left-7 h-[20px] w-full bg-secondary_yellow"></div>
+      <section className="relative z-10 py-5">
+        <div className="relative w-fit">
+          <h1 className="relative z-10">Les desserts</h1>
+          <div className="absolute z-0 top-7 left-7 h-[20px] w-full bg-secondary_yellow"></div>
         </div>
         {desserts.length !== 0 ? (
           entries.map((o) => {
