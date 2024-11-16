@@ -28,7 +28,7 @@ func (r Rabbit) PublishDish(l logger.Interface, p *repo.ProductRepo, order rpcEn
 	}
 
 	ordering := rpcEntity.OrderPublish{
-		Dish:              dishes,
+		Dishes:            dishes,
 		CustomerId:        order.CustomerId,
 		DeliveryId:        order.DeliveryId,
 		DeliveryAdresseId: order.DeliveryAdresseId,

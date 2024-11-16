@@ -19,9 +19,8 @@ namespace Host.Models
         [Column("order_state")]
         public OrderState OrderState { get; set; }
 
-        [Required]
         [ForeignKey("customer_id")]
-        public User Customer { get; set; }
+        public User? Customer { get; set; }
 
         [ForeignKey("deliverer_id")]
         public User? Deliverer { get; set; }

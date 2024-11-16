@@ -159,7 +159,7 @@ namespace Host.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateOrderV1(int orderId, [FromQuery] int delivererId, [FromQuery] int deliveryAddressId, [FromBody] OrderDto orderUpdate)
+        public IActionResult UpdateOrderV1(int orderId, [FromBody] OrderRecvDto orderUpdate)
         {
             if (orderUpdate == null || orderId <= 0)
                 return BadRequest(ModelState);
@@ -172,11 +172,11 @@ namespace Host.Controllers
             if (existingOrder == null)
                 return NotFound("Order not found.");
 
-            var deliverer = _userService.GetUserByIdAsNoTracking(delivererId);
+            var deliverer = _userService.GetUserByIdAsNoTracking(orderUpdate.DeliveryId);
             if (deliverer == null)
                 return BadRequest("Deliverer not found.");
 
-            var deliveryAddress = _deliveryAddressService.GetDeliveryAddressByIdAsNoTracking(deliveryAddressId);
+            var deliveryAddress = _deliveryAddressService.GetDeliveryAddressByIdAsNoTracking(orderUpdate.DeliveryAdresseId);
             if (deliveryAddress == null)
                 return BadRequest("Delivery address not found.");
 

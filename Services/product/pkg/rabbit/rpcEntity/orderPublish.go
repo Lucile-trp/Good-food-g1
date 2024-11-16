@@ -5,7 +5,7 @@ import (
 )
 
 type OrderPublish struct {
-	Dish              []entity.Dish `json:"dish"`
+	Dishes            []entity.Dish `json:"dishes"`
 	CustomerId        int           `json:"customerId"`
 	DeliveryId        int           `json:"deliveryId"`
 	DeliveryAdresseId int           `json:"deliveryAdresseId"`

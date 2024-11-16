@@ -93,11 +93,10 @@ namespace Host.Controllers
                 return BadRequest(ModelState);
 
             var customer = _userService.GetUserById(customerId);
-            if (customer == null)
-                return NotFound("Customer not found.");
 
             var deliveryAddressEntity = _mapper.Map<DeliveryAddress>(deliveryAddressCreate);
-            deliveryAddressEntity.Customer = customer; 
+            if (customer != null)
+                deliveryAddressEntity.Customer = customer; 
 
             if (!_deliveryAddressService.CreateDeliveryAddress(deliveryAddressEntity))
                 return StatusCode(500, "A problem occurred while handling your request.");

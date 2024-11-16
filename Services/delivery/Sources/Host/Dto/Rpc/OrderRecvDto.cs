@@ -4,8 +4,8 @@ namespace Host.Dto.Rpc
 {
     public class OrderRecvDto
     {
-        [JsonProperty("dish")]
-        public DishDto[] Dish { get; set; }
+        [JsonProperty("dishes")]
+        public DishDto[] Dishes { get; set; }
 
         [JsonProperty("customerId")]
         public int CustomerId { get; set; }

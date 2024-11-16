@@ -22,14 +22,6 @@ namespace RabbitMQ.EventBus
             Logger = loggerFactory.CreateLogger<RabbitMQEventBus>();
         }
 
-        internal RabbitMQEventBus(IRabbitMQPersistentConnection persistentConnection, ILogger logger, string queueName)
-        {
-            PersistentConnection = persistentConnection;
-            QueueName = queueName;
-            Channel = PersistentConnection.Channel;
-            Logger = logger;
-        }
-
         public void Publish(object message)
         {
             if (!PersistentConnection.IsConnected)

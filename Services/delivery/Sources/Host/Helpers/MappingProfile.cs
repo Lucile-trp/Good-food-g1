@@ -12,11 +12,13 @@ namespace Host.Helpers
             CreateMap<OrderDto, Order>();
 
             CreateMap<DeliveryAddress, DeliveryAddressDto>();
-
             CreateMap<DeliveryAddressDto, DeliveryAddress>();
 
             CreateMap<User, UserDto>();
             CreateMap<UserDto, User>();
+
+            CreateMap<Dish, DishDto>();
+            CreateMap<DishDto, Dish>();
         }
     }
 }
