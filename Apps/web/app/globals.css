@@ -25,3 +25,6 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+.text-stroke-white {
+  -webkit-text-stroke: 1px white; /* Stroke de 2px en noir */
+}
