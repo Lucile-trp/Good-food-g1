@@ -12,7 +12,7 @@ import (
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
-func (ch RabbitChannel) Publish(l logger.Interface, p *repo.ProductRepo, id int, orderId int) error {
+func (r Rabbit) PublishDish(l logger.Interface, p *repo.ProductRepo, id int, orderId int) error {
 	dish, err := p.GetDish(context.Background(), id)
 
 	if err != nil {
@@ -35,9 +35,9 @@ func (ch RabbitChannel) Publish(l logger.Interface, p *repo.ProductRepo, id int,
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	err = ch.channel.PublishWithContext(ctx,
+	err = r.ch.PublishWithContext(ctx,
 		"",
-		ch.queue,
+		r.publish,
 		false,
 		false,
 		amqp.Publishing{
@@ -50,7 +50,7 @@ func (ch RabbitChannel) Publish(l logger.Interface, p *repo.ProductRepo, id int,
 		return fmt.Errorf("publishing: %w", err)
 	}
 
-	l.Info("%s sent: %s", ch.queue, body)
+	l.Info("%s sent: %s", r.publish, body)
 
 	return nil
 }

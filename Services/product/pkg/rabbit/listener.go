@@ -10,8 +10,8 @@ import (
 )
 
 func (r Rabbit) Listen(l logger.Interface, p *repo.ProductRepo) error {
-	msg, err := r.consume.channel.Consume(
-		r.consume.queue,
+	msg, err := r.ch.Consume(
+		r.consume,
 		"",
 		true,
 		false,
@@ -48,7 +48,7 @@ func (r Rabbit) Listen(l logger.Interface, p *repo.ProductRepo) error {
 		}
 
 		if err == nil && m.Body != nil {
-			err = r.publish.Publish(l, p, id, orderId)
+			err = r.PublishDish(l, p, id, orderId)
 			if err != nil {
 				l.Error(fmt.Errorf("rabbitmq: convert to id: %w", err))
 			}
