@@ -1,6 +1,7 @@
 // components/Header.tsx
 
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 interface HeaderProps {
@@ -10,7 +11,9 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ isConnected }) => {
   return (
     <header className="flex items-center justify-between bg-white border-b border-dark_gray md:px-8 xl:px-64">
+      <Link href="/">
       <Image src="/logo/png/black/logo_black.png" height={50} width={180} alt="Logo Goodfood"></Image>
+      </Link>
 
       <nav className="flex items-center">
         {!isConnected ? (
