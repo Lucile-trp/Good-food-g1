@@ -21,6 +21,12 @@ namespace Host.Repository
             return _context.Dishes.FirstOrDefault(d => d.Id == dishId);
         }
 
+        public bool CreateDish(Dish dish)
+        {
+            _context.Add(dish);
+            return Save();
+        }
+
         public bool DeleteDish(Dish dish)
         {
              _context.Remove(dish);

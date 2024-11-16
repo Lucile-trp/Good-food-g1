@@ -6,6 +6,7 @@ namespace Host.Interfaces.Services
     {
         ICollection<Dish> GetDish();
         Dish GetDishById(int dishId);
+        bool CreateDish(Dish dish);
         bool DeleteDish(int dishId);
         bool DishExists(int dishId);
     }

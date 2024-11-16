@@ -23,6 +23,11 @@ namespace Host.Services
             return _dishRepository.GetDishById(dishId);
         }
 
+        public bool CreateDish(Dish dish)
+        {
+            return _dishRepository.CreateDish(dish);
+        }
+
         public bool DeleteDish(int dishId)
         {
             var dish = _dishRepository.GetDishById(dishId);

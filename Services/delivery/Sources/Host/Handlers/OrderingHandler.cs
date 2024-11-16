@@ -13,7 +13,8 @@ namespace Host.Handlers
     {
         private readonly ILogger Logger;
         private readonly IOrderService _orderService;
-        private readonly IUserService _userService; 
+        private readonly IUserService _userService;
+        private readonly IDishService _dishService;
         private readonly IDeliveryAddressService _deliveryAddressService; 
         private readonly IMapper _mapper;
         
@@ -21,12 +22,14 @@ namespace Host.Handlers
             ILoggerFactory loggerFactory,
             IOrderService orderService, 
             IUserService userService, 
+            IDishService dishService, 
             IDeliveryAddressService deliveryAddressService,
             IMapper mapper
         ) : base(persistentConnection)
         {
             _orderService = orderService;
             _userService = userService;
+            _dishService = dishService;
             _deliveryAddressService = deliveryAddressService;
             _mapper = mapper;
 
@@ -69,6 +72,8 @@ namespace Host.Handlers
             foreach (DishDto dish in orderRecv.Dishes)
             {
                 var dishEntity = _mapper.Map<Dish>(dish);
+
+                _dishService.CreateDish(dishEntity);
                 orderEntity.Dishes.Add(dishEntity);
             }
 
