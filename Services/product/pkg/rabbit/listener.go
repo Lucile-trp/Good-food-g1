@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"product/internal/repo"
 	"product/pkg/logger"
-	"strconv"
+	"product/pkg/rabbit/rpcEntity"
 	"strings"
 )
 
@@ -31,24 +31,14 @@ func (r Rabbit) Listen(l logger.Interface, p *repo.ProductRepo) error {
 
 		l.Info(str)
 
-		var currencies = map[string]string{}
-		err = json.Unmarshal([]byte(str), &currencies)
+		var order rpcEntity.OrderConsume
+		err = json.Unmarshal([]byte(str), &order)
 		if err != nil {
 			l.Error(fmt.Errorf("rabbitmq: unmarshal to map: %w", err))
 		}
 
-		id, err := strconv.Atoi(currencies["dishId"])
-		if err != nil {
-			l.Error(fmt.Errorf("rabbitmq: convert to id: %w", err))
-		}
-
-		orderId, err := strconv.Atoi(currencies["orderId"])
-		if err != nil {
-			l.Error(fmt.Errorf("rabbitmq: convert to id: %w", err))
-		}
-
 		if err == nil && m.Body != nil {
-			err = r.PublishDish(l, p, id, orderId)
+			err = r.PublishDish(l, p, order)
 			if err != nil {
 				l.Error(fmt.Errorf("rabbitmq: convert to id: %w", err))
 			}

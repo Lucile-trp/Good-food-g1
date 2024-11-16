@@ -7,21 +7,32 @@ import (
 	"product/internal/entity"
 	"product/internal/repo"
 	"product/pkg/logger"
+	"product/pkg/rabbit/rpcEntity"
 	"time"
 
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
-func (r Rabbit) PublishDish(l logger.Interface, p *repo.ProductRepo, id int, orderId int) error {
-	dish, err := p.GetDish(context.Background(), id)
+func (r Rabbit) PublishDish(l logger.Interface, p *repo.ProductRepo, order rpcEntity.OrderConsume) error {
 
-	if err != nil {
-		return fmt.Errorf("postgres: get dish: %w", err)
+	var dishes []entity.Dish
+
+	for _, dishId := range order.DishesId {
+		l.Info("Id dish: ", dishId)
+		dish, err := p.GetDish(context.Background(), dishId)
+
+		if err != nil {
+			return fmt.Errorf("postgres: get dish: %w", err)
+		}
+
+		dishes = append(dishes, dish)
 	}
 
-	ordering := entity.Ordering{
-		Dish:    dish,
-		OrderId: orderId,
+	ordering := rpcEntity.OrderPublish{
+		Dish:              dishes,
+		CustomerId:        order.CustomerId,
+		DeliveryId:        order.DeliveryId,
+		DeliveryAdresseId: order.DeliveryAdresseId,
 	}
 
 	data, err := json.Marshal(ordering)
@@ -32,8 +43,7 @@ func (r Rabbit) PublishDish(l logger.Interface, p *repo.ProductRepo, id int, ord
 
 	body := string(data)
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 
 	err = r.ch.PublishWithContext(ctx,
 		"",
