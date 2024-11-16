@@ -43,15 +43,9 @@ namespace RabbitMQ.Connection
                 TryConnect();
             }
 
-
-            Channel.ExchangeDeclare("goodfood.exchange", ExchangeType.Topic);
-
-            Console.WriteLine($"Subscribers {Subscribers.Count}");
-
             foreach (var subscriber in Subscribers)
             {
                 Channel.QueueDeclare(subscriber.Key, false, false, false, null);
-                Channel.QueueBind(subscriber.Key, "goodfood.exchange", string.Empty, null);
 
                 var consumer = new EventingBasicConsumer(Channel);
 
