@@ -16,7 +16,7 @@ const config: Config = {
       secondary_green: "#6FBC85",
       secondary_purple: "#AFA5D1",
       secondary_yellow: "#FBE216",
-      secondary_rose: "F0869D",
+      secondary_rose: "#F0869D",
 
     },
     extend: {

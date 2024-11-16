@@ -1,0 +1,76 @@
+"use client";
+
+import { useState } from "react";
+
+export default function ProductPage() {
+  const [entries, setEntries] = useState([]);
+  const [plats, setPlats] = useState([]);
+  const [desserts, setDesserts] = useState([]);
+
+  return (
+    <main className="grow flex flex-col text-black md:px-8 xl:px-64 relative">
+        <div className="absolute left-0 bg-[#D9D9D9] h-64 w-full z-0"></div>
+      {/* HOME SECTION */}
+      <section className="relative z-10">
+        {/* GRID */}
+        <div className="">
+          <h1>VOTRE RESTAURANT</h1>
+          <input list="cities" />
+          <datalist id="cities">
+            <option value="Liste des villes" />
+          </datalist>
+        </div>
+      </section>
+
+      {/* ENTRIES */}
+      <section className="relative z-10 py-5">
+        <div className="relative w-fit">
+          <h1 className="relative z-10">Les entrées</h1>
+          <div className="absolute z-0 top-7 left-7 h-[20px] w-full bg-secondary_rose"></div>
+        </div>
+
+        {entries.length !== 0 ? (
+          entries.map((o) => {
+            return <></>;
+          })
+        ) : (
+          <p>Pas d'entrées disponibles.</p>
+        )}
+      </section>
+
+      <div className="h-px w-full bg-dark_gray mt-10 relative z-10" />
+
+      {/* PLATS */}
+      <section className="relative z-10 py-5">
+        <div className="relative w-fit">
+          <h1 className="relative z-10">Les plats</h1>
+          <div className="absolute z-0 top-7 left-7 h-[20px] w-full bg-secondary_green"></div>
+        </div>
+        {plats.length !== 0 ? (
+          entries.map((o) => {
+            return <></>;
+          })
+        ) : (
+          <p>Pas de plats disponibles.</p>
+        )}
+      </section>
+
+      <div className="h-px w-full bg-dark_gray mt-10" />
+
+      {/* DESSERTS */}
+      <section className="relative w-fit py-5">
+        <div>
+        <h1 className="relative z-10">Les desserts</h1>
+        <div className="absolute z-0 top-7 left-7 h-[20px] w-full bg-secondary_yellow"></div>
+        </div>
+        {desserts.length !== 0 ? (
+          entries.map((o) => {
+            return <></>;
+          })
+        ) : (
+          <p>Pas de desserts disponibles.</p>
+        )}
+      </section>
+    </main>
+  );
+}

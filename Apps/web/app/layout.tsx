@@ -15,7 +15,21 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr">
-      <body className="w-screen h-screen overflow-x-hidden">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
+          rel="stylesheet"
+        ></link>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Space+Grotesk:wght@300..700&display=swap"
+          rel="stylesheet"
+        ></link>
+      </head>
+      <body className="w-screen h-screen overflow-x-hidden bg-background">
         <Header isConnected={false}></Header>
         {children}
         <Footer></Footer>
