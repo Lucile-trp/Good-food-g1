@@ -6,6 +6,7 @@ using Host.Interfaces.Services;
 using Host.Models;
 using Host.RabbitMQ.Handler;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Schema;
 using RabbitMQ.Connection;
 namespace Host.Handlers
 {
@@ -65,19 +66,33 @@ namespace Host.Handlers
                 OrderState = OrderState.Waiting,
                 Deliverer = deliverer ?? null,
                 DeliveryAddress = deliveryAddress,
-                Date = DateTime.UtcNow,
-                Dishes = new List<Dish>()
+                Date = DateTime.UtcNow
             };
+
+            var success = _orderService.CreateOrder(orderEntity);
 
             foreach (DishDto dish in orderRecv.Dishes)
             {
-                var dishEntity = _mapper.Map<Dish>(dish);
+                var dishEntity = new Dish
+                {
+                    Cost = dish.Cost,
+                    Description = dish.Description,
+                    RestaurantId = dish.RestaurantId,
+                    Title = dish.Title,
+                };
 
-                _dishService.CreateDish(dishEntity);
-                orderEntity.Dishes.Add(dishEntity);
+                dishEntity.Order = _orderService.GetOrderById(orderEntity.OrderId);
+                if (dishEntity.Order == null)
+                {
+                    Logger.LogError("Failed get order: {0}", orderEntity.OrderId);
+                }
+
+                var dishSuccess = _dishService.CreateDish(dishEntity);
+                if (!dishSuccess)
+                {
+                    Logger.LogError("Failed create dish: {0}", content);
+                }
             }
-
-            var success = _orderService.CreateOrder(orderEntity);
 
             if (!success)
             {

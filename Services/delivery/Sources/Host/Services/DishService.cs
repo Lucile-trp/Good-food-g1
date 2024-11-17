@@ -13,7 +13,7 @@ namespace Host.Services
             _dishRepository = repo;
         }
 
-        public ICollection<Dish> GetDish()
+        public ICollection<Dish> GetDishes()
         {
             return _dishRepository.GetDishes();
         }

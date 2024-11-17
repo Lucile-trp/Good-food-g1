@@ -4,7 +4,7 @@ namespace Host.Interfaces.Services
 {
     public interface IDishService
     {
-        ICollection<Dish> GetDish();
+        ICollection<Dish> GetDishes();
         Dish GetDishById(int dishId);
         bool CreateDish(Dish dish);
         bool DeleteDish(int dishId);

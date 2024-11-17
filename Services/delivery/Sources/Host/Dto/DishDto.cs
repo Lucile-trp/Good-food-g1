@@ -11,5 +11,7 @@ namespace Host.Dto
         public double Cost { get; set; }
 
         public int RestaurantId { get; set; }
+
+        public int OrderId { get; set; }
     }
 }
