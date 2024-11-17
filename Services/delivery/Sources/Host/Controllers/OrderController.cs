@@ -41,7 +41,7 @@ namespace Host.Controllers
             _eventBusGetDish = new RabbitMQEventBus(persistentConnection, loggerFactory, Queues.SendDish);
         }
 
-        // GET 
+        // GET (all orders)
         [HttpGet]
         [MapToApiVersion("1")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<OrderDto>))]

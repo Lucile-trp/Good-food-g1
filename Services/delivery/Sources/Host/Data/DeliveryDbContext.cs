@@ -8,10 +8,13 @@ namespace Host.Data
         public DeliveryDbContext(DbContextOptions<DeliveryDbContext> options) : base(options)
         {
         }
-
         public DbSet<Order> Orders { get; set; }
         public DbSet<DeliveryAddress> DeliveryAddresses { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Dish> Dishes { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+        }
     }
 }
