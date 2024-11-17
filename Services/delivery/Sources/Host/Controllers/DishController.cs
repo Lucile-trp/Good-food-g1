@@ -13,11 +13,13 @@ namespace Host.Controllers
     public class DishController : ControllerBase
     {
         private readonly IDishService _dishService;
+        private readonly ILogger<DishController> _logger;
         private readonly IMapper _mapper;
 
-        public DishController(IDishService dishService, IMapper mapper)
+        public DishController(IDishService dishService, IMapper mapper, ILoggerFactory loggerFactory)
         {
             _dishService = dishService;
+            _logger = loggerFactory.CreateLogger<DishController>();
             _mapper = mapper;
         }
 
@@ -27,15 +29,7 @@ namespace Host.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<DishDto>))]
         public IActionResult GetDishesV1()
         {
-            var dishes = _dishService.GetDishes();
-            var dishDtos = dishes.Select(d => new DishDto {
-                Cost = d.Cost,
-                Description = d.Description,
-                Id = d.Id,
-                OrderId = d.Order.OrderId,
-                RestaurantId = d.RestaurantId,
-                Title = d.Title
-            });
+            var dishDtos = GetDishDtos();
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -48,15 +42,26 @@ namespace Host.Controllers
         [MapToApiVersion("1.0")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<DishDto>))]
         [ProducesResponseType(404)]
-        public IActionResult GetDishByOrderIbV1(int orderId)
+        public IActionResult GetDishByOrderIdV1(int orderId)
         {
-            var dishes = _dishService.GetDishes();
-            var dishDtos = _mapper.Map<IEnumerable<DishDto>>(dishes);
+            var dishDtos = GetDishDtos();
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             return Ok(dishDtos.Where(d => d.OrderId == orderId));
+        }
+
+        private IEnumerable<DishDto> GetDishDtos() {
+            var dishes = _dishService.GetDishes();
+            var dishDtos = _mapper.Map<IEnumerable<DishDto>>(dishes);
+
+            for (int i = 0; i < dishes.Count; i++)
+            {
+                dishDtos.ElementAt(i).OrderId = dishes.ElementAt(i).Order?.OrderId ?? 0;
+            }
+
+            return dishDtos;
         }
     }
 }

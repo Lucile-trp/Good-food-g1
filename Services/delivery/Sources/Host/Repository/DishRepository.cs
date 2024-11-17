@@ -1,5 +1,6 @@
 using Host.Data;
 using Host.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Host.Repository
 {
@@ -13,12 +14,12 @@ namespace Host.Repository
         }
         public ICollection<Dish> GetDishes()
         {
-            return _context.Dishes.ToList();
+            return _context.Dishes.Include(d => d.Order).ToList();
         }
 
         public Dish GetDishById(int dishId)
         {
-            return _context.Dishes.FirstOrDefault(d => d.Id == dishId);
+            return _context.Dishes.Include(d => d.Order).FirstOrDefault(d => d.Id == dishId);
         }
 
         public bool CreateDish(Dish dish)
