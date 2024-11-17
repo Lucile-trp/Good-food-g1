@@ -1,5 +1,4 @@
-﻿using Host.Core.Models;
-using Host.RabbitMQ.Handler;
+﻿using Host.RabbitMQ.Handler;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Connection;
@@ -23,14 +22,6 @@ namespace RabbitMQ.EventBus
             Logger = loggerFactory.CreateLogger<RabbitMQEventBus>();
         }
 
-        internal RabbitMQEventBus(IRabbitMQPersistentConnection persistentConnection, ILogger logger, string queueName)
-        {
-            PersistentConnection = persistentConnection;
-            QueueName = queueName;
-            Channel = PersistentConnection.Channel;
-            Logger = logger;
-        }
-
         public void Publish(object message)
         {
             if (!PersistentConnection.IsConnected)
@@ -39,14 +30,13 @@ namespace RabbitMQ.EventBus
             }
 
             string body = JsonConvert.SerializeObject(message);
+            Logger.LogInformation(body);
             var bytes = Encoding.UTF8.GetBytes(body);
-            
-            Channel.BasicPublish(exchange: string.Empty, routingKey: QueueName, basicProperties: null, body: bytes);
 
-            Channel.BasicAcks += (sender, eventArgs) =>
-            {
-                Logger.LogInformation("Sent RabbitMQ");
-            };
+            var props = Channel.CreateBasicProperties();
+            props.ContentType = "application/json";
+
+            Channel.BasicPublish(exchange: "", routingKey: QueueName, props, body: bytes);
         }
 
         public void Subscribe(RabbitMQMessageHandler eventHandler)

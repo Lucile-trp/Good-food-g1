@@ -3,6 +3,7 @@ using System;
 using Host.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Host.Migrations
 {
     [DbContext(typeof(DeliveryDbContext))]
-    partial class DeliveryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241116225842_MakeUserNullable")]
+    partial class MakeUserNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -213,8 +216,7 @@ namespace Host.Migrations
                 {
                     b.HasOne("Host.Models.Order", "Order")
                         .WithMany("Dishes")
-                        .HasForeignKey("order_id")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("order_id");
 
                     b.Navigation("Order");
                 });

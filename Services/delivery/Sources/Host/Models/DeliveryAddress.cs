@@ -33,9 +33,8 @@ namespace Host.Models
         [Column("country")]
         public string Country { get; set; }
 
-        [Required]
         [ForeignKey("customer_id")]
-        public User Customer { get; set; }
+        public User? Customer { get; set; }
         
         [InverseProperty("DeliveryAddress")]
         public List<Order> Orders { get; } = new List<Order>();
