@@ -189,17 +189,6 @@ services:
     networks:
       - backend
 
-# Watchtower to auto update containers
-  watchtower:
-    image: containrrr/watchtower
-    environment:
-      - TZ=Europe/Paris
-      - WATCHTOWER_CLEANUP=true
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    interval: 60
-    restart: unless-stopped
-
 networks:
   backend:
     driver: bridge
