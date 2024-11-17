@@ -11,6 +11,8 @@ services:
       - "443:3000"
     networks:
       - frontend
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
 
 # Gateway service : host
   gateway-host:
@@ -33,6 +35,8 @@ services:
     networks:
       - backend
       - frontend
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
 
 # Authentification service : host
   auth-host:
@@ -51,6 +55,8 @@ services:
       - "50001:8080"
     networks:
       - backend
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
 
 # Authentification service : db
   auth-mongodb:
@@ -67,6 +73,8 @@ services:
     hostname: mongodbauth
     networks:
       - backend
+    labels:
+      com.centurylinklabs.watchtower.enable: "false"
 
 # Product service : host
   product-host:
@@ -85,6 +93,8 @@ services:
       - "50002:8080"
     networks:
       - backend
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
 
 # Product service : db
   product_postgres_db:
@@ -102,6 +112,8 @@ services:
     hostname: postgresproduct
     networks:
       - backend
+    labels:
+      com.centurylinklabs.watchtower.enable: "false"
 
 # Delivery service : host
   delivery-host:
@@ -120,6 +132,8 @@ services:
       - RabbitMQ__Password=admin
     networks:
       - backend
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
 
 # Delivery service : db
   delivery_postgres_db:
@@ -138,6 +152,8 @@ services:
     hostname: delivery_postgres_db
     networks:
       - backend
+    labels:
+      com.centurylinklabs.watchtower.enable: "false"
 
 # Franchise service : host
   franchise-host:
@@ -156,6 +172,8 @@ services:
       - RabbitMQ__Password=admin
     networks:
       - backend
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
 
 # Franchise service : db 
   franchise_postgres_db:
@@ -174,6 +192,8 @@ services:
     hostname: franchise_postgres_db
     networks:
       - backend
+    labels:
+      com.centurylinklabs.watchtower.enable: "false"
 
 # RabbitMQ
   rabbitmq:
@@ -188,6 +208,23 @@ services:
     hostname: "rabbitmq"
     networks:
       - backend
+    labels:
+      com.centurylinklabs.watchtower.enable: "false"
+
+# Watchtower to auto update containers
+  watchtower:
+    container_name: "Watchtower"
+    image: containrrr/watchtower
+    environment:
+      - TZ=Europe/Paris
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_LABEL_ENABLE=1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 30
+    restart: unless-stopped
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
 
 networks:
   backend:
