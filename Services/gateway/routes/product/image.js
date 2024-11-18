@@ -5,21 +5,11 @@ const isAuthorized = require('../../middlewares/isAuthorized');
 
 const PRODUCT_API = process.env.PRODUCT; // URL de base pour le MS-DELIVERY
 
-router.get('/', isAuthorized, async (req, res, next) => {
-  try {
-    const response = await axios.get(`${PRODUCT_API}/api/v1/images/`);
-    res.set(response.headers);
-    res.status(response.status).json(response.data);
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-});
-
 // Route pour obtenir une image par ID
-router.get('/:id', isAuthorized, async (req, res, next) => {
+router.get('/', isAuthorized, async (req, res, next) => {
+  const { id } = req.query;
   try {
-    const response = await axios.get(`${PRODUCT_API}/api/v1/image?id=${req.params.id}`);
+    const response = await axios.get(`${PRODUCT_API}/api/v1/image?id=${id}`);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {

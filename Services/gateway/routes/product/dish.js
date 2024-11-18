@@ -5,22 +5,11 @@ const isAuthorized = require('../../middlewares/isAuthorized');
 
 const PRODUCT_API = process.env.PRODUCT_API; 
 
-// Route pour obtenir la liste de tous les plats
+// // Route pour obtenir un plat par ID
 router.get('/', isAuthorized, async (req, res, next) => {
+  const { id } = req.query;
   try {
-    const response = await axios.get(`${PRODUCT_API}/api/v1/dishes/`);
-    res.set(response.headers);
-    res.status(response.status).json(response.data);
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-});
-
-// Route pour obtenir un plat par ID
-router.get('/:id', isAuthorized, async (req, res, next) => {
-  try {
-    const response = await axios.get(`${PRODUCT_API}/api/v1/dish?id=${req.params.id}`);
+    const response = await axios.get(`${PRODUCT_API}/api/v1/dish?id=${id}`);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
@@ -30,7 +19,7 @@ router.get('/:id', isAuthorized, async (req, res, next) => {
 });
 
 // Route pour créer un nouveu plat
-router.post('/dish', isAuthorized, async (req, res, next) => {
+router.post('/', isAuthorized, async (req, res, next) => {
   const body = req.body;
 
   try {
