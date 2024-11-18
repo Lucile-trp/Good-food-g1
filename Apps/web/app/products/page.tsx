@@ -2,12 +2,29 @@
 
 import { ProductCard } from "@/components/Products/ProductCard";
 import { mockProducts, Product } from "@/types/product";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function ProductPage() {
   const [entries, setEntries] = useState([]);
-  const [plats, setPlats] = useState<Product[]>(mockProducts);
+  const [plats, setPlats] = useState<Product[]>([]);
   const [desserts, setDesserts] = useState([]);
+
+  useEffect(() => {
+    getDataFromApi();
+  }, []);
+
+  async function getDataFromApi() {
+    await fetch("https://api.egamorf.com/api/v1/dishes", {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then((data) => {
+      console.log('products : ', JSON.stringify(data))
+    });
+
+    
+  }
 
   return (
     <main className="grow flex flex-col text-black px-4 md:px-8 xl:px-64 relative">
