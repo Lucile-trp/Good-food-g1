@@ -33,6 +33,11 @@ export const AuthModale = ({
       return;
     }
 
+    if(user.password != user.confirmationPassword){
+      setError("Les mots de passes sont différents.")
+      return;
+    }
+
     // TODO : REGSITER
   }
 
@@ -86,7 +91,6 @@ export const AuthModale = ({
                 />
               </div>
               <button
-                type="submit"
                 className="bg-black text-white rounded h-8"
                 onClick={() => handleConnection()}
               >
@@ -136,7 +140,6 @@ export const AuthModale = ({
                 ></input>
               </div>
               <button
-                type="submit"
                 className="bg-black text-white rounded h-8"
                 onClick={() => handleRegister()}
               >
