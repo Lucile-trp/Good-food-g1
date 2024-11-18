@@ -16,6 +16,9 @@ namespace Host.Helpers
 
             CreateMap<User, UserDto>();
             CreateMap<UserDto, User>();
+
+            CreateMap<Dish, DishDto>();
+            CreateMap<DishDto, Dish>();
         }
     }
 }

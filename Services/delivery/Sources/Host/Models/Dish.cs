@@ -24,6 +24,7 @@ namespace Host.Models
         [Column("restaurant_id")]
         public int RestaurantId { get; set; }
 
-        public List<Ordering> Orderings { get; } = new List<Ordering>();
+        [ForeignKey("order_id")]
+        public Order Order { get; set; }
     }
 }

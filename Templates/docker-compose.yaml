@@ -1,0 +1,259 @@
+services:
+
+# nginx : reverse proxy
+  reverse_proxy:
+    image: nginx:1.27
+    container_name: ReverseProxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    healthcheck:
+      test: curl --fail http://localhost || exit 1
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+    volumes:
+      - ./nginx:/etc/nginx
+      - ./nginx/ssl:/ssl
+    networks:
+      - frontend
+      
+# Web App service : host
+  web-app:
+    container_name: GoodFoodWebApp
+    image: lutrp/goodfood-webapp
+    restart: always
+    environment:
+      API_URL: http://gateway-host:8080
+    networks:
+      - frontend
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+
+# Gateway service : host
+  gateway-host:
+    container_name: ApiGatewayHost
+    image: lutrp/goodfood-gateway
+    restart: always
+    depends_on:
+      - auth-host
+      - product-host
+      - delivery-host
+      - franchise-host
+      - rabbitmq
+    environment:
+      AUTH_API: http://auth-host:8080
+      PRODUCT_API: http://product-host:8080
+      DELIVERY_API: http://delivery-host:8080
+      FRANCHISE_API: http://franchise-host:8080
+    networks:
+      - backend
+      - frontend
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+
+# Authentification service : host
+  auth-host:
+    container_name: AuthentificationHost
+    image: lutrp/goodfood-authms
+    restart: always
+    depends_on:
+      - auth-mongodb
+      - rabbitmq
+    environment:
+      DATABASE_NAME: goodfood-auth
+      DATABASE_USER: admin
+      DATABASE_PASS: admin
+      DATABASE_URI: mongodb://mongodbauth:27017
+    ports:
+      - "50001:8080"
+    networks:
+      - backend
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+
+# Authentification service : db
+  auth-mongodb:
+    image: mongo:jammy
+    container_name: AuthentificationMongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    volumes:
+      - auth:/data/auth/mongodb
+    ports:
+      - '27017:27017'
+    hostname: mongodbauth
+    networks:
+      - backend
+    labels:
+      com.centurylinklabs.watchtower.enable: "false"
+
+# Product service : host
+  product-host:
+    container_name: ProductHost
+    image: lutrp/goodfood-productms
+    restart: always
+    depends_on:
+      - product_postgres_db
+      - rabbitmq
+    environment:
+      - CONNECTION_STRING=postgresql://productpostgresadmin:admin@postgresproduct:5432
+      - RABBITMQ_URL=amqp://admin:admin@rabbitmq:5672/
+      - GIN_MODE=debug
+      - LOG_MODE=debug
+    ports:
+      - "50002:8080"
+    networks:
+      - backend
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+
+# Product service : db
+  product_postgres_db:
+    image: postgres:latest
+    container_name: ProductPostgres
+    restart: always
+    environment: 
+      - POSTGRES_USER=productpostgresadmin
+      - POSTGRES_PASSWORD=admin
+      - PGDATA=/data/product/postgres
+    ports:
+      - "5500:5432"
+    volumes:
+      - product:/data/product/postgres
+    hostname: postgresproduct
+    networks:
+      - backend
+    labels:
+      com.centurylinklabs.watchtower.enable: "false"
+
+# Delivery service : host
+  delivery-host:
+    container_name: DeliveryHost
+    image: lutrp/goodfood-deliveryms
+    restart: always
+    depends_on:
+      - delivery_postgres_db
+      - rabbitmq
+    ports:
+      - "50003:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=delivery_postgres_db;Port=5432;Database=deliverys;Username=deliverypostgresadmin;Password=admin;
+      - RabbitMQ__Hostname=rabbitmq
+      - RabbitMQ__Username=admin
+      - RabbitMQ__Password=admin
+    networks:
+      - backend
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+
+# Delivery service : db
+  delivery_postgres_db:
+    image: postgres:latest
+    container_name: DeliveryPostgres
+    restart: always
+    environment: 
+      - POSTGRES_USER=deliverypostgresadmin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=deliverys
+      - PGDATA=/data/delivery/postgres
+    ports:
+      - "5501:5432"
+    volumes:
+      - delivery:/data/delivery/postgres
+    hostname: delivery_postgres_db
+    networks:
+      - backend
+    labels:
+      com.centurylinklabs.watchtower.enable: "false"
+
+# Franchise service : host
+  franchise-host:
+    container_name: FranchiseHost
+    image: lutrp/goodfood-franchisems
+    restart: always
+    depends_on:
+      - franchise_postgres_db
+      - rabbitmq
+    ports:
+      - "50004:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=franchise_postgres_db;Port=5432;Database=franchises;Username=franchisepostgresadmin;Password=admin;
+      - RabbitMQ__Hostname=rabbitmq
+      - RabbitMQ__Username=admin
+      - RabbitMQ__Password=admin
+    networks:
+      - backend
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+
+# Franchise service : db 
+  franchise_postgres_db:
+    image: postgres:latest
+    container_name: FranchisePostgres
+    restart: always
+    environment: 
+      - POSTGRES_USER=franchisepostgresadmin
+      - POSTGRES_PASSWORD=admin 
+      - POSTGRES_DB=franchises
+      - PGDATA=/data/franchise/postgres
+    ports:
+      - "5502:5432"
+    volumes:
+      - franchise:/data/franchise/postgres
+    hostname: franchise_postgres_db
+    networks:
+      - backend
+    labels:
+      com.centurylinklabs.watchtower.enable: "false"
+
+# RabbitMQ
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: "RabbitMQ"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    hostname: "rabbitmq"
+    networks:
+      - backend
+    labels:
+      com.centurylinklabs.watchtower.enable: "false"
+
+# Watchtower to auto update containers
+  watchtower:
+    container_name: "Watchtower"
+    image: containrrr/watchtower
+    environment:
+      - TZ=Europe/Paris
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_LABEL_ENABLE=1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 30
+    restart: unless-stopped
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+
+networks:
+  backend:
+    driver: bridge
+  frontend:
+    driver: bridge
+
+volumes:
+  auth:
+    driver: local
+  delivery:
+    driver: local
+  product:
+    driver: local
+  franchise:
+    driver: local

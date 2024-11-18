@@ -1,0 +1,12 @@
+services:
+# Web App service : host
+  web-app:
+    container_name: GoodFoodWebApp
+    build: 
+      context: ./web/
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      API_URL: http://localhost:5000
+    ports:
+      - "80:3000"

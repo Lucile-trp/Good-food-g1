@@ -55,7 +55,7 @@ namespace Host.Migrations
                         .HasColumnType("character varying(10)")
                         .HasColumnName("zip");
 
-                    b.Property<int>("customer_id")
+                    b.Property<int?>("customer_id")
                         .HasColumnType("integer");
 
                     b.HasKey("DeliveryAddressId");
@@ -63,6 +63,42 @@ namespace Host.Migrations
                     b.HasIndex("customer_id");
 
                     b.ToTable("delivery_address");
+                });
+
+            modelBuilder.Entity("Host.Models.Dish", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Cost")
+                        .HasColumnType("double precision")
+                        .HasColumnName("cost");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<int>("RestaurantId")
+                        .HasColumnType("integer")
+                        .HasColumnName("restaurant_id");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("title");
+
+                    b.Property<int?>("order_id")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("order_id");
+
+                    b.ToTable("dish");
                 });
 
             modelBuilder.Entity("Host.Models.Order", b =>
@@ -82,7 +118,7 @@ namespace Host.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("order_state");
 
-                    b.Property<int>("customer_id")
+                    b.Property<int?>("customer_id")
                         .HasColumnType("integer");
 
                     b.Property<int?>("deliverer_id")
@@ -168,20 +204,26 @@ namespace Host.Migrations
                 {
                     b.HasOne("Host.Models.User", "Customer")
                         .WithMany("DeliveryAddresses")
-                        .HasForeignKey("customer_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("customer_id");
 
                     b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("Host.Models.Dish", b =>
+                {
+                    b.HasOne("Host.Models.Order", "Order")
+                        .WithMany("Dishes")
+                        .HasForeignKey("order_id")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("Host.Models.Order", b =>
                 {
                     b.HasOne("Host.Models.User", "Customer")
                         .WithMany("OrdersAsCustomer")
-                        .HasForeignKey("customer_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("customer_id");
 
                     b.HasOne("Host.Models.User", "Deliverer")
                         .WithMany("OrdersAsDeliverer")
@@ -201,6 +243,11 @@ namespace Host.Migrations
             modelBuilder.Entity("Host.Models.DeliveryAddress", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("Host.Models.Order", b =>
+                {
+                    b.Navigation("Dishes");
                 });
 
             modelBuilder.Entity("Host.Models.User", b =>
