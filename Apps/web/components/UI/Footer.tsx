@@ -6,7 +6,7 @@ export const Footer = () => {
     "Mention légale",
   ];
   return (
-    <footer className="py-12 bg-dark_gray text-gray-300 text-white">
+    <footer className="py-12 bg-dark_gray text-gray-300 text-white md:px-8 xl:px-64 ">
       <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
         {FooterNavigation.map((title, index) => (
           <div key={index}>

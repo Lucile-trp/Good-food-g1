@@ -4,10 +4,11 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="grow flex flex-col items-center justify-center">
+    <main className="grow flex flex-col text-black md:px-8 xl:px-64 relative">
+      <div className="absolute left-0 bg-[#D9D9D9] h-64 w-full"></div>
       {/* HOME SECTION */}
       <section>
-        <div className="absolute left-0 bg-[#D9D9D9] h-64 w-full"></div>
+        
 
         {/* GRID */}
         <div className="grid grid-cols-4 gap-4 mt-6">
@@ -23,14 +24,14 @@ export default function Home() {
           </div>
         </div>
         {/* ABSOLUTE */}
-        <div className="absolute top-12 bg-opacity-80 h-full content-center z-20">
+        <div className="absolute top-36 content-center z-20">
           <h1 className="text-5xl font-extrabold text-black leading-tight text-stroke-white">
             BIENVENUE SUR GOODFOOD
           </h1>
           <div className="mt-6 flex flex-col gap-2">
             <label
               htmlFor="restaurant"
-              className="block text-lg font-medium mb-2 text-black"
+              className="block text-lg font-medium mb-2 text-black text-sm"
             >
               Choisissez votre restaurant
             </label>
@@ -38,10 +39,10 @@ export default function Home() {
               id="restaurant"
               type="text"
               placeholder="Restaurants"
-              className="w-full px-4 py-2 border border-dark_gray rounded focus:outline-none"
+              className="w-full px-4 py-2 text-sm border border-dark_gray rounded focus:outline-none"
             />
             <Link href="/products">
-              <button className="px-6 py-2 bg-black text-white rounded w-32">
+              <button className="px-6 py-2 bg-black text-white rounded w-32 text-sm">
                 Accéder
               </button>
             </Link>
@@ -58,7 +59,7 @@ export default function Home() {
             <img
               src="/images/img2.jpg"
               alt="Livreur"
-              className="w-full h-auto relative z-10"
+              className="w-full h-full relative z-10 object-cover"
             />
             <div className="w-full h-full absolute z-0 top-1 left-1 bg-black"></div>
           </div>
@@ -68,7 +69,7 @@ export default function Home() {
               <div className="absolute z-0 top-7 left-7 h-[20px] w-full bg-secondary_green"></div>
             </section>
 
-            <p className="text-black max-w-xl	">
+            <p className="text-black max-w-xl	font-light text-sm">
               But I must explain to you how all this mistaken idea of denouncing
               pleasure and praising pain was born and I will give you a complete
               account of the system, and expound the actual teachings of the

@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { AuthModale } from "../Modales/AuthModale";
+import { useUser } from "@/contexts/UserContext";
 
 interface HeaderProps {
   isConnected: boolean;
@@ -13,6 +14,8 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ isConnected }) => {
   const [authModale, setAuthModale] = useState<boolean>(true);
   const [authUserChoice, setAuthUserChoice] = useState<string>("");
+
+  const { user, setUser } = useUser();
   return (
     <header className="flex items-center justify-between bg-white border-b border-dark_gray md:px-8 xl:px-64">
       <Link href="/">
@@ -25,7 +28,7 @@ const Header: React.FC<HeaderProps> = ({ isConnected }) => {
       </Link>
 
       <nav className="flex items-center">
-        {!isConnected ? (
+        {!user ? (
           <div className="pt-4">
             <button
               className="px-4 py-2 text-white bg-black border-r hover:bg-secondary_purple"
