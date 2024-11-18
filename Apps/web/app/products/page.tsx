@@ -14,14 +14,14 @@ export default function ProductPage() {
   }, []);
 
   async function getDataFromApi() {
-    await fetch("https://api.egamorf.com/api/v1/dishes", {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then((data) => {
-      console.log('products : ', JSON.stringify(data))
-    });
+    await fetch('https://api.egamorf.com/api/v1/dishes')
+    .then(response => {
+      return response.json();
+    })
+    .then(data => {
+      setPlats(data)
+      console.log(data)
+    })
 
     
   }

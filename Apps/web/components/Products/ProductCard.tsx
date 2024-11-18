@@ -15,9 +15,9 @@ export const ProductCard = ({ product }: { product: Product }) => {
             />
           </div>
           <div className="p-2 flex flex-col justify-between h-full">
-            <h4>{product.titre}</h4>
+            <h4>{product.title}</h4>
             <p className="text-sm">{product.description}</p>
-            <p>{product.prix}e</p>
+            <p>{product.cost}e</p>
 
             <button className="bg-black text-white p-2 rounded" onClick={() => addToCart(product)}>
               Ajouter au panier

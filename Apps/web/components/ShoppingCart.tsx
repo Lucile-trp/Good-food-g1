@@ -29,9 +29,9 @@ export const ShoppinCart = ({
             return (
               <div className="m-2" key={e.id.toString()}>
                 <div className="flex justify-between py-2 items-center">
-                <h2>{e.titre}</h2>
+                <h2>{e.title}</h2>
                 <p>Quantité : 1 </p>
-                <div className="p-1 h-8 w-20 bg-black rounded flex justify-center"><p className="text-white"><strong>{e.prix}e</strong></p></div>
+                <div className="p-1 h-8 w-20 bg-black rounded flex justify-center"><p className="text-white"><strong>{e.cost}e</strong></p></div>
                 </div>
                 <button
                   className="h-8 w-full bg-error text-white rounded"
