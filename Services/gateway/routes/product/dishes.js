@@ -9,7 +9,6 @@ const PRODUCT_API = process.env.PRODUCT_API;
 router.get('/', isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.get(`${PRODUCT_API}/api/v1/dishes/`);
-    res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err);

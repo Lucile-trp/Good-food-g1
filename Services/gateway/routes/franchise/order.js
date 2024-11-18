@@ -9,7 +9,6 @@ const FRANCHISE_API = process.env.FRANCHISE_API;
 router.get('/', async (req, res, next) => {
   try {
     const response = await axios.get(FRANCHISE_API + '/api/v1/order');
-    res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err); // Afficher l'erreur dans la console pour le débogage
@@ -21,7 +20,6 @@ router.get('/', async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
   try {
     const response = await axios.get(`${FRANCHISE_API}/api/v1/order/${req.params.id}`);
-    res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err); // Afficher l'erreur dans la console pour le débogage
@@ -33,7 +31,6 @@ router.get("/:id", async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     const response = await axios.post(FRANCHISE_API + '/api/v1/order', req.body);
-    res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err); // Afficher l'erreur dans la console pour le débogage
@@ -45,7 +42,6 @@ router.post('/', async (req, res, next) => {
 router.put("/:id", async (req, res, next) => {
   try {
     const response = await axios.put(`${FRANCHISE_API}/api/v1/order/${req.params.id}`, req.body);
-    res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err); // Afficher l'erreur dans la console pour le débogage
@@ -57,7 +53,6 @@ router.put("/:id", async (req, res, next) => {
 router.delete("/:id", isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.delete(`${FRANCHISE_API}/api/v1/order/${req.params.id}`);
-    res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err); // Afficher l'erreur dans la console pour le débogage

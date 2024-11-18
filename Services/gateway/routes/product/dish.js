@@ -10,7 +10,6 @@ router.get('/', isAuthorized, async (req, res, next) => {
   const { id } = req.query;
   try {
     const response = await axios.get(`${PRODUCT_API}/api/v1/dish?id=${id}`);
-    res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err);
@@ -24,7 +23,6 @@ router.post('/', isAuthorized, async (req, res, next) => {
 
   try {
     const response = await axios.post(`${PRODUCT_API}/api/v1/dish`, body);
-    res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err);  

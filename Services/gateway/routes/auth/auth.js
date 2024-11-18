@@ -11,7 +11,7 @@ const AUTH_API = process.env.AUTH_API;
 router.get("/:id", isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.get(`${AUTH_API}/users/${req.params.id}`);
-    res.set(response.headers);
+
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err); // Afficher l'erreur dans la console pour le débogage
@@ -23,7 +23,7 @@ router.get("/:id", isAuthorized, async (req, res, next) => {
 router.get("/", isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.get(`${AUTH_API}/users`);
-    res.set(response.headers);
+
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err); // Afficher l'erreur dans la console pour le débogage
@@ -40,7 +40,7 @@ router.post('/refresh', async (req, res, next) => {
 
   try {
     const response = await axios_instance.post("/auth/api/auth/refresh");
-    res.set(response.headers);
+
     res.json(response.data);
   } catch (err) {
     next(err.response.status);
@@ -56,7 +56,7 @@ router.post('/signin', async (req, res, next) => {
 
   try {
     const response = await axios_instance.post("/auth/api/auth/signin", req.body);
-    res.set(response.headers);
+
     res.json(response.data);
   } catch (err) {
     next(err.response.status);
@@ -72,7 +72,7 @@ router.post('/signup', async (req, res, next) => {
 
   try {
     const response = await axios_instance.post("/auth/api/auth/signup", req.body);
-    res.set(response.headers);
+
     res.json(response.data);
   } catch (err) {
     next(err.response.status);
