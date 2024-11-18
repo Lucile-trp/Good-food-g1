@@ -1,11 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { ProductCard } from "@/components/Products/ProductCard";
+import { Product } from "@/types/product";
+import { useEffect, useState } from "react";
 
 export default function ProductPage() {
   const [entries, setEntries] = useState([]);
-  const [plats, setPlats] = useState([]);
+  const [plats, setPlats] = useState<Product[]>([]);
   const [desserts, setDesserts] = useState([]);
+
+  useEffect(() => {
+    setPlats([
+      { Id: 1, titre: "test", description: "test", prix: 5 },
+      { Id: 2, titre: "test", description: "test", prix: 5 },
+      { Id: 3, titre: "test", description: "test", prix: 5 },
+      { Id: 4, titre: "test", description: "test", prix: 5 },
+      { Id: 5, titre: "test", description: "test", prix: 5 },
+      { Id: 6, titre: "test", description: "test", prix: 5 },
+    ]);
+  }, []);
 
   return (
     <main className="grow flex flex-col text-black md:px-8 xl:px-64 relative">
@@ -34,7 +47,7 @@ export default function ProductPage() {
             return <></>;
           })
         ) : (
-          <p>Pas d'entrées disponibles.</p>
+          <p>Arrive prochainement 🚀</p>
         )}
       </section>
 
@@ -46,13 +59,16 @@ export default function ProductPage() {
           <h1 className="relative z-10">Les plats</h1>
           <div className="absolute z-0 top-7 left-7 h-[20px] w-full bg-secondary_green"></div>
         </div>
-        {plats.length !== 0 ? (
-          entries.map((o) => {
-            return <></>;
-          })
-        ) : (
-          <p>Pas de plats disponibles.</p>
-        )}
+        <div className="grid grid-cols-3 gap-5">
+          {plats.length !== 0 ? (
+            plats.map((o) => {
+              console.log(o);
+              return <ProductCard product={o}></ProductCard>;
+            })
+          ) : (
+            <p>Pas de plats disponibles.</p>
+          )}
+        </div>
       </section>
 
       <div className="h-px w-full bg-dark_gray mt-10" />
@@ -64,11 +80,11 @@ export default function ProductPage() {
           <div className="absolute z-0 top-7 left-7 h-[20px] w-full bg-secondary_yellow"></div>
         </div>
         {desserts.length !== 0 ? (
-          entries.map((o) => {
+          desserts.map((o) => {
             return <></>;
           })
         ) : (
-          <p>Pas de desserts disponibles.</p>
+          <p>Arrive prochainement 🚀</p>
         )}
       </section>
     </main>
