@@ -1,6 +1,4 @@
-
 import Link from "next/link";
-
 
 export default function Home() {
   return (
@@ -8,8 +6,6 @@ export default function Home() {
       <div className="absolute left-0 bg-[#D9D9D9] h-64 w-full"></div>
       {/* HOME SECTION */}
       <section>
-        
-
         {/* GRID */}
         <div className="grid grid-cols-4 gap-4 mt-6">
           <div className="col-span-4 lg:col-span-4 lg:col-start-2 relative">
@@ -69,7 +65,7 @@ export default function Home() {
               <div className="absolute z-0 top-7 left-7 h-[20px] w-full bg-secondary_green"></div>
             </section>
 
-            <p className="text-black max-w-xl	font-light text-sm">
+            <p className="text-black max-w-xl	font-light">
               But I must explain to you how all this mistaken idea of denouncing
               pleasure and praising pain was born and I will give you a complete
               account of the system, and expound the actual teachings of the
@@ -81,6 +77,35 @@ export default function Home() {
             </p>
           </div>
         </div>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-white border rounded p-4">
+            <h2>Etape 1</h2>
+            <p>
+              But I must explain to you how all this mistaken idea of denouncing
+              pleasure and praising pain was born and I will give you a complete
+              account of the system.
+            </p>
+          </div>
+          <div className="bg-white border rounded p-4">
+            <h2>Etape 2</h2>
+            <p>
+              But I must explain to you how all this mistaken idea of denouncing
+              pleasure and praising pain was born and I will give you a complete
+              account of the system.
+            </p>
+          </div>
+          <div className="bg-white border rounded p-4">
+            <h2>Etape 3</h2>
+            <p>
+              But I must explain to you how all this mistaken idea of denouncing
+              pleasure and praising pain was born and I will give you a complete
+              account of the system.
+            </p>
+          </div>
+        </div>
+        <button className="bg-black w-full h-12 text-white my-8 rounded">
+          Commencer
+        </button>
       </section>
     </main>
   );
