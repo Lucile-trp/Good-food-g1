@@ -1,4 +1,25 @@
 services:
+
+# nginx : reverse proxy
+  reverse_proxy:
+    image: nginx:1.27
+    container_name: ReverseProxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    healthcheck:
+      test: curl --fail http://localhost || exit 1
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+    volumes:
+      - ./nginx:/etc/nginx
+      - ./nginx/ssl:/ssl
+    networks:
+      - frontend
+      
 # Web App service : host
   web-app:
     container_name: GoodFoodWebApp
@@ -6,9 +27,6 @@ services:
     restart: always
     environment:
       API_URL: http://gateway-host:8080
-    ports:
-      - "80:3000"
-      - "443:3000"
     networks:
       - frontend
     labels:
@@ -30,8 +48,6 @@ services:
       PRODUCT_API: http://product-host:8080
       DELIVERY_API: http://delivery-host:8080
       FRANCHISE_API: http://franchise-host:8080
-    ports:
-      - "5000:8080"
     networks:
       - backend
       - frontend
