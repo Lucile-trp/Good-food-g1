@@ -68,7 +68,7 @@ export const AuthModale = ({
           <div className="my-6">
             <form className="flex flex-col gap-3">
               <div className="flex flex-col">
-                <label htmlFor="email">E-mail</label>
+                <label htmlFor="email">E-mail*</label>
                 <input
                   id="email"
                   type="text"
@@ -77,7 +77,7 @@ export const AuthModale = ({
                 ></input>
               </div>
               <div className="flex flex-col">
-                <label htmlFor="password">Mot de passe</label>
+                <label htmlFor="password">Mot de passe*</label>
                 <input
                   type="password"
                   id="password"
@@ -98,7 +98,7 @@ export const AuthModale = ({
           <div className="my-6">
             <form className="flex flex-col gap-3">
               <div className="flex flex-col">
-                <label htmlFor="email">E-mail</label>
+                <label htmlFor="email">E-mail*</label>
                 <input
                   type="text"
                   id="email"
@@ -109,7 +109,7 @@ export const AuthModale = ({
               </div>
 
               <div className="flex flex-col">
-                <label htmlFor="password">Mot de passe</label>
+                <label htmlFor="password">Mot de passe*</label>
                 <input
                   type="password"
                   id="password"
@@ -123,7 +123,7 @@ export const AuthModale = ({
 
               <div className="flex flex-col">
                 <label htmlFor="passwordConfirmation">
-                  Confirmation du mot de passe
+                  Confirmation du mot de passe*
                 </label>
                 <input
                   type="password"
