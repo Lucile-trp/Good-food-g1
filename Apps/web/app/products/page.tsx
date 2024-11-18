@@ -2,29 +2,22 @@
 
 import { ProductCard } from "@/components/Products/ProductCard";
 import { useCart } from "@/contexts/CartContext";
-import { Product } from "@/types/product";
+import { mockProducts, Product } from "@/types/product";
 import { useEffect, useState } from "react";
 
 export default function ProductPage() {
   const [entries, setEntries] = useState([]);
-  const [plats, setPlats] = useState<Product[]>([]);
+  const [plats, setPlats] = useState<Product[]>(mockProducts);
   const [desserts, setDesserts] = useState([]);
 
   
 
   useEffect(() => {
-    setPlats([
-      { Id: 1, titre: "test", description: "test", prix: 5 },
-      { Id: 2, titre: "test", description: "test", prix: 5 },
-      { Id: 3, titre: "test", description: "test", prix: 5 },
-      { Id: 4, titre: "test", description: "test", prix: 5 },
-      { Id: 5, titre: "test", description: "test", prix: 5 },
-      { Id: 6, titre: "test", description: "test", prix: 5 },
-    ]);
+
   }, []);
 
   return (
-    <main className="grow flex flex-col text-black md:px-8 xl:px-64 relative">
+    <main className="grow flex flex-col text-black px-4 md:px-8 xl:px-64 relative">
       <div className="absolute left-0 bg-[#D9D9D9] h-64 w-full z-0"></div>
       {/* HOME SECTION */}
       <section className="relative z-10">
@@ -62,7 +55,7 @@ export default function ProductPage() {
           <h1 className="relative z-10">Les plats</h1>
           <div className="absolute z-0 top-7 left-7 h-[20px] w-full bg-secondary_green"></div>
         </div>
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {plats.length !== 0 ? (
             plats.map((o) => {
               return <ProductCard product={o} key={o.Id.toString()}></ProductCard>;

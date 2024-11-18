@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { Product } from "@/types/product";
 import React, { createContext, useContext, useState } from "react";
@@ -8,14 +8,15 @@ interface CartContextProps {
   addToCart: (item: Product) => void;
   removeFromCart: (id: number) => void;
   clearCart: () => void;
-
 }
 
 // CONTEXT
 const CartContext = createContext<CartContextProps | undefined>(undefined);
 
 // PROVIDER
-export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [cart, setCart] = useState<Product[]>([]);
   const [cartOpen, setCartOpen] = useState<boolean>(false);
 
@@ -33,7 +34,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, clearCart}}
+      value={{ cart, addToCart, removeFromCart, clearCart }}
     >
       {children}
     </CartContext.Provider>

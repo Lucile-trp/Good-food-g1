@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface User {
   id: string;
@@ -19,9 +19,14 @@ const UserContext = createContext<UserContextProps | undefined>(undefined);
 
 // PROVIDER
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>({id:'oui', email: 'luciole.trp', role:"admin"});
+  const [user, setUser] = useState<User | null>(null);
 
   const logout = () => setUser(null);
+
+  useEffect(() => {
+    console.log("context user : ", user);
+
+  },[user])
 
   return (
     <UserContext.Provider value={{ user, setUser, logout }}>

@@ -19,7 +19,7 @@ const Header: React.FC<HeaderProps> = ({ isConnected }) => {
   const [openCart, setOpenCart] = useState<boolean>(false);
   const { cart } = useCart();
 
-  const { user, setUser } = useUser();
+  const { user } = useUser();
   return (
     <header className="flex items-center justify-between bg-white border-b border-dark_gray md:px-8 xl:px-64 text-sm">
       <Link href="/">

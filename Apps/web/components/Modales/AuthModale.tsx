@@ -1,3 +1,4 @@
+import { useUser } from "@/contexts/UserContext";
 import { Dispatch, SetStateAction, useState } from "react";
 
 type User = {
@@ -15,26 +16,36 @@ export const AuthModale = ({
   authUserChoice: String;
   setAuthUserChoice: Dispatch<SetStateAction<string>>;
 }) => {
-  const [user, setUser] = useState<Partial<User>>({});
+  const [userForm, setUserForm] = useState<Partial<User>>({});
   const [error, setError] = useState<string | null>(null);
 
+  const { setUser } = useUser();
+
   function handleConnection() {
-    if (!user.email || !user.password) {
+    if (!userForm.email || !userForm.password) {
       setError("Veuillez renseigner tout les champs requis.");
       return;
     }
 
     // TODO : CONNEXION
+    setUser({ id: "oui", email: userForm.email, role: "admin" });
+    setAuthModale(false)
+
+    
   }
 
   function handleRegister() {
-    if (!user.email || !user.password || !user.confirmationPassword) {
+    if (
+      !userForm.email ||
+      !userForm.password ||
+      !userForm.confirmationPassword
+    ) {
       setError("Veuillez renseigner tout les champs requis.");
       return;
     }
 
-    if(user.password != user.confirmationPassword){
-      setError("Les mots de passes sont différents.")
+    if (userForm.password != userForm.confirmationPassword) {
+      setError("Les mots de passes sont différents.");
       return;
     }
 
@@ -46,7 +57,7 @@ export const AuthModale = ({
       <div
         className="absolute bg-black/40 w-full h-full z-0"
         onClick={() => {
-          setAuthModale(false), setUser({});
+          setAuthModale(false), setUserForm({});
         }}
       ></div>
 
@@ -71,7 +82,7 @@ export const AuthModale = ({
 
         {authUserChoice == "SignIn" ? (
           <div className="my-6">
-            <form className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3">
               <div className="flex flex-col">
                 <label htmlFor="email">E-mail*</label>
                 <input
@@ -79,6 +90,7 @@ export const AuthModale = ({
                   type="text"
                   className="border rounded"
                   required
+                  onChange={(e) => setUserForm({...userForm, email: e.target.value})}
                 ></input>
               </div>
               <div className="flex flex-col">
@@ -88,6 +100,7 @@ export const AuthModale = ({
                   id="password"
                   className="border rounded"
                   required
+                  onChange={(e) => setUserForm({...userForm, password: e.target.value})}
                 />
               </div>
               <button
@@ -96,7 +109,7 @@ export const AuthModale = ({
               >
                 Se connecter
               </button>
-            </form>
+            </div>
           </div>
         ) : (
           <div className="my-6">
@@ -108,7 +121,9 @@ export const AuthModale = ({
                   id="email"
                   className="border rounded"
                   required
-                  onChange={(e) => setUser({ ...user, email: e.target.value })}
+                  onChange={(e) =>
+                    setUserForm({ ...userForm, email: e.target.value })
+                  }
                 ></input>
               </div>
 
@@ -120,7 +135,7 @@ export const AuthModale = ({
                   className="border rounded"
                   required
                   onChange={(e) =>
-                    setUser({ ...user, password: e.target.value })
+                    setUserForm({ ...userForm, password: e.target.value })
                   }
                 ></input>
               </div>
@@ -135,7 +150,10 @@ export const AuthModale = ({
                   className="border rounded"
                   required
                   onChange={(e) =>
-                    setUser({ ...user, confirmationPassword: e.target.value })
+                    setUserForm({
+                      ...userForm,
+                      confirmationPassword: e.target.value,
+                    })
                   }
                 ></input>
               </div>
@@ -157,8 +175,10 @@ export const AuthModale = ({
             className="hover:underline cursor-pointer"
             onClick={() => {
               authUserChoice == "SignIn"
-                ? (setAuthUserChoice("SignUp"), setUser({}), setError(null))
-                : (setAuthUserChoice("SignIn"), setUser({}), setError(null));
+                ? (setAuthUserChoice("SignUp"), setUserForm({}), setError(null))
+                : (setAuthUserChoice("SignIn"),
+                  setUserForm({}),
+                  setError(null));
             }}
           >
             {authUserChoice == "SignIn"
