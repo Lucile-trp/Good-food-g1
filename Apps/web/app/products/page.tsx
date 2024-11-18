@@ -1,9 +1,8 @@
 "use client";
 
 import { ProductCard } from "@/components/Products/ProductCard";
-import { useCart } from "@/contexts/CartContext";
 import { mockProducts, Product } from "@/types/product";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function ProductPage() {
   const [entries, setEntries] = useState([]);
@@ -52,7 +51,9 @@ export default function ProductPage() {
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {plats.length !== 0 ? (
             plats.map((o) => {
-              return <ProductCard product={o} key={o.Id.toString()}></ProductCard>;
+              return (
+                <ProductCard product={o} key={o.id.toString()}></ProductCard>
+              );
             })
           ) : (
             <p>Pas de plats disponibles.</p>

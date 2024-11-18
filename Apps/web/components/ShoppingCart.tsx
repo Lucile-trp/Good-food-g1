@@ -27,7 +27,7 @@ export const ShoppinCart = ({
         {cart.length !== 0 ? (
           cart.map((e) => {
             return (
-              <div className="m-2" key={e.Id.toString()}>
+              <div className="m-2" key={e.id.toString()}>
                 <div className="flex justify-between py-2 items-center">
                 <h2>{e.titre}</h2>
                 <p>Quantité : 1 </p>
@@ -35,7 +35,7 @@ export const ShoppinCart = ({
                 </div>
                 <button
                   className="h-8 w-full bg-error text-white rounded"
-                  onClick={() => removeFromCart(e.Id)}
+                  onClick={() => removeFromCart(e.id)}
                 >
                   Supprimer du panier
                 </button>
