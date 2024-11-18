@@ -81,7 +81,6 @@ router.get('/ByState/:state', isAuthorized, async (req, res, next) => {
 
 // Route pour créer une nouvelle commande
 router.post('/', isAuthorized, async (req, res, next) => {
-  const { customerId, delivererId, deliveryAddressId } = req.query;
   const body = req.body;
 
   if (!customerId || !delivererId || !deliveryAddressId) {
@@ -89,7 +88,7 @@ router.post('/', isAuthorized, async (req, res, next) => {
   }
 
   try {
-    const response = await axios.post(`${DELIVERY_API}/api/v1/order?customerId=${customerId}&delivererId=${delivererId}&deliveryAddressId=${deliveryAddressId}`, body);
+    const response = await axios.post(`${DELIVERY_API}/api/v1/order`, body);
 
     res.status(response.status).json(response.data);
   } catch (err) {
@@ -108,7 +107,7 @@ router.put('/:orderId', isAuthorized, async (req, res, next) => {
   }
 
   try {
-    const response = await axios.put(`${DELIVERY_API}/api/v1/order/${req.params.orderId}?delivererId=${delivererId}&deliveryAddressId=${deliveryAddressId}`, body);
+    const response = await axios.put(`${DELIVERY_API}/api/v1/order/${req.params.orderId}`, body);
 
     res.status(response.status).json(response.data);
   } catch (err) {
