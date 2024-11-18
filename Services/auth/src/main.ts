@@ -10,6 +10,7 @@ async function bootstrap() {
       transport: Transport.TCP,
     });
   await app.startAllMicroservices();
+  await app.setGlobalPrefix('api/v1');
   await app.listen(3000);
   console.log('Auth microservice running');
 }

@@ -1,5 +1,4 @@
-﻿using Host.Core.Models;
-using Host.RabbitMQ.Handler;
+﻿using Host.RabbitMQ.Handler;
 
 namespace RabbitMQ.EventBus
 {

@@ -11,8 +11,6 @@ RUN dotnet build "./Host/Host.csproj"
 RUN dotnet tool install --global dotnet-ef
 ENV PATH="$PATH:/root/.dotnet/tools"
 
-RUN dotnet ef migrations add init --project "./Host/Host.csproj"
-
 # Publish a release
 RUN dotnet publish "./Host/Host.csproj" -c Release -o out
 

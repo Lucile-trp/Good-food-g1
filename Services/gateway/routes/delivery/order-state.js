@@ -10,11 +10,11 @@ router.get('/', async (req, res, next) => {
   console.log(DELIVERY_API);
 
   try {
-    const response = await axios.get(DELIVERY_API + '/api/v1/orderState/');
+    const response = await axios.get(`${DELIVERY_API}/api/v1/orderstate/`);
     res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
-    console.error(err); // Afficher l'erreur dans la console pour le débogage
+    console.error(err);
     next(err);
   }
 });

@@ -1,21 +1,16 @@
-using System;
-using System.IO;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
 using RabbitMQ;
-using RabbitMQ.Client;
 using RabbitMQ.Connection;
-using RabbitMQ.EventBus;
-using Host.Core;
 using Host.Interfaces.Repository;
 using Host.Interfaces.Services;
 using Host.Services;
-using Host.Helpers;
 using Host.Repository;
 using Host.Data;
-using Host.Models;
 using Host.Extensions;
 using System.Text.Json.Serialization;
+using RabbitMQ.EventBus;
+using Host.Handlers;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +27,12 @@ builder.Services.AddScoped<IDeliveryAddressService, DeliveryAddressService>();
 
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IDeliveryAddressRepository, DeliveryAddressRepository>();
+
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.AddScoped<IDishService, DishService>();
+builder.Services.AddScoped<IDishRepository, DishRepository>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllersWithViews()
@@ -71,12 +72,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-/*
-// TODO: Delete
+// TO-DO: Delete
 var persistentConnection = app.Services.GetServices<IHostedService>().OfType<IRabbitMQPersistentConnection>().Single();
-var eventBus = new RabbitMQEventBus(persistentConnection, app.Logger, Queues.Order);
-eventBus.Subscribe(new OrderHandler(persistentConnection, app.Logger));
-*/
+var orderService = app.Services.GetServices<IOrderService>().Single();
+var userService = app.Services.GetServices<IUserService>().Single();
+var dishService = app.Services.GetServices<IDishService>().Single();
+var deliveryAdresseService = app.Services.GetServices<IDeliveryAddressService>().Single();
+var mapper = app.Services.GetServices<IMapper>().Single();
+var loggerFactory = app.Services.GetServices<ILoggerFactory>().Single();
+
+var eventBus = new RabbitMQEventBus(persistentConnection, loggerFactory, Queues.GetDish);
+eventBus.Subscribe(new OrderingHandler(persistentConnection, loggerFactory, orderService, userService, dishService, deliveryAdresseService, mapper));
 
 app.ApplyMigrations();
 
