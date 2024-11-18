@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 type User = {
   email: string;
@@ -16,10 +16,25 @@ export const AuthModale = ({
   setAuthUserChoice: Dispatch<SetStateAction<string>>;
 }) => {
   const [user, setUser] = useState<Partial<User>>({});
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    console.log("user : ", user);
-  }, [user]);
+  function handleConnection() {
+    if (!user.email || !user.password) {
+      setError("Veuillez renseigner tout les champs requis.");
+      return;
+    }
+
+    // TODO : CONNEXION
+  }
+
+  function handleRegister() {
+    if (!user.email || !user.password || !user.confirmationPassword) {
+      setError("Veuillez renseigner tout les champs requis.");
+      return;
+    }
+
+    // TODO : REGSITER
+  }
 
   return (
     <div className="flex z-100 top-0 left-0 w-screen h-screen justify-center items-center">
@@ -37,14 +52,17 @@ export const AuthModale = ({
             <h1 className="relative z-10">
               {authUserChoice == "SignIn" ? "CONNEXION" : "INSCRIPTION"}
             </h1>
-            <div className="absolute z-0 top-7 left-7 h-[20px] w-full bg-secondary_green" />
           </div>
         </div>
         <div className="h-px w-full bg-black" />
 
         {/* BODY */}
 
-        <p>Erreur : [message]</p>
+        {error && (
+          <p className="text-error">
+            <strong>Erreur : {error}</strong>
+          </p>
+        )}
 
         {authUserChoice == "SignIn" ? (
           <div className="my-6">
@@ -67,7 +85,11 @@ export const AuthModale = ({
                   required
                 />
               </div>
-              <button type="submit" className="bg-black text-white rounded">
+              <button
+                type="submit"
+                className="bg-black text-white rounded h-8"
+                onClick={() => handleConnection()}
+              >
                 Se connecter
               </button>
             </form>
@@ -113,7 +135,11 @@ export const AuthModale = ({
                   }
                 ></input>
               </div>
-              <button type="submit" className="bg-black text-white rounded">
+              <button
+                type="submit"
+                className="bg-black text-white rounded h-8"
+                onClick={() => handleRegister()}
+              >
                 S'enregistrer
               </button>
             </form>
@@ -128,8 +154,8 @@ export const AuthModale = ({
             className="hover:underline cursor-pointer"
             onClick={() => {
               authUserChoice == "SignIn"
-                ? (setAuthUserChoice("SignUp"), setUser({}))
-                : (setAuthUserChoice("SignIn"), setUser({}));
+                ? (setAuthUserChoice("SignUp"), setUser({}), setError(null))
+                : (setAuthUserChoice("SignIn"), setUser({}), setError(null));
             }}
           >
             {authUserChoice == "SignIn"
