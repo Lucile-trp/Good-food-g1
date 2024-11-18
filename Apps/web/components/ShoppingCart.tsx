@@ -27,7 +27,7 @@ export const ShoppinCart = ({
         {cart.length !== 0 ? (
           cart.map((e) => {
             return (
-              <div className="m-2">
+              <div className="m-2" key={e.Id.toString()}>
                 <h2>{e.titre}</h2>
                 <p>{e.description}</p>
                 <p>{e.prix}e</p>

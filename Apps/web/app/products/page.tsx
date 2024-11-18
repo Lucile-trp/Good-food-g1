@@ -65,8 +65,7 @@ export default function ProductPage() {
         <div className="grid grid-cols-3 gap-5">
           {plats.length !== 0 ? (
             plats.map((o) => {
-              console.log(o);
-              return <ProductCard product={o}></ProductCard>;
+              return <ProductCard product={o} key={o.Id.toString()}></ProductCard>;
             })
           ) : (
             <p>Pas de plats disponibles.</p>

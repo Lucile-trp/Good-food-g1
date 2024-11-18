@@ -4,7 +4,7 @@ import { Product } from "@/types/product";
 export const ProductCard = ({ product }: { product: Product }) => {
   const {addToCart} = useCart();
   return (
-    <div className="w-full h-full relative w-fit" id={product.Id.toString()}>
+    <div className="w-full h-full relative w-fit">
       <div className="relative border bg-white z-20">
         <div className="grid grid-cols-2">
           <div className="w-full h-full bg-black">
