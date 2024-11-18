@@ -6,6 +6,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { AuthModale } from "../Modales/AuthModale";
 import { useUser } from "@/contexts/UserContext";
+import { ShoppinCart } from "../ShoppingCart";
 
 interface HeaderProps {
   isConnected: boolean;
@@ -17,7 +18,7 @@ const Header: React.FC<HeaderProps> = ({ isConnected }) => {
 
   const { user, setUser } = useUser();
   return (
-    <header className="flex items-center justify-between bg-white border-b border-dark_gray md:px-8 xl:px-64">
+    <header className="flex items-center justify-between bg-white border-b border-dark_gray md:px-8 xl:px-64 text-sm">
       <Link href="/">
         <Image
           src="/logo/png/black/logo_black.png"
@@ -58,6 +59,8 @@ const Header: React.FC<HeaderProps> = ({ isConnected }) => {
       </nav>
 
       {/* Modales */}
+
+      {/* Auth */}
       <div className="fixed top-0 left-0 z-[9999]">
         {authModale ? (
           <AuthModale
@@ -69,6 +72,9 @@ const Header: React.FC<HeaderProps> = ({ isConnected }) => {
           <></>
         )}
       </div>
+
+      {/* Basket */}
+      {/* <ShoppinCart></ShoppinCart> */}
     </header>
   );
 };
