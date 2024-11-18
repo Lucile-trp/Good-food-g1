@@ -1,6 +1,8 @@
+import { useCart } from "@/contexts/CartContext";
 import { Product } from "@/types/product";
 
 export const ProductCard = ({ product }: { product: Product }) => {
+  const {addToCart} = useCart();
   return (
     <div className="w-full h-full relative w-fit" id={product.Id.toString()}>
       <div className="relative border bg-white z-20">
@@ -17,7 +19,7 @@ export const ProductCard = ({ product }: { product: Product }) => {
             <p>{product.description}</p>
             <p>{product.prix}e</p>
 
-            <button className="bg-black text-white p-2 rounded">
+            <button className="bg-black text-white p-2 rounded" onClick={() => addToCart(product)}>
               Ajouter au panier
             </button>
           </div>

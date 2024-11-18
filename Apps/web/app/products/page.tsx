@@ -1,6 +1,7 @@
 "use client";
 
 import { ProductCard } from "@/components/Products/ProductCard";
+import { useCart } from "@/contexts/CartContext";
 import { Product } from "@/types/product";
 import { useEffect, useState } from "react";
 
@@ -8,6 +9,8 @@ export default function ProductPage() {
   const [entries, setEntries] = useState([]);
   const [plats, setPlats] = useState<Product[]>([]);
   const [desserts, setDesserts] = useState([]);
+
+  
 
   useEffect(() => {
     setPlats([

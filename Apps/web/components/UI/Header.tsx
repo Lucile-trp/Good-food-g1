@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import { AuthModale } from "../Modales/AuthModale";
 import { useUser } from "@/contexts/UserContext";
 import { ShoppinCart } from "../ShoppingCart";
+import { useCart } from "@/contexts/CartContext";
 
 interface HeaderProps {
   isConnected: boolean;
@@ -15,6 +16,8 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ isConnected }) => {
   const [authModale, setAuthModale] = useState<boolean>(true);
   const [authUserChoice, setAuthUserChoice] = useState<string>("");
+  const [openCart, setOpenCart] = useState<boolean>(false);
+  const { cart } = useCart();
 
   const { user, setUser } = useUser();
   return (
@@ -37,14 +40,25 @@ const Header: React.FC<HeaderProps> = ({ isConnected }) => {
             >
               Se connecter
             </button>
-            <button className="px-4 py-2 text-white bg-black hover:bg-secondary_green" onClick={() => (setAuthModale(true), setAuthUserChoice("SignUp"))}>
+            <button
+              className="px-4 py-2 text-white bg-black hover:bg-secondary_green"
+              onClick={() => (setAuthModale(true), setAuthUserChoice("SignUp"))}
+            >
               S'inscrire
             </button>
           </div>
         ) : (
           <div className="flex pt-4 items-end">
-            <button className="px-4 py-2 text-white bg-black border-r hover:bg-secondary_green h-10">
+            <button
+              className="px-4 py-2 text-white bg-black border-r hover:bg-secondary_green h-10 flex gap-2 items-center"
+              onClick={() => {
+                setOpenCart(true);
+              }}
+            >
               Panier
+              <div className="h-6 w-6 bg-white_smoke rounded text-black">
+                {cart && cart.length}
+              </div>
             </button>
             <button className="px-4 py-2 text-white bg-black hover:bg-secondary_purple h-10">
               <Image
@@ -72,9 +86,8 @@ const Header: React.FC<HeaderProps> = ({ isConnected }) => {
           <></>
         )}
       </div>
-
       {/* Basket */}
-      {/* <ShoppinCart></ShoppinCart> */}
+      {openCart && <ShoppinCart setOpenCart={setOpenCart}></ShoppinCart>}
     </header>
   );
 };

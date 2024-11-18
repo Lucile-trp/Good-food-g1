@@ -19,7 +19,7 @@ const UserContext = createContext<UserContextProps | undefined>(undefined);
 
 // PROVIDER
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>({id:'oui', email: 'luciole.trp', role:"admin"});
 
   const logout = () => setUser(null);
 

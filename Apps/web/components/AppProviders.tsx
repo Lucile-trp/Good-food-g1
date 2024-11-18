@@ -1,5 +1,7 @@
 import React from "react";
 import { UserProvider } from "@/contexts/UserContext";
+import { CartProvider } from "@/contexts/CartContext";
+import { ShoppinCart } from "./ShoppingCart";
 
 interface AppProvidersProps {
   children: React.ReactNode;
@@ -8,7 +10,9 @@ interface AppProvidersProps {
 const AppProviders: React.FC<AppProvidersProps> = ({ children }) => {
   return (
     <UserProvider>
+      <CartProvider>
         {children}
+      </CartProvider>
     </UserProvider>
   );
 };
