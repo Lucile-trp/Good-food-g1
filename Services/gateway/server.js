@@ -2,7 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const authRoutes = require('./routes/auth/auth');
-const productRoutes = require('./routes/product/product');
+const dishRoutes = require('./routes/product/dish');
+const restaurantRoutes = require('./routes/product/restaurant');
+const imageRoutes = require('./routes/product/image');
+const dishesRoutes = require('./routes/product/dishes');
+const restaurantsRoutes = require('./routes/product/restaurants');
+const imagesRoutes = require('./routes/product/images');
 const orderDeliveryRoutes = require('./routes/delivery/order');
 const deliveryAddressRoutes = require('./routes/delivery/delivery-address');
 const orderStateRoutes = require('./routes/delivery/order-state');
@@ -19,7 +24,14 @@ app.use(bodyParser.json());
 app.use('/api/user/', authRoutes);
 
 // Routes du MS-PRODUCT 
-app.use('/api/product/', productRoutes);
+app.use('/api/v1/dish', dishRoutes);  
+app.use('/api/v1/restaurant', restaurantRoutes);
+app.use('/api/v1/image', imageRoutes);
+
+// Routes du MS-PRODUCT 
+app.use('/api/v1/dishes', dishesRoutes);  
+app.use('/api/v1/restaurants', restaurantsRoutes);
+app.use('/api/v1/images', imagesRoutes);
 
 // Routes du MS-DELIVERY 
 app.use('/api/v1/order/', orderDeliveryRoutes);

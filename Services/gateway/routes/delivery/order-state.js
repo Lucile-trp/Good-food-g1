@@ -11,7 +11,7 @@ router.get('/', async (req, res, next) => {
 
   try {
     const response = await axios.get(`${DELIVERY_API}/api/v1/orderstate/`);
-    res.set(response.headers);
+
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err);

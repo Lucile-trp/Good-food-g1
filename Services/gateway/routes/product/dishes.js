@@ -3,15 +3,15 @@ const router = express.Router();
 const axios = require('axios');
 const isAuthorized = require('../../middlewares/isAuthorized');
 
-const FRANCHISE_API = process.env.FRANCHISE_API;
+const PRODUCT_API = process.env.PRODUCT_API; 
 
-// Route pour obtenir la liste des franchises
-router.get('/', async (req, res, next) => {
+// Route pour obtenir la liste de tous les plats
+router.get('/', isAuthorized, async (req, res, next) => {
   try {
-    const response = await axios.get(FRANCHISE_API + '/api/v1/productType');
+    const response = await axios.get(`${PRODUCT_API}/api/v1/dishes/`);
     res.status(response.status).json(response.data);
   } catch (err) {
-    console.error(err); // Afficher l'erreur dans la console pour le débogage
+    console.error(err);
     next(err);
   }
 });

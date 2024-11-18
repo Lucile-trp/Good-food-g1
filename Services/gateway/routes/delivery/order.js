@@ -9,8 +9,10 @@ const DELIVERY_API = process.env.DELIVERY_API; // URL de base pour le MS-DELIVER
 router.get('/', isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.get(`${DELIVERY_API}/api/v1/order/`);
-    res.set(response.headers);
+
     res.status(response.status).json(response.data);
+    res.header('Content-Length', 0);
+    res.header('transfer-encoding', '');
   } catch (err) {
     console.error(err);
     next(err);
@@ -21,7 +23,7 @@ router.get('/', isAuthorized, async (req, res, next) => {
 router.get('/:id', isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.get(`${DELIVERY_API}/api/v1/order/${req.params.id}`);
-    res.set(response.headers);
+
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err);
@@ -33,7 +35,7 @@ router.get('/:id', isAuthorized, async (req, res, next) => {
 router.get('/ByCustomer/:customerId', isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.get(`${DELIVERY_API}/api/v1/order/ByCustomer/${req.params.customerId}`);
-    res.set(response.headers);
+
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err);
@@ -45,7 +47,7 @@ router.get('/ByCustomer/:customerId', isAuthorized, async (req, res, next) => {
 router.get('/byDeliverer/:delivererId', isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.get(`${DELIVERY_API}/api/v1/order/byDeliverer/${req.params.delivererId}`);
-    res.set(response.headers);
+
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err);
@@ -57,7 +59,7 @@ router.get('/byDeliverer/:delivererId', isAuthorized, async (req, res, next) => 
 router.get('/ByDeliveryAddress/:deliveryAddressId', isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.get(`${DELIVERY_API}/api/v1/order/ByDeliveryAddress/${req.params.deliveryAddressId}`);
-    res.set(response.headers);
+
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err);
@@ -69,7 +71,7 @@ router.get('/ByDeliveryAddress/:deliveryAddressId', isAuthorized, async (req, re
 router.get('/ByState/:state', isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.get(`${DELIVERY_API}/api/v1/order/ByState/${req.params.state}`);
-    res.set(response.headers);
+
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err);
@@ -79,7 +81,6 @@ router.get('/ByState/:state', isAuthorized, async (req, res, next) => {
 
 // Route pour créer une nouvelle commande
 router.post('/', isAuthorized, async (req, res, next) => {
-  const { customerId, delivererId, deliveryAddressId } = req.query;
   const body = req.body;
 
   if (!customerId || !delivererId || !deliveryAddressId) {
@@ -87,8 +88,8 @@ router.post('/', isAuthorized, async (req, res, next) => {
   }
 
   try {
-    const response = await axios.post(`${DELIVERY_API}/api/v1/order?customerId=${customerId}&delivererId=${delivererId}&deliveryAddressId=${deliveryAddressId}`, body);
-    res.set(response.headers);
+    const response = await axios.post(`${DELIVERY_API}/api/v1/order`, body);
+
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err);  
@@ -106,8 +107,8 @@ router.put('/:orderId', isAuthorized, async (req, res, next) => {
   }
 
   try {
-    const response = await axios.put(`${DELIVERY_API}/api/v1/order/${req.params.orderId}?delivererId=${delivererId}&deliveryAddressId=${deliveryAddressId}`, body);
-    res.set(response.headers);
+    const response = await axios.put(`${DELIVERY_API}/api/v1/order/${req.params.orderId}`, body);
+
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err); 
@@ -119,7 +120,7 @@ router.put('/:orderId', isAuthorized, async (req, res, next) => {
 router.delete("/:orderId", isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.delete(`${DELIVERY_API}/api/v1/order/${req.params.orderId}`);
-    res.set(response.headers);
+
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error("DELETE error:", err.response ? err.response.data : err.message); // Log détaillé

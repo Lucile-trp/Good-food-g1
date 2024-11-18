@@ -9,7 +9,6 @@ const DELIVERY_API = process.env.DELIVERY_API;
 router.get('/', async (req, res, next) => {
   try {
     const response = await axios.get(`${DELIVERY_API}/api/v1/deliveryAddress/`);
-    res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err); 
@@ -21,7 +20,6 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.get(`${DELIVERY_API}/api/v1/deliveryAddress/${req.params.id}`);
-    res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err); 
@@ -33,7 +31,6 @@ router.get('/:id', isAuthorized, async (req, res, next) => {
 router.get('/ByCustomer/:customerId', isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.get(`${DELIVERY_API}/api/v1/deliveryAddress/ByCustomer/${req.params.customerId}`);
-    res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err); 
@@ -45,7 +42,6 @@ router.get('/ByCustomer/:customerId', isAuthorized, async (req, res, next) => {
 router.get('/ByOrder/:orderId', isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.get(`${DELIVERY_API}/api/v1/deliveryAddress/ByOrder/${req.params.orderId}`);
-    res.set(response.headers);
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err); 
@@ -64,7 +60,6 @@ router.post('/', isAuthorized, async (req, res, next) => {
 
   try {
     const response = await axios.post(`${DELIVERY_API}/api/v1/deliveryAddress?customerId=${customerId}`, body);
-    res.set(response.headers); 
     res.status(response.status).json(response.data); 
   } catch (err) {
     console.error(err);  
@@ -76,7 +71,7 @@ router.post('/', isAuthorized, async (req, res, next) => {
 router.put('/:id', isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.put(`${DELIVERY_API}/api/v1/deliveryAddress/${req.params.id}`, req.body);
-    res.set(response.headers);
+
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err); 
@@ -88,7 +83,7 @@ router.put('/:id', isAuthorized, async (req, res, next) => {
 router.delete("/:id", isAuthorized, async (req, res, next) => {
   try {
     const response = await axios.delete(`${DELIVERY_API}/api/v1/deliveryAddress/${req.params.id}`);
-    res.set(response.headers);
+
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error("DELETE error:", err.response ? err.response.data : err.message); // Log détaillé
