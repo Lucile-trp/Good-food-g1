@@ -25,5 +25,5 @@ p {
 }
 
 .text-stroke-white {
-  -webkit-text-stroke: 1px white; /* Stroke de 2px en noir */
+  -webkit-text-stroke: 1px white; 
 }
