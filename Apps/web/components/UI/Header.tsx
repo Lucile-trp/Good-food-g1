@@ -9,17 +9,17 @@ import { useUser } from "@/contexts/UserContext";
 import { ShoppinCart } from "../ShoppingCart";
 import { useCart } from "@/contexts/CartContext";
 
-interface HeaderProps {
-  isConnected: boolean;
-}
-
-const Header: React.FC<HeaderProps> = ({ isConnected }) => {
-  const [authModale, setAuthModale] = useState<boolean>(true);
+const Header: React.FC = () => {
+  const [authModale, setAuthModale] = useState<boolean>(false);
   const [authUserChoice, setAuthUserChoice] = useState<string>("");
   const [openCart, setOpenCart] = useState<boolean>(false);
   const { cart } = useCart();
 
-  const { user } = useUser();
+  const { user, setUser } = useUser();
+
+  function handleDisconnected() {
+    setUser(null);
+  }
   return (
     <header className="flex items-center justify-between bg-white border-b border-dark_gray md:px-8 xl:px-64 text-sm">
       <Link href="/">
@@ -60,13 +60,21 @@ const Header: React.FC<HeaderProps> = ({ isConnected }) => {
                 {cart && cart.length}
               </div>
             </button>
-            <button className="px-4 py-2 text-white bg-black hover:bg-secondary_purple h-10">
+            <button className="px-4 py-2 text-white bg-black  border-r hover:bg-secondary_purple h-10">
               <Image
                 src="/icons/png/white/user_icon.png"
                 width={20}
                 height={20}
                 alt="User icon picture"
               ></Image>
+            </button>
+            <button
+              className="px-4 py-2 text-white bg-black hover:bg-secondary_purple h-10"
+              onClick={() => {
+                handleDisconnected();
+              }}
+            >
+              Déconnexion
             </button>
           </div>
         )}

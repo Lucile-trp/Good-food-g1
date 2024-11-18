@@ -32,7 +32,7 @@ export default function RootLayout({
       </head>
       <body className="w-screen h-screen overflow-x-hidden bg-background">
         <AppProviders>
-          <Header isConnected={false}></Header>
+          <Header></Header>
           {children}
           <Footer></Footer>
         </AppProviders>

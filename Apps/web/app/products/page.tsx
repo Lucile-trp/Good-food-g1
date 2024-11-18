@@ -10,12 +10,6 @@ export default function ProductPage() {
   const [plats, setPlats] = useState<Product[]>(mockProducts);
   const [desserts, setDesserts] = useState([]);
 
-  
-
-  useEffect(() => {
-
-  }, []);
-
   return (
     <main className="grow flex flex-col text-black px-4 md:px-8 xl:px-64 relative">
       <div className="absolute left-0 bg-[#D9D9D9] h-64 w-full z-0"></div>
