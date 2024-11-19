@@ -5,77 +5,95 @@ const isAuthorized = require('../../middlewares/isAuthorized');
 
 const AUTH_API = process.env.AUTH_API;
 
-// exemple de route pour l'authentification (a modifier si besoins)
 
-// Route pour obtenir un delivery par son ID
-router.get("/:id", isAuthorized, async (req, res, next) => {
+// Route pour obtenir la liste de tous les users
+router.get('/', isAuthorized, async (req, res, next) => {
   try {
-    const response = await axios.get(`${AUTH_API}/users/${req.params.id}`);
+    const response = await axios.get(`${AUTH_API}/api/v1/users/`);
 
     res.status(response.status).json(response.data);
   } catch (err) {
-    console.error(err); // Afficher l'erreur dans la console pour le débogage
+    console.error(err);
     next(err);
   }
 });
 
-// Route pour obtenir un delivery par son ID
-router.get("/", isAuthorized, async (req, res, next) => {
+// Route pour obtenir un user par ID
+router.get('/:id', isAuthorized, async (req, res, next) => {
   try {
-    const response = await axios.get(`${AUTH_API}/users`);
+    const response = await axios.get(`${AUTH_API}/api/v1/users/${req.params.id}`);
 
     res.status(response.status).json(response.data);
   } catch (err) {
-    console.error(err); // Afficher l'erreur dans la console pour le débogage
+    console.error(err);
     next(err);
   }
 });
 
-router.post('/refresh', async (req, res, next) => {
-  const axios_instance = axios.create({
-    baseURL: AUTH_API,
-    timeout: 10000,
-    headers: { Authorization: req.headers.authorization }
-  });
-
+// Route pour obtenir les commandes par adresse de livraison
+router.get('/ByMail/:mail', isAuthorized, async (req, res, next) => {
   try {
-    const response = await axios_instance.post("/auth/api/auth/refresh");
+    const response = await axios.get(`${AUTH_API}/api/v1/users/ByMail/${req.params.mail}`);
 
-    res.json(response.data);
+    res.status(response.status).json(response.data);
   } catch (err) {
-    next(err.response.status);
+    console.error(err);
+    next(err);
   }
 });
 
-router.post('/signin', async (req, res, next) => {
-  const axios_instance = axios.create({
-    baseURL: AUTH_API,
-    timeout: 10000,
-    headers: { Authorization: req.headers.authorization }
-  });
-
+// Route pour créer une nouvelle commande
+router.post('/', isAuthorized, async (req, res, next) => {
+  const body = req.body;
   try {
-    const response = await axios_instance.post("/auth/api/auth/signin", req.body);
+    const response = await axios.post(`${AUTH_API}/api/v1/users`, body);
 
-    res.json(response.data);
+    res.status(response.status).json(response.data);
   } catch (err) {
-    next(err.response.status);
+    console.error(err);  
+    next(err);  
   }
 });
 
-router.post('/signup', async (req, res, next) => {
-  const axios_instance = axios.create({
-    baseURL: AUTH_API,
-    timeout: 10000,
-    headers: { Authorization: req.headers.authorization }
-  });
+// Route pour créer une nouvelle commande
+router.post('/auth/login', isAuthorized, async (req, res, next) => {
+  const body = req.body;
 
   try {
-    const response = await axios_instance.post("/auth/api/auth/signup", req.body);
+    const response = await axios.post(`${AUTH_API}/api/v1/users/auth`, body);
 
-    res.json(response.data);
+    res.status(response.status).json(response.data);
   } catch (err) {
-    next(err.response.status);
+    console.error(err);  
+    next(err);  
+  }
+});
+
+// Route pour créer une nouvelle commande
+router.post('/auth/register', isAuthorized, async (req, res, next) => {
+  const body = req.body;
+
+  try {
+    const response = await axios.post(`${AUTH_API}/api/v1/users/register`, body);
+
+    res.status(response.status).json(response.data);
+  } catch (err) {
+    console.error(err);  
+    next(err);  
+  }
+});
+
+// Route pour créer une nouvelle commande
+router.post('/auth/verifyAuthorization', isAuthorized, async (req, res, next) => {
+  const body = req.body;
+
+  try {
+    const response = await axios.post(`${AUTH_API}/api/v1/users/verifyAuthorization`, body);
+
+    res.status(response.status).json(response.data);
+  } catch (err) {
+    console.error(err);  
+    next(err);  
   }
 });
 
