@@ -21,7 +21,7 @@ spec:
 
           env:
             - name: ConnectionStrings__DefaultConnection
-              value: Host=franchise_postgres_db;Port=5432;Database=franchises;Username=franchisepostgresadmin;Password=admin;
+              value: Host=franchise-postgres-db-service;Port=5502;Database=franchises;Username=franchisepostgresadmin;Password=admin;
             - name: RabbitMQ__Hostname
               value: rabbitmq-service
             - name: RabbitMQ__Password

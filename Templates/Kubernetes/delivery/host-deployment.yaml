@@ -21,7 +21,7 @@ spec:
 
           env:
             - name: ConnectionStrings__DefaultConnection
-              value: Host=delivery_postgres_db;Port=5432;Database=deliverys;Username=deliverypostgresadmin;Password=admin;
+              value: Host=delivery-postgres-db-service;Port=5501;Database=deliverys;Username=deliverypostgresadmin;Password=admin;
             - name: RabbitMQ__Hostname
               value: rabbitmq-service
             - name: RabbitMQ__Password
