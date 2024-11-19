@@ -20,7 +20,7 @@ router.get('/:id', isAuthorized, async (req, res, next) => {
 // Route pour avoir les plats d'une commande
 router.get('/ByOrder/:id', isAuthorized, async (req, res, next) => {
   try {
-    const response = await axios.post(`${DELIVERY_API}/api/v1/dish/${req.params.id}`);
+    const response = await axios.get(`${DELIVERY_API}/api/v1/dish/${req.params.id}`);
     res.status(response.status).json(response.data);
   } catch (err) {
     console.error(err);  

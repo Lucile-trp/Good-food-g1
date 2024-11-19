@@ -21,7 +21,7 @@ const app = express();
 app.use(bodyParser.json());
 
 // Routes du MS-AUTH
-app.use('/api/users/', authRoutes);
+app.use('/api/v1/users', authRoutes);
 
 // Routes du MS-PRODUCT 
 app.use('/api/v1/dish', dishRoutes);  
@@ -34,14 +34,14 @@ app.use('/api/v1/restaurants', restaurantsRoutes);
 app.use('/api/v1/images', imagesRoutes);
 
 // Routes du MS-DELIVERY 
-app.use('/api/v1/order/', orderDeliveryRoutes);
-app.use('/api/v1/deliveryAddress/', deliveryAddressRoutes);
-app.use('/api/v1/orderState/', orderStateRoutes);
+app.use('/api/v1/order', orderDeliveryRoutes);
+app.use('/api/v1/deliveryAddress', deliveryAddressRoutes);
+app.use('/api/v1/orderState', orderStateRoutes);
 
 // Routes du MS-FRANCHISE 
-app.use('/api/v1/supplier/', supplierRoutes);
+app.use('/api/v1/supplier', supplierRoutes);
 app.use('/api/v1/order', orderFranchiseRoutes);
-app.use('/api/v1/productType/', productTypeRoutes);
+app.use('/api/v1/productType', productTypeRoutes);
 
 // Routes du MS-MAILING 
 app.use('/api/mailing/', mailingRoutes);

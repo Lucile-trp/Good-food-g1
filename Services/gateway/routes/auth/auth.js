@@ -9,7 +9,7 @@ const AUTH_API = process.env.AUTH_API;
 // Route pour obtenir la liste de tous les users
 router.get('/', isAuthorized, async (req, res, next) => {
   try {
-    const response = await axios.get(`${AUTH_API}/api/v1/users/`);
+    const response = await axios.get(`${AUTH_API}/api/v1/users`);
 
     res.status(response.status).json(response.data);
   } catch (err) {
@@ -60,7 +60,7 @@ router.post('/auth/login', isAuthorized, async (req, res, next) => {
   const body = req.body;
 
   try {
-    const response = await axios.post(`${AUTH_API}/api/v1/users/auth`, body);
+    const response = await axios.post(`${AUTH_API}/api/v1/auth/login`, body);
 
     res.status(response.status).json(response.data);
   } catch (err) {
@@ -74,7 +74,7 @@ router.post('/auth/register', isAuthorized, async (req, res, next) => {
   const body = req.body;
 
   try {
-    const response = await axios.post(`${AUTH_API}/api/v1/users/register`, body);
+    const response = await axios.post(`${AUTH_API}/api/v1/auth/register`, body);
 
     res.status(response.status).json(response.data);
   } catch (err) {
@@ -88,7 +88,7 @@ router.post('/auth/verifyAuthorization', isAuthorized, async (req, res, next) =>
   const body = req.body;
 
   try {
-    const response = await axios.post(`${AUTH_API}/api/v1/users/verifyAuthorization`, body);
+    const response = await axios.post(`${AUTH_API}/api/v1/auth/verifyAuthorization`, body);
 
     res.status(response.status).json(response.data);
   } catch (err) {
