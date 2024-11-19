@@ -13,7 +13,7 @@ services:
       - franchise-host
       - rabbitmq
     environment:
-      AUTH_API: http://auth-host:8080
+      AUTH_API: http://auth-host:3000
       PRODUCT_API: http://product-host:8080
       DELIVERY_API: http://delivery-host:8080
       FRANCHISE_API: http://franchise-host:8080
@@ -39,7 +39,7 @@ services:
       DATABASE_PASS: admin
       DATABASE_URI: mongodb://mongodbauth:27017
     ports:
-      - "50001:8080"
+      - "50001:3000"
     networks:
       - backend
 
