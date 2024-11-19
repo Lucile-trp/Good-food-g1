@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: franchise-host
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: franchise-host
+
+  template:
+    metadata:
+      labels:
+        app: franchise-host
+
+    spec:
+      containers:
+        - name: franchisehost
+
+          env:
+            - name: ConnectionStrings__DefaultConnection
+              value: '"Server=tcp:franchise-postgres-db-service,5502;Initial Catalog=Franchise;Persist Security Info=False;User ID=franchisepostgresadmin;Password=admin;Connection Timeout=30;"'
+            - name: RabbitMQ__Hostname
+              value: rabbitmq-service
+            - name: RabbitMQ__Password
+              value: admin
+            - name: RabbitMQ__Username
+              value: admin
+
+          image: lutrp/goodfood-franchisems
+
+          resources:
+            limits:
+              cpu: 100m
+              memory: 500Mi
+
+          ports:
+            - containerPort: 8080

@@ -71,6 +71,15 @@ jobs:
           push: true
           tags: lutrp/goodfood-deliveryms
 
+      # Deploy franchise ms
+      - name: Build & Push franchise MS Docker image to Docker Hub
+        uses: docker/build-push-action@v5
+        with:
+          context: ./Services/franchise/Sources/
+          file: ./Services/franchise/Sources/Dockerfile
+          push: true
+          tags: lutrp/goodfood-franchisems
+
       # Deploy product ms
       - name: Build & Push product MS Docker image to Docker Hub
         uses: docker/build-push-action@v5

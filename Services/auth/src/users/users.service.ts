@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from './users.model';
+import { AllowedRoles, User } from './users.model';
 import { toObjectId } from 'src/helpers/toObjectId';
 import { hashPassword } from 'src/helpers/hashPassword';
 
@@ -39,6 +39,7 @@ export class UserService {
     const newUser = new this.userModel({
       email,
       password: passwordHash,
+      role: AllowedRoles.USER
     });
     const res = await newUser.save();
     return res.id;
