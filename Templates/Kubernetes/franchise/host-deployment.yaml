@@ -21,7 +21,7 @@ spec:
 
           env:
             - name: ConnectionStrings__DefaultConnection
-              value: '"Server=tcp:franchise-postgres-db-service,5502;Initial Catalog=Franchise;Persist Security Info=False;User ID=franchisepostgresadmin;Password=admin;Connection Timeout=30;"'
+              value: Host=franchise_postgres_db;Port=5432;Database=franchises;Username=franchisepostgresadmin;Password=admin;
             - name: RabbitMQ__Hostname
               value: rabbitmq-service
             - name: RabbitMQ__Password

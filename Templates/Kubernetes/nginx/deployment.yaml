@@ -30,6 +30,11 @@ spec:
               name: nginx-claim0
               readOnly: true
 
+          volumeMounts:
+            - mountPath: /ssl
+              name: nginx-claim1
+              readOnly: true
+
           resources:
             limits:
               cpu: 100m
@@ -39,6 +44,9 @@ spec:
       volumes:
         - name: nginx-claim0
           hostPath:
-            path: /run/desktop/mnt/host/c/Users/madler/Documents/Dev/Good-food-g1/nginx/nginx.conf
+            path: /run/desktop/mnt/host/c/Develop/Good-food-g1/nginx/nginx.conf
+        - name: nginx-claim1
+          hostPath:
+            path: /run/desktop/mnt/host/c/Develop/Good-food-g1/nginx/ssl
 
 status: {}
