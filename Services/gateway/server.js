@@ -21,7 +21,7 @@ const app = express();
 app.use(bodyParser.json());
 
 // Routes du MS-AUTH
-app.use('/api/user/', authRoutes);
+app.use('/api/users/', authRoutes);
 
 // Routes du MS-PRODUCT 
 app.use('/api/v1/dish', dishRoutes);  

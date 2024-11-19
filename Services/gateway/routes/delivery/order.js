@@ -11,8 +11,6 @@ router.get('/', isAuthorized, async (req, res, next) => {
     const response = await axios.get(`${DELIVERY_API}/api/v1/order/`);
 
     res.status(response.status).json(response.data);
-    res.header('Content-Length', 0);
-    res.header('transfer-encoding', '');
   } catch (err) {
     console.error(err);
     next(err);
@@ -82,11 +80,7 @@ router.get('/ByState/:state', isAuthorized, async (req, res, next) => {
 // Route pour créer une nouvelle commande
 router.post('/', isAuthorized, async (req, res, next) => {
   const body = req.body;
-
-  if (!customerId || !delivererId || !deliveryAddressId) {
-    return res.status(400).json({ error: "customerId, delivererId, and deliveryAddressId are required in query string" });
-  }
-
+  
   try {
     const response = await axios.post(`${DELIVERY_API}/api/v1/order`, body);
 
