@@ -13,6 +13,7 @@ const config: Config = {
       dark_gray: "#373737",
       white_smoke: "#F5F5F5",
       white: "#FFFFFF",
+      error: "#ff2c2c",
       secondary_green: "#6FBC85",
       secondary_purple: "#AFA5D1",
       secondary_yellow: "#FBE216",

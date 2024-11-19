@@ -1,14 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { ProductCard } from "@/components/Products/ProductCard";
+import { mockProducts, Product } from "@/types/product";
+import { useEffect, useState } from "react";
 
 export default function ProductPage() {
   const [entries, setEntries] = useState([]);
-  const [plats, setPlats] = useState([]);
+  const [plats, setPlats] = useState<Product[]>([]);
   const [desserts, setDesserts] = useState([]);
 
+  useEffect(() => {
+    getDataFromApi();
+  }, []);
+
+  async function getDataFromApi() {
+    await fetch('https://api.egamorf.com/api/v1/dishes')
+    .then(response => {
+      return response.json();
+    })
+    .then(data => {
+      setPlats(data)
+      console.log(data)
+    })
+
+    
+  }
+
   return (
-    <main className="grow flex flex-col text-black md:px-8 xl:px-64 relative">
+    <main className="grow flex flex-col text-black px-4 md:px-8 xl:px-64 relative">
       <div className="absolute left-0 bg-[#D9D9D9] h-64 w-full z-0"></div>
       {/* HOME SECTION */}
       <section className="relative z-10">
@@ -34,7 +53,7 @@ export default function ProductPage() {
             return <></>;
           })
         ) : (
-          <p>Pas d'entrées disponibles.</p>
+          <p>Arrive prochainement 🚀</p>
         )}
       </section>
 
@@ -46,13 +65,17 @@ export default function ProductPage() {
           <h1 className="relative z-10">Les plats</h1>
           <div className="absolute z-0 top-7 left-7 h-[20px] w-full bg-secondary_green"></div>
         </div>
-        {plats.length !== 0 ? (
-          entries.map((o) => {
-            return <></>;
-          })
-        ) : (
-          <p>Pas de plats disponibles.</p>
-        )}
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {plats.length !== 0 ? (
+            plats.map((o) => {
+              return (
+                <ProductCard product={o} key={o.id.toString()}></ProductCard>
+              );
+            })
+          ) : (
+            <p>Pas de plats disponibles.</p>
+          )}
+        </div>
       </section>
 
       <div className="h-px w-full bg-dark_gray mt-10" />
@@ -64,11 +87,11 @@ export default function ProductPage() {
           <div className="absolute z-0 top-7 left-7 h-[20px] w-full bg-secondary_yellow"></div>
         </div>
         {desserts.length !== 0 ? (
-          entries.map((o) => {
+          desserts.map((o) => {
             return <></>;
           })
         ) : (
-          <p>Pas de desserts disponibles.</p>
+          <p>Arrive prochainement 🚀</p>
         )}
       </section>
     </main>

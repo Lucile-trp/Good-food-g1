@@ -1,4 +1,5 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useUser } from "@/contexts/UserContext";
+import { Dispatch, SetStateAction, useState } from "react";
 
 type User = {
   email: string;
@@ -15,18 +16,48 @@ export const AuthModale = ({
   authUserChoice: String;
   setAuthUserChoice: Dispatch<SetStateAction<string>>;
 }) => {
-  const [user, setUser] = useState<Partial<User>>({});
+  const [userForm, setUserForm] = useState<Partial<User>>({});
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    console.log("user : ", user);
-  }, [user]);
+  const { setUser } = useUser();
+
+  function handleConnection() {
+    if (!userForm.email || !userForm.password) {
+      setError("Veuillez renseigner tout les champs requis.");
+      return;
+    }
+
+    // TODO : CONNEXION
+    setUser({ id: "oui", email: userForm.email, role: "admin" });
+    setAuthModale(false)
+
+    
+  }
+
+  function handleRegister() {
+    if (
+      !userForm.email ||
+      !userForm.password ||
+      !userForm.confirmationPassword
+    ) {
+      setError("Veuillez renseigner tout les champs requis.");
+      return;
+    }
+
+    if (userForm.password != userForm.confirmationPassword) {
+      setError("Les mots de passes sont différents.");
+      return;
+    }
+
+    // TODO : REGSITER
+  }
 
   return (
     <div className="flex z-100 top-0 left-0 w-screen h-screen justify-center items-center">
       <div
         className="absolute bg-black/40 w-full h-full z-0"
         onClick={() => {
-          setAuthModale(false), setUser({});
+          setAuthModale(false), setUserForm({});
         }}
       ></div>
 
@@ -37,71 +68,81 @@ export const AuthModale = ({
             <h1 className="relative z-10">
               {authUserChoice == "SignIn" ? "CONNEXION" : "INSCRIPTION"}
             </h1>
-            <div className="absolute z-0 top-7 left-7 h-[20px] w-full bg-secondary_green" />
           </div>
         </div>
         <div className="h-px w-full bg-black" />
 
         {/* BODY */}
 
-        <p>Erreur : [message]</p>
+        {error && (
+          <p className="text-error">
+            <strong>Erreur : {error}</strong>
+          </p>
+        )}
 
         {authUserChoice == "SignIn" ? (
           <div className="my-6">
-            <form className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3">
               <div className="flex flex-col">
-                <label htmlFor="email">E-mail</label>
+                <label htmlFor="email">E-mail*</label>
                 <input
                   id="email"
                   type="text"
                   className="border rounded"
                   required
+                  onChange={(e) => setUserForm({...userForm, email: e.target.value})}
                 ></input>
               </div>
               <div className="flex flex-col">
-                <label htmlFor="password">Mot de passe</label>
+                <label htmlFor="password">Mot de passe*</label>
                 <input
                   type="password"
                   id="password"
                   className="border rounded"
                   required
+                  onChange={(e) => setUserForm({...userForm, password: e.target.value})}
                 />
               </div>
-              <button type="submit" className="bg-black text-white rounded">
+              <button
+                className="bg-black text-white rounded h-8"
+                onClick={() => handleConnection()}
+              >
                 Se connecter
               </button>
-            </form>
+            </div>
           </div>
         ) : (
           <div className="my-6">
             <form className="flex flex-col gap-3">
               <div className="flex flex-col">
-                <label htmlFor="email">E-mail</label>
+                <label htmlFor="email">E-mail*</label>
                 <input
                   type="text"
                   id="email"
                   className="border rounded"
                   required
-                  onChange={(e) => setUser({ ...user, email: e.target.value })}
+                  onChange={(e) =>
+                    setUserForm({ ...userForm, email: e.target.value })
+                  }
                 ></input>
               </div>
 
               <div className="flex flex-col">
-                <label htmlFor="password">Mot de passe</label>
+                <label htmlFor="password">Mot de passe*</label>
                 <input
                   type="password"
                   id="password"
                   className="border rounded"
                   required
                   onChange={(e) =>
-                    setUser({ ...user, password: e.target.value })
+                    setUserForm({ ...userForm, password: e.target.value })
                   }
                 ></input>
               </div>
 
               <div className="flex flex-col">
                 <label htmlFor="passwordConfirmation">
-                  Confirmation du mot de passe
+                  Confirmation du mot de passe*
                 </label>
                 <input
                   type="password"
@@ -109,11 +150,17 @@ export const AuthModale = ({
                   className="border rounded"
                   required
                   onChange={(e) =>
-                    setUser({ ...user, confirmationPassword: e.target.value })
+                    setUserForm({
+                      ...userForm,
+                      confirmationPassword: e.target.value,
+                    })
                   }
                 ></input>
               </div>
-              <button type="submit" className="bg-black text-white rounded">
+              <button
+                className="bg-black text-white rounded h-8"
+                onClick={() => handleRegister()}
+              >
                 S'enregistrer
               </button>
             </form>
@@ -128,8 +175,10 @@ export const AuthModale = ({
             className="hover:underline cursor-pointer"
             onClick={() => {
               authUserChoice == "SignIn"
-                ? (setAuthUserChoice("SignUp"), setUser({}))
-                : (setAuthUserChoice("SignIn"), setUser({}));
+                ? (setAuthUserChoice("SignUp"), setUserForm({}), setError(null))
+                : (setAuthUserChoice("SignIn"),
+                  setUserForm({}),
+                  setError(null));
             }}
           >
             {authUserChoice == "SignIn"
