@@ -1,6 +1,12 @@
+'use client'
+
+import { FeedbackModale } from "@/components/Modales/FeedbackModale";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Home() {
+  const [feedbackModale, setFeedbackModale] = useState<boolean>(true);
+
   return (
     <main className="grow flex flex-col text-black md:px-8 xl:px-64 relative">
       <div className="absolute left-0 bg-[#D9D9D9] h-64 w-full"></div>
@@ -107,6 +113,8 @@ export default function Home() {
           Commencer
         </button>
       </section>
+
+      {feedbackModale && <FeedbackModale setOpenFeedbackModale={setFeedbackModale}></FeedbackModale>}
     </main>
   );
 }
